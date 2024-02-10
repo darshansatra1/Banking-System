@@ -50,7 +50,8 @@ var userSchema = new mongoose.Schema({
     },
     //TODO: Add account schema
 }, {
-    timestamps: true
+    timestamps: true,
+    collection: "Users",
 });
 
 userSchema.pre('save', async function (next) {
