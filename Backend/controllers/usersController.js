@@ -90,8 +90,27 @@ const loginUser = asyncHandler(async (req, res) => {
         console.log(e.message)
         return res.status(500).send("Ooops!! Something Went Wrong, Try again...");
     }
-
-
 });
 
-module.exports = { createUser, loginUser };
+/***
+ * @desc   Get a user
+ * @route  GET  /api/users/:id
+ * @access private(USER)
+ */
+const getUserById = asyncHandler(async (req, res) => {
+    let user;
+    try {
+        user = await User.findById(req.params.id);
+        res.status(200).json({
+            user_name: user.user_name,
+            email: user.email,
+            role: user.role,
+        });
+    } catch (error) {
+        if (!user) return res.status(404).send("User not found!");
+        res.status(500).send("Something went wrong!");
+    }
+});
+
+
+module.exports = { createUser, loginUser, getUserById };
