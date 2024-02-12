@@ -41,7 +41,10 @@ var userSchema = new mongoose.Schema({
     role: {
         type: String,
         required: true,
-        enum: ['customer', 'merchant'],
+        enum: {
+            values: ['customer', 'merchant'],
+            message: "{VALUE} is not supported as a role",
+        },
         default: 'customer'
     },
     user_status: {
