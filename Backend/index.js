@@ -1,7 +1,6 @@
 const express = require("express");
 const dbConnect = require("./config/dbConnect");
 const dotenv = require("dotenv").config();
-const PORT = process.env.PORT || 4000;
 const morgan = require("morgan"); // HTTP request and response logging
 const helmet = require("helmet"); // Security middleware
 const cors = require("cors"); // Cross-Origin Resource Sharing (CORS) configuration
@@ -10,7 +9,9 @@ const xss = require("xss-clean"); // Cross-site scripting (XSS) protection
 const mongoSanitize = require("express-mongo-sanitize"); // Data sanitization
 const { errorHandler, notFound } = require("./middlewares/errorHandler");
 
-
+// Import routes
+const usersRoute = require("./routes/usersRoute");
+const adminRoutes = require('./routes/adminRoutes'); // Import the admin routes
 
 const app = express();
 
@@ -29,15 +30,16 @@ app.use(mongoSanitize()); // Sanitize data for MongoDB queries
 app.use(express.json()); // Parse JSON data
 app.use(express.urlencoded({ extended: true })); // Parse URL-encoded data (if needed)
 
-// Router for authentication:
-const usersRoute = require("./routes/usersRoute");
-app.use('/api/user', usersRoute);
+// Mount the routes on the '/api' path
+app.use('/api/user', usersRoute); // User routes
+app.use('/api/admin', adminRoutes); // Adsmin routes
 
 // Error handling middleware:
 app.use(notFound);
 app.use(errorHandler);
 
-// Server startup:
+// Determine the port from the environment or use 4000 as a fallback
+const PORT = process.env.PORT || 4000;
 app.listen(PORT, () => {
     console.log(`Server is running at PORT ${PORT}`);
 });

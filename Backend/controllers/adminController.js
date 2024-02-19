@@ -1,6 +1,6 @@
-const Admin = require("Backend/models/adminModel.js");
+const Admin = require("../models/adminModel");
 const asyncHandler = require("express-async-handler");
-const { generateAdminToken } = require("../helpers/generateAdminToken");
+const { generateAdminToken } = require("../helpers/generateUsersToken");
 const validator = require("validator");
 
 /**
