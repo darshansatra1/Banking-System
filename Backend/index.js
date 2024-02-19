@@ -30,9 +30,9 @@ app.use(mongoSanitize()); // Sanitize data for MongoDB queries
 app.use(express.json()); // Parse JSON data
 app.use(express.urlencoded({ extended: true })); // Parse URL-encoded data (if needed)
 
-// Mount the routes on the '/api' path
-app.use('/api/user', usersRoute); // User routes
-app.use('/api/admin', adminRoutes); // Adsmin routes
+// Router for authentication:
+const usersRoute = require("./routes/usersRoute");
+app.use('/api/user', usersRoute);
 
 // Error handling middleware:
 app.use(notFound);
