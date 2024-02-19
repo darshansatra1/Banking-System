@@ -10,7 +10,7 @@ const mongoSanitize = require("express-mongo-sanitize"); // Data sanitization
 const { errorHandler, notFound } = require("./middlewares/errorHandler");
 
 // Import routes
-const usersRoute = require("./routes/usersRoute");
+
 const adminRoutes = require('./routes/adminRoutes'); // Import the admin routes
 
 const app = express();
