@@ -3,7 +3,7 @@ import { FcCurrencyExchange } from "react-icons/fc";
 import { RiLoginCircleFill } from "react-icons/ri";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
-import { login } from "../../../state/features/User/Auth/authSlice"; // Import the login action
+import { login } from "../../../state/features/User/Auth/authSlice";
 import FormButton from "../../shared/FormButton";
 import { Logo } from "../../shared/Logo";
 import MessagesContainer from "../../shared/MessagesContainer";
@@ -32,13 +32,9 @@ export default function Login() {
 
     if (user) {
       setFormInputs({ ...formInputs, msg: "Login Succesfully" });
-      // Store JWT token in session storage
-      if (user.token) {
-        sessionStorage.setItem('jwtToken', user.token);
-      }
       navigate("/");
     }
-  }, [isError, message, user, msg, navigate, formInputs]);
+  }, [isError, message, user, msg]);
 
   const handleLogin = (e) => {
     e.preventDefault();
