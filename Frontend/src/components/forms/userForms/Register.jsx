@@ -5,6 +5,7 @@ import { FcCurrencyExchange } from "react-icons/fc";
 import { TiUserAdd } from "react-icons/ti";
 import { useNavigate } from "react-router-dom";
 import { register } from "../../../state/features/User/Auth/authSlice";
+import { register } from "../../../state/features/User/Auth/authSlice";
 import FormButton from "../../shared/FormButton";
 import { Logo } from "../../shared/Logo";
 import MessagesContainer from "../../shared/MessagesContainer";
@@ -61,7 +62,7 @@ export default function Register() {
   return (
     <div className="block p-6 rounded shadow-lg shadow-black/20 bg-slate-50 w-full mx-auto">
       <Logo />
-      <h3 className="flex justify-center items-center text-2xl text-blue-800 font-bold text-center p-2 my-4 rounded shadow bg-blue-200 border-x-4 border-blue-800 select-none" onSubmit={handleSubmit}>
+      <h3 className="flex justify-center items-center text-2xl text-blue-800 font-bold text-center p-2 my-4 rounded shadow bg-blue-200 border-x-4 border-blue-800 select-none">
         <FcCurrencyExchange className="mr-1" size={45} />
         <span>Register</span>
       </h3>
