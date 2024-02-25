@@ -12,8 +12,7 @@ import MessagesContainer from "../../shared/MessagesContainer";
 import { InputsValidator } from "../helpers/InputsValidator";
 
 import axios from "axios";
-
-import axios from "axios";
+ 
 
 export default function Register() {
   const [formInputs, setFormInputs] = useState({
