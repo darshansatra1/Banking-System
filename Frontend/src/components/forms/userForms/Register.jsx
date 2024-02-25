@@ -5,7 +5,7 @@ import { FcCurrencyExchange } from "react-icons/fc";
 import { TiUserAdd } from "react-icons/ti";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { register } from "../../../state/features/User/Auth/authSlice";
+// import { register } from "../../../state/features/User/Auth/authSlice";
 import FormButton from "../../shared/FormButton";
 import { Logo } from "../../shared/Logo";
 import MessagesContainer from "../../shared/MessagesContainer";
@@ -16,30 +16,28 @@ import axios from "axios";
 
 export default function Register() {
   const [formInputs, setFormInputs] = useState({
-    user_name: "",
+    UserName: "",
     // lastName: "",
     password: "",
-    // repeatPassword: "",
+    repeatPassword: "",
     email: "",
     // phone: "",
     // address: "",
     // postCode: "",
-    // msg: "",
-    role: "customer",            
+    msg: "",
   });
 
   const {
-    // postCode,
+    postCode,
     email,
     password,
-    // phone,
-    // address,
-    // lastName,
-    // firstName,
-    user_name,
-    // repeatPassword,
-    // msg,
-    role,
+    phone,
+    address,
+    lastName,
+    firstName,
+    UserName,
+    repeatPassword,
+    msg,
   } = formInputs;
 
   const [error, setError] = useState("")
@@ -123,12 +121,12 @@ export default function Register() {
     //     };
 
     //set error msg to none first
-    // setFormInputs({ ...formInputs, msg: "" });
-    // //check for password match > then show error msg
-    // if (password !== repeatPassword) {
-    //   setFormInputs({ ...formInputs, msg: "password does not match" });
-    //   return;
-    // }
+    setFormInputs({ ...formInputs, msg: "" });
+    //check for password match > then show error msg
+    if (password !== repeatPassword) {
+      setFormInputs({ ...formInputs, msg: "password does not match" });
+      return;
+    }
   }
 
   //   const userData = {
@@ -140,18 +138,18 @@ export default function Register() {
   //     password,
   //   };
 
-  //   dispatch(register(formInputs));
+  //   dispatch(register(userData));
   // };
 
   return (
     <div className="block p-6 rounded shadow-lg shadow-black/20 bg-slate-50 w-full mx-auto">
       <Logo />
-      <h3 className="flex justify-center items-center text-2xl text-blue-800 font-bold text-center p-2 my-4 rounded shadow bg-blue-200 border-x-4 border-blue-800 select-none">
+      <h3 className="flex justify-center items-center text-2xl text-blue-800 font-bold text-center p-2 my-4 rounded shadow bg-blue-200 border-x-4 border-blue-800 select-none" onSubmit={handleSubmit}>
         <FcCurrencyExchange className="mr-1" size={45} />
         <span>Register</span>
       </h3>
 
-      <form className="mt-10" onSubmit={handleSubmit}>
+      <form className="mt-10">
         <div className="relative z-0 w-full mb-6">
           <label
             htmlFor="user_name"
@@ -162,9 +160,9 @@ export default function Register() {
           <input
             type="text"
             name="user_name"
-            defaultValue={user_name}
+            defaultValue={UserName}
             onChange={(e) =>
-              setFormInputs({ ...formInputs, user_name: e.target.value })
+              setFormInputs({ ...formInputs, UserName: e.target.value })
             }
             className="block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
             placeholder="Type Your Full Name"
@@ -298,7 +296,7 @@ export default function Register() {
             placeholder="Repeat Password"
             required
           />
-        </div> */}
+        </div>
 
         {/* password validator */}
         <InputsValidator passwordInput={password} />
@@ -357,7 +355,8 @@ export default function Register() {
 
         {/*form button */}
         <FormButton
-          text={{ loading: "Processing", default: "Register"}}
+          text={{ loading: "Processing", default: "Register" }}
+          
           icon={<TiUserAdd className="mb-[-2px] ml-1" size={27} />}
         />
       </form>
