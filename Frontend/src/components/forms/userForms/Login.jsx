@@ -1,5 +1,3 @@
-// Inside your Login component
-
 import React, { useState, useEffect } from "react";
 import { FcCurrencyExchange } from "react-icons/fc";
 import { RiLoginCircleFill } from "react-icons/ri";
