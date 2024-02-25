@@ -107,7 +107,7 @@ export default function Register() {
           />
         </div>
 
-        <div className="relative z-0 w-full mb-6">
+        {/* <div className="relative z-0 w-full mb-6">
           <label
             htmlFor="password"
             className="w-full inline-block font-semibold mb-4 p-2 text-gray-800 border-b-4 border-blue-800 rounded shadow bg-blue-200"
