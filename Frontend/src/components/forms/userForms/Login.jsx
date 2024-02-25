@@ -5,11 +5,11 @@ import { FcCurrencyExchange } from "react-icons/fc";
 import { RiLoginCircleFill } from "react-icons/ri";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
-import { login } from "../../../state/features/User/Auth/authSlice";
+import { login } from "../../../state/features/User/Auth/authSlice"; // Import the login action
 import FormButton from "../../shared/FormButton";
 import { Logo } from "../../shared/Logo";
 import MessagesContainer from "../../shared/MessagesContainer";
-import { login } from "../../../state/features/User/Auth/authSlice";
+
 
 export default function Login() {
   const [formInputs, setFormInputs] = useState({
