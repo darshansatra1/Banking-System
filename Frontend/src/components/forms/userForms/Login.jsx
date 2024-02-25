@@ -48,8 +48,6 @@ export default function Login() {
       email: email.trim(),
       password,
     };
-
-    // Dispatch login action
     dispatch(login(userData));
   };
 
