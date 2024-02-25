@@ -112,5 +112,41 @@ const getUserById = asyncHandler(async (req, res) => {
     }
 });
 
+/***
+ * @desc   Update a user
+ * @route  PUT  /api/users/:id
+ * @access private(USER)
+ */
+const updateUserById = asyncHandler(async(req,res)=>{
+    try{
+        const user = await User.findById(req.params.id);
+        if(user.user_name !== req.body.user_name){
+            const findUser = await User.findOne({
+                user_name:req.body.user_name
+            });
+            if(!findUser){
+                user.user_name = req.body.user_name;
+                user.markModified("user_name");
+            }else{
+                return res.status(409).send("This username is taken, please some different name");
+            }
 
-module.exports = { createUser, loginUser, getUserById };
+        }
+        const updatedUser = await user.save();
+
+        res.status(200).json({
+            _uid: updatedUser._uid,
+            user_name: updatedUser.user_name,
+            email:updatedUser.email,
+            role:updatedUser.role,
+        })
+    }catch (error){
+        if(error.message.match(/(email|name)/gi)){
+            return res.status(400).send(error.message);
+        }
+        return res.status(500).send("Something went wrong!");
+    }
+})
+
+
+module.exports = { createUser, loginUser, getUserById, updateUserById };
