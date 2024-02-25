@@ -4,7 +4,7 @@ import { FcCurrencyExchange } from "react-icons/fc";
 import { RiLoginCircleFill } from "react-icons/ri";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
-// import { login } from "../../../state/features/User/Auth/authSlice";
+import { login } from "../../../state/features/User/Auth/authSlice";
 import FormButton from "../../shared/FormButton";
 import { Logo } from "../../shared/Logo";
 import MessagesContainer from "../../shared/MessagesContainer";
@@ -26,28 +26,28 @@ export default function Login() {
     (state) => state.userAuth
   );
 
-  // useEffect(() => {
-  //   if (isError) {
-  //     setFormInputs({ ...formInputs, msg: message });
-  //   }
+  useEffect(() => {
+    if (isError) {
+      setFormInputs({ ...formInputs, msg: message });
+    }
 
-  //   if (user) {
-  //     setFormInputs({ ...formInputs, msg: "Login Succesfully" });
-  //     navigate("/");
-  //   }
-  // }, [isError, message, user, msg]);
+    if (user) {
+      setFormInputs({ ...formInputs, msg: "Login Succesfully" });
+      navigate("/");
+    }
+  }, [isError, message, user, msg]);
 
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();
-  //   //set msg to none first
-  //   setFormInputs({ ...formInputs, msg: "" });
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    //set msg to none first
+    setFormInputs({ ...formInputs, msg: "" });
 
-  //   const userData = {
-  //     email: email.trim(),
-  //     password,
-  //   };
-  //   dispatch(login(userData));
-  // };
+    const userData = {
+      email: email.trim(),
+      password,
+    };
+    dispatch(login(userData));
+  };
 
   return (
     <div className="w-full lg:w-[40%] max-w-md block p-6 rounded shadow-lg shadow-black/20 bg-slate-50 mx-auto">
