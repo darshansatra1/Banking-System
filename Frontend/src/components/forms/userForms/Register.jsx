@@ -11,16 +11,18 @@ import { Logo } from "../../shared/Logo";
 import MessagesContainer from "../../shared/MessagesContainer";
 import { InputsValidator } from "../helpers/InputsValidator";
 
+import axios from "axios";
+
 export default function Register() {
   const [formInputs, setFormInputs] = useState({
-    firstName: "",
-    lastName: "",
+    UserName: "",
+    // lastName: "",
     password: "",
     repeatPassword: "",
     email: "",
-    phone: "",
-    address: "",
-    postCode: "",
+    // phone: "",
+    // address: "",
+    // postCode: "",
     msg: "",
   });
 
@@ -32,10 +34,12 @@ export default function Register() {
     address,
     lastName,
     firstName,
+    UserName,
     repeatPassword,
     msg,
   } = formInputs;
 
+  const [error, setError] = useState("")
   const navigate = useNavigate();
 
   const dispatch = useDispatch();
@@ -60,15 +64,30 @@ export default function Register() {
   //   }
   // }, [user, isError, isSuccess, message]);
 
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();
-  //   //set error msg to none first
-  //   setFormInputs({ ...formInputs, msg: "" });
-  //   //check for password match > then show error msg
-  //   if (password !== repeatPassword) {
-  //     setFormInputs({ ...formInputs, msg: "password does not match" });
-  //     return;
-  //   }
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try{
+      const url = "http://localhost:8080/api/users";
+      const {formInputs: res} = await axios.post(url, formInputs);
+      navigate("/login")
+      console.log(res.message);
+    } catch (error) {
+      if(error.reasonse && 
+        error.response.status >= 400 &&
+        error.response.status <= 500
+        ){
+          setError(error.response.formInputs.message)
+        }
+    }
+
+    //set error msg to none first
+    setFormInputs({ ...formInputs, msg: "" });
+    //check for password match > then show error msg
+    if (password !== repeatPassword) {
+      setFormInputs({ ...formInputs, msg: "password does not match" });
+      return;
+    }
+  }
 
   //   const userData = {
   //     name: `${firstName.trim()} ${lastName.trim()}`,
@@ -85,7 +104,7 @@ export default function Register() {
   return (
     <div className="block p-6 rounded shadow-lg shadow-black/20 bg-slate-50 w-full mx-auto">
       <Logo />
-      <h3 className="flex justify-center items-center text-2xl text-blue-800 font-bold text-center p-2 my-4 rounded shadow bg-blue-200 border-x-4 border-blue-800 select-none">
+      <h3 className="flex justify-center items-center text-2xl text-blue-800 font-bold text-center p-2 my-4 rounded shadow bg-blue-200 border-x-4 border-blue-800 select-none" onSubmit={handleSubmit}>
         <FcCurrencyExchange className="mr-1" size={45} />
         <span>Register</span>
       </h3>
@@ -93,24 +112,24 @@ export default function Register() {
       <form className="mt-10">
         <div className="relative z-0 w-full mb-6">
           <label
-            htmlFor="first_name"
+            htmlFor="user_name"
             className="w-full inline-block font-semibold mb-4 p-2 text-gray-800 border-b-4 border-blue-800 rounded shadow bg-blue-200"
           >
-            First name
+            Full name
           </label>
           <input
             type="text"
-            name="first_name"
-            defaultValue={firstName}
+            name="user_name"
+            defaultValue={UserName}
             onChange={(e) =>
-              setFormInputs({ ...formInputs, firstName: e.target.value })
+              setFormInputs({ ...formInputs, UserName: e.target.value })
             }
             className="block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
-            placeholder="Type Your First Name"
+            placeholder="Type Your Full Name"
             required
           />
         </div>
-        <div className="relative z-0 w-full mb-6">
+        {/*<div className="relative z-0 w-full mb-6">
           <label
             htmlFor="last_name"
             className="w-full inline-block font-semibold mb-4 p-2 text-gray-800 border-b-4 border-blue-800 rounded shadow bg-blue-200"
@@ -129,10 +148,10 @@ export default function Register() {
             placeholder="Type Your Last Name"
             required
           />
-        </div>
+        </div> */}
 
         {/* name validator */}
-        <InputsValidator nameInput={`${firstName} ${lastName}`} />
+        {/* <InputsValidator nameInput={`${firstName} ${lastName}`} /> */}
 
         <div className="relative z-0 w-full mb-6">
           <label
@@ -155,7 +174,7 @@ export default function Register() {
           />
         </div>
 
-        <div className="relative z-0 w-full mb-6">
+        {/* <div className="relative z-0 w-full mb-6">
           <label
             htmlFor="address"
             className="w-full inline-block font-semibold mb-4 p-2 text-gray-800 border-b-4 border-blue-800 rounded shadow bg-blue-200"
@@ -174,7 +193,7 @@ export default function Register() {
             placeholder="Type Your Home Address"
             required
           />
-        </div>
+          </div> */}
         <div className="relative z-0 w-full mb-6">
           <label
             htmlFor="password"
@@ -219,7 +238,7 @@ export default function Register() {
         {/* password validator */}
         <InputsValidator passwordInput={password} />
 
-        <div className="relative z-0 w-full mb-6">
+        {/* <div className="relative z-0 w-full mb-6">
           <label
             htmlFor="phone"
             className="w-full inline-block font-semibold mb-4 p-2 text-gray-800 border-b-4 border-blue-800 rounded shadow bg-blue-200"
@@ -238,9 +257,9 @@ export default function Register() {
             placeholder="Type Your Mobile Number"
             required
           />
-        </div>
+        </div> */}
 
-        <div className="relative z-0 w-full mb-6">
+        {/* <div className="relative z-0 w-full mb-6">
           <label
             htmlFor="postal"
             className="w-full inline-block font-semibold mb-4 p-2 text-gray-800 border-b-4 border-blue-800 rounded shadow bg-blue-200"
@@ -259,7 +278,7 @@ export default function Register() {
             placeholder="Type Your Postal Code"
             required
           />
-        </div>
+        </div> */}
 
         {/* Request Status and Errors
         {(isError || isSuccess) && (
@@ -269,7 +288,7 @@ export default function Register() {
             // isError={isError}
           />
         )} */}
-
+        {error && <div className={ErrorEvent}>{error}</div>}
         {/*form button */}
         <FormButton
           text={{ loading: "Processing", default: "Register" }}
