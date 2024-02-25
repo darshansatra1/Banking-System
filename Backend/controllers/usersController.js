@@ -1,6 +1,6 @@
 const User = require("../models/userModel");
 const asyncHandler = require("express-async-handler");
-const { generateUsersToken } = require("../helpers/generateUsersToken");
+const { generateUserToken } = require("../helpers/generateUserToken");
 const validator = require("validator")
 
 /**
@@ -37,7 +37,7 @@ const createUser = asyncHandler(async (req, res) => {
                 user_name: newUser?.user_name,
                 email: newUser?.email,
                 role: newUser?.role,
-                token: generateUsersToken(newUser?._id, newUser?.email),
+                token: generateUserToken(newUser?._id, newUser?.email, newUser?.role),
             });
         } else {
             return res.status(409).send("User already exists");
@@ -78,7 +78,7 @@ const loginUser = asyncHandler(async (req, res) => {
                 user_name: findUser?.user_name,
                 email: findUser?.email,
                 role: findUser?.role,
-                token: generateUsersToken(findUser?._id, findUser?.email),
+                token: generateUserToken(findUser?._id, findUser?.email, findUser?.role),
             });
         } else {
             return res.status(401).send("Invalid credentials")
