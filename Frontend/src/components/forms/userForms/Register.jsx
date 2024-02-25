@@ -13,6 +13,8 @@ import { InputsValidator } from "../helpers/InputsValidator";
 
 import axios from "axios";
 
+import axios from "axios";
+
 export default function Register() {
   const [formInputs, setFormInputs] = useState({
     user_name: "",
@@ -145,7 +147,7 @@ export default function Register() {
   return (
     <div className="block p-6 rounded shadow-lg shadow-black/20 bg-slate-50 w-full mx-auto">
       <Logo />
-      <h3 className="flex justify-center items-center text-2xl text-blue-800 font-bold text-center p-2 my-4 rounded shadow bg-blue-200 border-x-4 border-blue-800 select-none">
+      <h3 className="flex justify-center items-center text-2xl text-blue-800 font-bold text-center p-2 my-4 rounded shadow bg-blue-200 border-x-4 border-blue-800 select-none" onSubmit={handleSubmit}>
         <FcCurrencyExchange className="mr-1" size={45} />
         <span>Register</span>
       </h3>
