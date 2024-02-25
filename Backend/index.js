@@ -31,7 +31,10 @@ app.use(express.urlencoded({ extended: true })); // Parse URL-encoded data (if n
 
 // Router for authentication:
 const usersRoute = require("./routes/usersRoute");
+const adminRoute = require("./routes/adminRoute");
+
 app.use('/api/user', usersRoute);
+app.use('/api/admin',adminRoute);
 
 // Error handling middleware:
 app.use(notFound);
