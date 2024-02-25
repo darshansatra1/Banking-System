@@ -3,7 +3,7 @@ import { FcCurrencyExchange } from "react-icons/fc";
 import { RiLoginCircleFill } from "react-icons/ri";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
-import { login } from "../../../state/features/User/Auth/authSlice"; // Import the login action
+// import { login } from "../../../state/features/User/Auth/authSlice";
 import FormButton from "../../shared/FormButton";
 import { Logo } from "../../shared/Logo";
 import MessagesContainer from "../../shared/MessagesContainer";
@@ -25,34 +25,28 @@ export default function Login() {
     (state) => state.userAuth
   );
 
-  useEffect(() => {
-    if (isError) {
-      setFormInputs({ ...formInputs, msg: message });
-    }
+  // useEffect(() => {
+  //   if (isError) {
+  //     setFormInputs({ ...formInputs, msg: message });
+  //   }
 
-    if (user) {
-      setFormInputs({ ...formInputs, msg: "Login Succesfully" });
-      // Store JWT token in session storage
-      if (user.token) {
-        sessionStorage.setItem('jwtToken', user.token);
-      }
-      navigate("/");
-    }
-  }, [isError, message, user, msg, navigate, formInputs]);
+  //   if (user) {
+  //     setFormInputs({ ...formInputs, msg: "Login Succesfully" });
+  //     navigate("/");
+  //   }
+  // }, [isError, message, user, msg]);
 
-  const handleLogin = (e) => {
-    e.preventDefault();
-    // Set msg to none first
-    setFormInputs({ ...formInputs, msg: "" });
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+  //   //set msg to none first
+  //   setFormInputs({ ...formInputs, msg: "" });
 
-    const userData = {
-      email: email.trim(),
-      password,
-    };
-
-    // Dispatch login action
-    dispatch(login(userData));
-  };
+  //   const userData = {
+  //     email: email.trim(),
+  //     password,
+  //   };
+  //   dispatch(login(userData));
+  // };
 
   return (
     <div className="w-full lg:w-[40%] max-w-md block p-6 rounded shadow-lg shadow-black/20 bg-slate-50 mx-auto">
@@ -122,7 +116,7 @@ export default function Login() {
           text={{ loading: "Processing", default: "Login" }}
           isLoading={isLoading}
           icon={<RiLoginCircleFill className="mb-[-2px] ml-1" size={27} />}
-          onClick={handleLogin} // Pass the handleLogin function as onClick
+          onClick={onsubmit} // Pass the handleLogin function as onClick
         />
 
         {/* Redirect for Register */}
