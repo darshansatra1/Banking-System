@@ -5,5 +5,5 @@ const generateUserToken = (id, email, role) => {
 };
 
 module.exports = {
-    generateUsersToken: generateUserToken,
+    generateUserToken: generateUserToken,
 };

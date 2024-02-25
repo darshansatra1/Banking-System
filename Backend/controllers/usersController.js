@@ -5,7 +5,7 @@ const validator = require("validator")
 
 /**
  * @desc   Create a user
- * @route  POST  /api/users
+ * @route  POST  /api/user/
  * @access public
  */
 const createUser = asyncHandler(async (req, res) => {
@@ -52,7 +52,7 @@ const createUser = asyncHandler(async (req, res) => {
 
 /**
  * @desc   User login
- * @route  POST  /api/users/login
+ * @route  POST  /api/user/login
  * @access public
  */
 const loginUser = asyncHandler(async (req, res) => {
@@ -87,15 +87,14 @@ const loginUser = asyncHandler(async (req, res) => {
         if (e.message.match(/(email|password|validation)/gi)) {
             return res.status(400).send(e.message);
         }
-        console.log(e.message)
         return res.status(500).send("Ooops!! Something Went Wrong, Try again...");
     }
 });
 
 /***
- * @desc   Get a user
- * @route  GET  /api/users/:id
- * @access private(USER)
+ * @desc   Get user by id
+ * @route  GET  /api/user/:id
+ * @access private(ADMIN)
  */
 const getUserById = asyncHandler(async (req, res) => {
     let user;
@@ -113,9 +112,28 @@ const getUserById = asyncHandler(async (req, res) => {
 });
 
 /***
- * @desc   Update a user
- * @route  PUT  /api/users/:id
+ * @desc   Get user
+ * @route  GET  /api/user/
  * @access private(USER)
+ */
+const getUser = asyncHandler(async (req, res) => {
+    let user = req.user;
+    try {
+        res.status(200).json({
+            _uid: user._id,
+            user_name: user.user_name,
+            email: user.email,
+            role: user.role,
+        });
+    } catch (error) {
+        res.status(500).send("Something went wrong!");
+    }
+});
+
+/***
+ * @desc   Update a user by id
+ * @route  PUT  /api/user/:id
+ * @access private(ADMIN)
  */
 const updateUserById = asyncHandler(async(req,res)=>{
     try{
@@ -141,12 +159,48 @@ const updateUserById = asyncHandler(async(req,res)=>{
             role:updatedUser.role,
         })
     }catch (error){
-        if(error.message.match(/(email|name)/gi)){
+        if(error.message.match(/(email|name|validation)/gi)){
             return res.status(400).send(error.message);
         }
         return res.status(500).send("Something went wrong!");
     }
-})
+});
+
+/***
+ * @desc   Update a user
+ * @route  PUT  /api/user/
+ * @access private(USER)
+ */
+const updateUser = asyncHandler(async(req,res)=>{
+    try{
+        const user = req.user;
+        if(user.user_name !== req.body.user_name){
+            const findUser = await User.findOne({
+                user_name:req.body.user_name
+            });
+            if(!findUser){
+                user.user_name = req.body.user_name;
+                user.markModified("user_name");
+            }else{
+                return res.status(409).send("This username is taken, please some different name");
+            }
+
+        }
+        const updatedUser = await user.save();
+
+        res.status(200).json({
+            _uid: updatedUser._uid,
+            user_name: updatedUser.user_name,
+            email:updatedUser.email,
+            role:updatedUser.role,
+        })
+    }catch (error){
+        if(error.message.match(/(email|name|validation)/gi)){
+            return res.status(400).send(error.message);
+        }
+        return res.status(500).send("Something went wrong!");
+    }
+});
 
 
-module.exports = { createUser, loginUser, getUserById, updateUserById };
+module.exports = { createUser, loginUser, getUserById, updateUserById , updateUser, getUser};
