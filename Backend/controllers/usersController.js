@@ -31,12 +31,14 @@ const createUser = asyncHandler(async (req, res) => {
                 password: req.body.password,
                 role: req.body.role,
                 user_status: 0,
+                balance:500,
             });
             return res.status(201).json({
                 _uid: newUser?._id,
                 user_name: newUser?.user_name,
                 email: newUser?.email,
                 role: newUser?.role,
+                balance: newUser?.balance,
                 token: generateUserToken(newUser?._id, newUser?.email, newUser?.role),
             });
         } else {
@@ -78,6 +80,7 @@ const loginUser = asyncHandler(async (req, res) => {
                 user_name: findUser?.user_name,
                 email: findUser?.email,
                 role: findUser?.role,
+                balance: findUser?.balance,
                 token: generateUserToken(findUser?._id, findUser?.email, findUser?.role),
             });
         } else {
@@ -104,6 +107,7 @@ const getUserById = asyncHandler(async (req, res) => {
             user_name: user.user_name,
             email: user.email,
             role: user.role,
+            balance: user.balance,
         });
     } catch (error) {
         if (!user) return res.status(404).send("User not found!");
@@ -124,6 +128,7 @@ const getUser = asyncHandler(async (req, res) => {
             user_name: user.user_name,
             email: user.email,
             role: user.role,
+            balance: user.balance,
         });
     } catch (error) {
         res.status(500).send("Something went wrong!");
@@ -157,6 +162,7 @@ const updateUserById = asyncHandler(async(req,res)=>{
             user_name: updatedUser.user_name,
             email:updatedUser.email,
             role:updatedUser.role,
+            balance: updatedUser.balance,
         })
     }catch (error){
         if(error.message.match(/(email|name|validation)/gi)){
@@ -193,6 +199,7 @@ const updateUser = asyncHandler(async(req,res)=>{
             user_name: updatedUser.user_name,
             email:updatedUser.email,
             role:updatedUser.role,
+            balance: updatedUser.balance,
         })
     }catch (error){
         if(error.message.match(/(email|name|validation)/gi)){
