@@ -9,7 +9,8 @@ import { MdReviews } from "react-icons/md";
 import { Link } from "react-router-dom";
 import { Logo } from "../../../shared/Logo";
 
-const navItems = ["Home", "About", "Reviews"];
+// const navItems = ["Home", "About", "Reviews"];
+const navItems = [];
 const navIcons = [
   <AiFillHome size={25} className="mb-1 mr-1" />,
   <BsInfoCircleFill size={25} className="mb-1 mr-1" />,
@@ -143,8 +144,8 @@ export default function Navbar() {
           <div className="flex justify-center items-center gap-4">
             <Link
               to="/register"
-              className="inline-flex font-bold text-xs sm:text-sm bg-teal-800 text-white hover:bg-white px-4 py-2 hover:text-blue-800 border-2  border-teal-800 hover:border-blue-800 items-center rounded-lg
-         shadow transition-all ease-in-out duration-300"
+              className="inline-flex font-bold text-xs sm:text-sm bg-teal-800 text-white hover:bg-white px-2 sm:px-3 py-2 hover:text-blue-800 border-2 hover:border-blue-800 items-center rounded-lg
+              shadow transition-all ease-in-out duration-300"
             >
               Register
             </Link>
