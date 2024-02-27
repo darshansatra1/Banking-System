@@ -103,7 +103,6 @@ export default function Login() {
             required
           />
         </div>
-
         <FormButton
           text={{ loading: "Processing", default: "Login" }}
           icon={<RiLoginCircleFill className="mb-[-2px] ml-1" size={27} />}
