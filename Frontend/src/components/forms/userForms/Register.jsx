@@ -28,9 +28,17 @@ export default function Register() {
   });
 
   const {
-    // postCode,
+    // // postCode,
     email,
     password,
+    // phone,
+    // address,
+    // lastName,
+    // firstName,
+    user_name,
+    // repeatPassword,
+    // msg,
+    role,
     // phone,
     // address,
     // lastName,
@@ -131,6 +139,12 @@ export default function Register() {
     //   setFormInputs({ ...formInputs, msg: "password does not match" });
     //   return;
     // }
+    // setFormInputs({ ...formInputs, msg: "" });
+    // //check for password match > then show error msg
+    // if (password !== repeatPassword) {
+    //   setFormInputs({ ...formInputs, msg: "password does not match" });
+    //   return;
+    // }
   }
 
   //   const userData = {
@@ -142,6 +156,7 @@ export default function Register() {
   //     password,
   //   };
 
+  //   dispatch(register(formInputs));
   //   dispatch(register(formInputs));
   // };
 
@@ -165,7 +180,9 @@ export default function Register() {
             type="text"
             name="user_name"
             defaultValue={user_name}
+            defaultValue={user_name}
             onChange={(e) =>
+              setFormInputs({ ...formInputs, user_name: e.target.value })
               setFormInputs({ ...formInputs, user_name: e.target.value })
             }
             className="block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
