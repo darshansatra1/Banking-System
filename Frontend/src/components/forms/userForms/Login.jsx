@@ -1,3 +1,5 @@
+// Inside your Login component
+
 import React, { useState, useEffect } from "react";
 import { FcCurrencyExchange } from "react-icons/fc";
 import { RiLoginCircleFill } from "react-icons/ri";
@@ -60,7 +62,7 @@ export default function Login() {
         <FcCurrencyExchange className="mr-1" size={45} />
         <span>Login</span>
       </h3>
-      <form className="mt-10">
+      <form className="mt-10" onSubmit={handleLogin}>
         <div className="mb-6">
           <label htmlFor="email" className="w-full inline-block font-semibold mb-4 p-2 text-gray-800 border-b-4 border-blue-800 rounded shadow bg-blue-200">
             Email address
@@ -113,7 +115,6 @@ export default function Login() {
           />
         )}
 
-        {/* Form button */}
         <FormButton
           text={{ loading: "Processing", default: "Login" }}
           isLoading={isLoading}
@@ -121,7 +122,6 @@ export default function Login() {
           onClick={handleLogin} // Pass the handleLogin function as onClick
         />
 
-        {/* Redirect for Register */}
         <p className="text-gray-800 mt-6 text-center">
           Not a Client?{" "}
           <Link
