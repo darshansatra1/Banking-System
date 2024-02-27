@@ -12,8 +12,8 @@ const initialState = {
   message: "",
 };
 
-//Login
-export const login =  (
+//Login//Login
+export const login = createAsyncThunk(
   "auth/login",
   async (userData, thunkAPI) => {
     try {
