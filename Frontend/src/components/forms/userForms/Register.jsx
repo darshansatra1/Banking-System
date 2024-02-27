@@ -6,7 +6,6 @@ import { TiUserAdd } from "react-icons/ti";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { register } from "../../../state/features/User/Auth/authSlice";
-import { register } from "../../../state/features/User/Auth/authSlice";
 import FormButton from "../../shared/FormButton";
 import { Logo } from "../../shared/Logo";
 import MessagesContainer from "../../shared/MessagesContainer";
@@ -14,23 +13,13 @@ import { InputsValidator } from "../helpers/InputsValidator";
 
 import axios from "axios";
 
-import axios from "axios";
-
 export default function Register() {
   const [formInputs, setFormInputs] = useState({
     user_name: "",
     // lastName: "",
-    user_name: "",
-    // lastName: "",
     password: "",
     // repeatPassword: "",
-    // repeatPassword: "",
     email: "",
-    // phone: "",
-    // address: "",
-    // postCode: "",
-    // msg: "",
-    role: "customer",            
     // phone: "",
     // address: "",
     // postCode: "",
@@ -53,7 +42,6 @@ export default function Register() {
   } = formInputs;
 
   const [error, setError] = useState("")
-  const [error, setError] = useState("")
   const navigate = useNavigate();
 
   const dispatch = useDispatch();
@@ -62,10 +50,6 @@ export default function Register() {
   const { user, isError, isSuccess, isLoading, message } = useSelector(
     (state) => state.userAuth
   );
-// Old commented start  
-  const { user, isError, isSuccess, isLoading, message } = useSelector(
-    (state) => state.userAuth
-  );
 
   function checkEmpty()
   {
@@ -79,29 +63,7 @@ export default function Register() {
     if (isError) {
       setFormInputs({ ...formInputs, msg: message });
     }
-  function checkEmpty()
-  {
-    if(formInputs["email"] == "" || formInputs["password"] == "" || formInputs["role"] == "" || formInputs["user_name"])
-    {
-      return false
-    }
-    return true
-  }
-  useEffect(() => {
-    if (isError) {
-      setFormInputs({ ...formInputs, msg: message });
-    }
 
-    if ((user || isSuccess)&&checkEmpty()) {
-      setFormInputs({
-        ...formInputs,
-        msg: "Registered Succesfully",
-      });
-      setTimeout(() => {
-        navigate("/login");
-      }, 3000);
-    }
-  }, [user, isError, isSuccess, message]);
     if ((user || isSuccess)&&checkEmpty()) {
       setFormInputs({
         ...formInputs,
@@ -117,25 +79,24 @@ export default function Register() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(formInputs["role"])
     
     try {
       if (formInputs["role"] === "customer" || formInputs["role"] === "merchant") {
         const url = "http://localhost:8080/api/user";
         const { data: res } = await axios.post(url, formInputs);
+        console.log("customer",res.message);
         navigate("/login");
-        console.log(res.message);
+     
       }
     
-      if (formInputs["role"] === "manager" || formInputs["role"] === "employee") {
+      if (formInputs["role"] === "employee" || formInputs["role"] === "manager" ) {
         const url = "http://localhost:8080/api/admin";
         const { data: res } = await axios.post(url, formInputs);
+        console.log( "admin",res.message);
         navigate("/login");
-        console.log(res.message);
+        
       }
     } catch (error) {
-      {error && <div className="text-red-600">{error}</div>}
-
       if (
         error.response &&
         error.response.status >= 400 &&
@@ -144,8 +105,6 @@ export default function Register() {
         setError(error.response.data.message);
       }
     }
-    
-
     // const handleSubmit = async (userData) => {
     //   try {
     //     const response = await axios.post('http://localhost:8080/api/user', userData);
@@ -192,14 +151,11 @@ export default function Register() {
       </h3>
 
       <form className="mt-10" onSubmit={handleSubmit}>
-      <form className="mt-10" onSubmit={handleSubmit}>
         <div className="relative z-0 w-full mb-6">
           <label
             htmlFor="user_name"
-            htmlFor="user_name"
             className="w-full inline-block font-semibold mb-4 p-2 text-gray-800 border-b-4 border-blue-800 rounded shadow bg-blue-200"
           >
-            Full name
             Full name
           </label>
           <input
@@ -317,8 +273,8 @@ export default function Register() {
           >
             <option value="customer">Customer</option>
             <option value="merchant">Merchant</option>
-            <option value="employee">Employee</option>
             <option value="manager">Manager</option>
+            <option value="employee">Employee</option>
           </select>
         </div>
         {/* Role selection */}
@@ -396,12 +352,8 @@ export default function Register() {
             // isError={isError}
           />
         )} */}
-       {/* Error message div */}
-       {error && (
-        <div className="text-red-600">
-          {error}
-        </div>
-      )}
+       {error && <div className="text-red-600">{error}</div>}
+
         {/*form button */}
         <FormButton
           text={{ loading: "Processing", default: "Register"}}
@@ -411,4 +363,3 @@ export default function Register() {
     </div>
   );
 }
-
