@@ -6,6 +6,7 @@ import { TiUserAdd } from "react-icons/ti";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { register } from "../../../state/features/User/Auth/authSlice";
+import { register } from "../../../state/features/User/Auth/authSlice";
 import FormButton from "../../shared/FormButton";
 import { Logo } from "../../shared/Logo";
 import MessagesContainer from "../../shared/MessagesContainer";
@@ -13,13 +14,23 @@ import { InputsValidator } from "../helpers/InputsValidator";
 
 import axios from "axios";
 
+import axios from "axios";
+
 export default function Register() {
   const [formInputs, setFormInputs] = useState({
     user_name: "",
     // lastName: "",
+    user_name: "",
+    // lastName: "",
     password: "",
     // repeatPassword: "",
+    // repeatPassword: "",
     email: "",
+    // phone: "",
+    // address: "",
+    // postCode: "",
+    // msg: "",
+    role: "customer",            
     // phone: "",
     // address: "",
     // postCode: "",
@@ -42,10 +53,15 @@ export default function Register() {
   } = formInputs;
 
   const [error, setError] = useState("")
+  const [error, setError] = useState("")
   const navigate = useNavigate();
 
   const dispatch = useDispatch();
 
+// Old commented start  
+  const { user, isError, isSuccess, isLoading, message } = useSelector(
+    (state) => state.userAuth
+  );
 // Old commented start  
   const { user, isError, isSuccess, isLoading, message } = useSelector(
     (state) => state.userAuth
@@ -63,7 +79,29 @@ export default function Register() {
     if (isError) {
       setFormInputs({ ...formInputs, msg: message });
     }
+  function checkEmpty()
+  {
+    if(formInputs["email"] == "" || formInputs["password"] == "" || formInputs["role"] == "" || formInputs["user_name"])
+    {
+      return false
+    }
+    return true
+  }
+  useEffect(() => {
+    if (isError) {
+      setFormInputs({ ...formInputs, msg: message });
+    }
 
+    if ((user || isSuccess)&&checkEmpty()) {
+      setFormInputs({
+        ...formInputs,
+        msg: "Registered Succesfully",
+      });
+      setTimeout(() => {
+        navigate("/login");
+      }, 3000);
+    }
+  }, [user, isError, isSuccess, message]);
     if ((user || isSuccess)&&checkEmpty()) {
       setFormInputs({
         ...formInputs,
@@ -154,11 +192,14 @@ export default function Register() {
       </h3>
 
       <form className="mt-10" onSubmit={handleSubmit}>
+      <form className="mt-10" onSubmit={handleSubmit}>
         <div className="relative z-0 w-full mb-6">
           <label
             htmlFor="user_name"
+            htmlFor="user_name"
             className="w-full inline-block font-semibold mb-4 p-2 text-gray-800 border-b-4 border-blue-800 rounded shadow bg-blue-200"
           >
+            Full name
             Full name
           </label>
           <input

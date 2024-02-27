@@ -10,6 +10,7 @@ import FormButton from "../../shared/FormButton";
 import { Logo } from "../../shared/Logo";
 import MessagesContainer from "../../shared/MessagesContainer";
 import { login } from "../../../state/features/User/Auth/authSlice";
+import { login } from "../../../state/features/User/Auth/authSlice";
 
 export default function Login() {
   const [formInputs, setFormInputs] = useState({
@@ -19,6 +20,7 @@ export default function Login() {
     msg: ""
   });
 
+  const { email, password, role, msg } = formInputs;
   const { email, password, role, msg } = formInputs;
 
   const navigate = useNavigate();
