@@ -80,25 +80,24 @@ export default function Register() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(formInputs["role"])
     
     try {
       if (formInputs["role"] === "customer" || formInputs["role"] === "merchant") {
         const url = "http://localhost:8080/api/user";
         const { data: res } = await axios.post(url, formInputs);
+        console.log("customer",res.message);
         navigate("/login");
-        console.log(res.message);
+     
       }
     
-      if (formInputs["role"] === "manager" || formInputs["role"] === "employee") {
+      if (formInputs["role"] === "employee" || formInputs["role"] === "manager" ) {
         const url = "http://localhost:8080/api/admin";
         const { data: res } = await axios.post(url, formInputs);
+        console.log( "admin",res.message);
         navigate("/login");
-        console.log(res.message);
+        
       }
     } catch (error) {
-      {error && <div className="text-red-600">{error}</div>}
-
       if (
         error.response &&
         error.response.status >= 400 &&
@@ -107,8 +106,6 @@ export default function Register() {
         setError(error.response.data.message);
       }
     }
-    
-
     // const handleSubmit = async (userData) => {
     //   try {
     //     const response = await axios.post('http://localhost:8080/api/user', userData);
@@ -293,8 +290,8 @@ export default function Register() {
           >
             <option value="customer">Customer</option>
             <option value="merchant">Merchant</option>
-            <option value="employee">Employee</option>
             <option value="manager">Manager</option>
+            <option value="employee">Employee</option>
           </select>
         </div>
         {/* Role selection */}
@@ -372,12 +369,8 @@ export default function Register() {
             // isError={isError}
           />
         )} */}
-       {/* Error message div */}
-       {error && (
-        <div className="text-red-600">
-          {error}
-        </div>
-      )}
+       {error && <div className="text-red-600">{error}</div>}
+
         {/*form button */}
         <FormButton
           text={{ loading: "Processing", default: "Register"}}
@@ -387,4 +380,3 @@ export default function Register() {
     </div>
   );
 }
-

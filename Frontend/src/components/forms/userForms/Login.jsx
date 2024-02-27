@@ -15,7 +15,7 @@ export default function Login() {
   const [formInputs, setFormInputs] = useState({
     email: "",
     password: "",
-    role: "User", // Default role
+    role: "Customer", // Default role
     msg: ""
   });
 
@@ -29,26 +29,14 @@ export default function Login() {
   );
 
   useEffect(() => {
-    if (isError) {
-      setFormInputs({ ...formInputs, msg: message });
-    }
-
-    if (user) {
-      setFormInputs({ ...formInputs, msg: "Login Succesfully" });
+    if (isSuccess && user) {
       navigate("/");
     }
-  }, [isError, message, user, msg]);
+  }, [isSuccess, user, navigate]);
 
   const handleLogin = (e) => {
     e.preventDefault();
-    // Set msg to none first
-    setFormInputs({ ...formInputs, msg: "" });
-
-    const userData = {
-      email: email.trim(),
-      password,
-    };
-    dispatch(login(userData));
+    dispatch(login(formInputs));
   };
 
   return (
@@ -97,7 +85,7 @@ export default function Login() {
             onChange={(e) => setFormInputs({ ...formInputs, role: e.target.value })}
             className="block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
           >
-            <option value="User">User</option>
+            <option value="customer">Customer</option>
             <option value="Merchant">Merchant</option>
             <option value="Admin">Admin</option>
           </select>
@@ -115,7 +103,7 @@ export default function Login() {
           text={{ loading: "Processing", default: "Login" }}
           isLoading={isLoading}
           icon={<RiLoginCircleFill className="mb-[-2px] ml-1" size={27} />}
-          onClick={handleLogin} // Pass the handleLogin function as onClick
+          onClick={handleLogin}
         />
 
         <p className="text-gray-800 mt-6 text-center">
