@@ -1,9 +1,13 @@
 // Inside your Login component
 import { FcCurrencyExchange } from "react-icons/fc";
 import { RiLoginCircleFill } from "react-icons/ri";
+
+import { Link, useNavigate } from "react-router-dom";
+
 import FormButton from "../../shared/FormButton";
 import { Logo } from "../../shared/Logo";
 import React, { useState } from "react";
+
 import axios from "axios";
 import Cookies from 'js-cookie';
 
@@ -32,12 +36,12 @@ export default function Login() {
     switch (userRole) {
       case 'customer':
       case 'merchant':
-        path =  "/externalUserDashboard"
+        path = "/externalUserDashboard"
         break;
       case 'admin':  
       case 'employee':
       case 'manager':
-        path = "/internalUserDashboard" 
+        path =  "/internalUserDashboard"
         break;
       default:
         path = "/login"
@@ -109,6 +113,7 @@ export default function Login() {
             required
           />
         </div>
+
         <FormButton
           text={{ loading: "Processing", default: "Login" }}
           icon={<RiLoginCircleFill className="mb-[-2px] ml-1" size={27} />}
