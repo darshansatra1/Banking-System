@@ -1,165 +1,135 @@
-import React, { useRef } from "react";
-import { useEffect } from "react";
-import { useState } from "react";
-import { AiFillCloseCircle, AiFillHome } from "react-icons/ai";
-import { BsInfoCircleFill } from "react-icons/bs";
-import { GiHamburgerMenu } from "react-icons/gi";
-import { IoLogIn } from "react-icons/io5";
-import { MdReviews } from "react-icons/md";
-import { Link } from "react-router-dom";
-import { Logo } from "../../../shared/Logo";
+// import React, { useRef } from "react";
+// import { useEffect } from "react";
+// import { useState } from "react";
+// import { AiFillCloseCircle, AiFillHome } from "react-icons/ai";
+// import { BsInfoCircleFill } from "react-icons/bs";
+// import { GiHamburgerMenu } from "react-icons/gi";
+// import { IoLogIn } from "react-icons/io5";
+// import { MdReviews } from "react-icons/md";
+// import { Link } from "react-router-dom";
+// import { Logo } from "../../../shared/Logo";
 
-// const navItems = ["Home", "About", "Reviews"];
-const navItems = [];
-const navIcons = [
-  <AiFillHome size={25} className="mb-1 mr-1" />,
-  <BsInfoCircleFill size={25} className="mb-1 mr-1" />,
-  <MdReviews size={25} className="mr-1" />,
-];
+// // const navItems = ["Home", "About", "Reviews"];
+// const navItems = [];
+// const navIcons = [
+//   <AiFillHome size={25} className="mb-1 mr-1" />,
+//   <BsInfoCircleFill size={25} className="mb-1 mr-1" />,
+//   <MdReviews size={25} className="mr-1" />,
+// ];
 
-export default function Navbar() {
-  //navbar opened/closed state
-  const [isOpen, setIsOpen] = useState(false);
-  //navbar scroll when active state
-  const [navbar, setNavbar] = useState(false);
+// export default function Navbar() {
+//   //navbar opened/closed state
+//   const [isOpen, setIsOpen] = useState(false);
+//   //navbar scroll when active state
+//   const [navbar, setNavbar] = useState(false);
 
-  const navRef = useRef(null);
-  const OpenBtnRef = useRef(null);
+//   const navRef = useRef(null);
+//   const OpenBtnRef = useRef(null);
 
-  useEffect(() => {
-    //navbar scroll changeBackground function
-    const changeBackground = () => {
-      if (window.scrollY > 100) {
-        setNavbar(true);
-      } else {
-        setNavbar(false);
-      }
-    };
-    window.addEventListener("scroll", changeBackground);
+//   useEffect(() => {
+//     //navbar scroll changeBackground function
+//     const changeBackground = () => {
+//       if (window.scrollY > 100) {
+//         setNavbar(true);
+//       } else {
+//         setNavbar(false);
+//       }
+//     };
+//     window.addEventListener("scroll", changeBackground);
 
-    return () => {
-      window.removeEventListener("scroll", changeBackground);
-    };
-  }, []);
+//     return () => {
+//       window.removeEventListener("scroll", changeBackground);
+//     };
+//   }, []);
 
-  useEffect(() => {
-    //Close Navbar When Click outside it.
-    const closeNavbar = (e) => {
-      if (
-        !navRef?.current?.contains(e.target) &&
-        !OpenBtnRef?.current?.contains(e.target) &&
-        isOpen
-      ) {
-        setIsOpen(false);
-      }
-    };
-    document.addEventListener("click", closeNavbar);
+//   useEffect(() => {
+//     //Close Navbar When Click outside it.
+//     const closeNavbar = (e) => {
+//       if (
+//         !navRef?.current?.contains(e.target) &&
+//         !OpenBtnRef?.current?.contains(e.target) &&
+//         isOpen
+//       ) {
+//         setIsOpen(false);
+//       }
+//     };
+//     document.addEventListener("click", closeNavbar);
 
-    return () => {
-      document.removeEventListener("click", closeNavbar);
-    };
-  }, [isOpen]);
+//     return () => {
+//       document.removeEventListener("click", closeNavbar);
+//     };
+//   }, [isOpen]);
 
-  return (
-    <>
-      <div
-        className={`${
-          navbar ? "bg-slate-50 shadow-lg " : " bg-transparent "
-        }  fixed z-50 top-0 w-full transition-all duration-300 ease-in-out`}
-      >
-        <nav className="max-w-[1800px] w-full mx-auto px-4 sm:px-10 md:px-12 py-2 md:py-4 flex justify-between items-center z-20">
-          <div className="max-w-[200px]">
-            <Logo bg={false} textSize="text-lg md:text-2xl lg:text-3xl" />
-          </div>
+//   return (
+//     <>
+//       <div
+//         className={`${
+//           navbar ? "bg-slate-50 shadow-lg " : " bg-transparent "
+//         }  fixed z-50 top-0 w-full transition-all duration-300 ease-in-out`}
+//       >
+//         <nav
+//           class="relative flex w-full items-center justify-between bg-white py-2 shadow-sm shadow-neutral-700/10 dark:bg-neutral-800 dark:shadow-black/30 lg:flex-wrap lg:justify-start"
+//           data-te-navbar-ref>
 
-          <div className="hidden lg:flex justify-center items-center gap-4 px-4 text-lg text-slate-800">
-            {navItems.map((navItem, index) => (
-              <a
-                key={navItem}
-                className="flex justify-center items-center   p-3 !font-sans font-bold rounded-lg hover:text-white hover:bg-slate-800"
-                href={`#${navItem}`}
-              >
-                {navIcons[index]}
-                {navItem}
-              </a>
-            ))}
-          </div>
+//           <div class="flex w-full flex-wrap items-center justify-between px-6">
+//             <div class="flex items-center">
+//               <button
+//                 class="block border-0 bg-transparent py-2 pr-2.5 text-neutral-500 hover:no-underline hover:shadow-none focus:no-underline focus:shadow-none focus:outline-none focus:ring-0 dark:text-neutral-200 lg:hidden"
+//                 type="button" data-te-collapse-init data-te-target="#navbarSupportedContentY"
+//                 aria-controls="navbarSupportedContentY" aria-expanded="false" aria-label="Toggle navigation">
+//                 <span class="[&>svg]:w-7">
+//                   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="h-7 w-7">
+//                     <path fill-rule="evenodd"
+//                       d="M3 6.75A.75.75 0 013.75 6h16.5a.75.75 0 010 1.5H3.75A.75.75 0 013 6.75zM3 12a.75.75 0 01.75-.75h16.5a.75.75 0 010 1.5H3.75A.75.75 0 013 12zm0 5.25a.75.75 0 01.75-.75h16.5a.75.75 0 010 1.5H3.75a.75.75 0 01-.75-.75z"
+//                       clip-rule="evenodd" />
+//                   </svg>
+//                 </span>
+//               </button>
 
-          <div className="hidden lg:flex justify-end items-center gap-4">
-            <Link
-              to="/register"
-              className="inline-flex font-bold text-xs sm:text-sm bg-teal-800 text-white hover:bg-white px-2 sm:px-3 py-2 hover:text-blue-800 border-2 hover:border-blue-800 items-center rounded-lg
-         shadow transition-all ease-in-out duration-300"
-            >
-              Register
-            </Link>
-            <Link
-              to="/login"
-              className="flex gap-1 justify-center items-center font-bold text-xs sm:text-sm bg-blue-800 text-white hover:bg-white px-2 sm:px-3 py-2 hover:text-blue-800 border-2 hover:border-blue-800  rounded-lg
-         shadow transition-all ease-in-out duration-300"
-            >
-              <IoLogIn size={20} />
-              Login
-            </Link>
-          </div>
+//               <a class="text-primary dark:text-primary-400" href="#!">
+//                 <span class="[&>svg]:ml-2 [&>svg]:mr-3 [&>svg]:h-6 [&>svg]:w-6 [&>svg]:lg:ml-0">
+//                   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+//                     stroke="currentColor">
+//                     <path stroke-linecap="round" stroke-linejoin="round"
+//                       d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 00-2.456 2.456zM16.894 20.567L16.5 21.75l-.394-1.183a2.25 2.25 0 00-1.423-1.423L13.5 18.75l1.183-.394a2.25 2.25 0 001.423-1.423l.394-1.183.394 1.183a2.25 2.25 0 001.423 1.423l1.183.394-1.183.394a2.25 2.25 0 00-1.423 1.423z" />
+//                   </svg>
+//                 </span>
+//               </a>
+//             </div>
 
-          <button
-            ref={OpenBtnRef}
-            onClick={() => setIsOpen(!isOpen)}
-            className="lg:hidden focus:outline-none border-2 border-transparent rounded hover:border-slate-900 active:border-slate-900  focus:border-slate-900"
-          >
-            <GiHamburgerMenu size={30} className="text-slate-900" />
-          </button>
-        </nav>
-      </div>
-
-      {/* Modal */}
-      <div
-        className={`fixed inset-0 z-[55] flex justify-center items-center p-6 bg-slate-700 bg-opacity-50 transition-all duration-300 ease-in-out delay-500
-     ${isOpen ? "translate-x-0" : "-translate-x-full"}`}
-      >
-        <nav
-          ref={navRef}
-          className={`w-full bg-white text-blue-900 transition-all duration-300 ease-in-out flex flex-col gap-4 text-center p-4 shadow rounded ${
-            isOpen ? "translate-y-0 scale-100" : "translate-y-[100vh] scale-0"
-          }`}
-        >
-          <button
-            onClick={() => setIsOpen(!isOpen)}
-            className="lg:hidden focus:outline-none ml-auto border-2 border-transparent rounded hover:border-red-500 active:border-red-500  focus:border-red-500"
-          >
-            <AiFillCloseCircle size={35} className="text-red-700" />
-          </button>
-          {navItems.map((navItem, index) => (
-            <a
-              key={navItem}
-              className="nav-links flex justify-center items-center gap-[1px] py-2 !font-sans font-semibold bg-blue-200 border-x-4 border-blue-800 hover:underline focus:underline hover:text-slate-800 focus:text-slate-800"
-              href={`#${navItem}`}
-              onClick={() => setIsOpen(!isOpen)}
-            >
-              {navIcons[index]}
-              {navItem}
-            </a>
-          ))}
-          <div className="flex justify-center items-center gap-4">
-            <Link
-              to="/register"
-              className="inline-flex font-bold text-xs sm:text-sm bg-teal-800 text-white hover:bg-white px-2 sm:px-3 py-2 hover:text-blue-800 border-2 hover:border-blue-800 items-center rounded-lg
-              shadow transition-all ease-in-out duration-300"
-            >
-              Register
-            </Link>
-            <Link
-              to="/login"
-              className="flex gap-1 justify-center items-center font-bold text-xs sm:text-sm bg-blue-800 text-white hover:bg-white px-4  py-2 hover:text-blue-800 border-2 border-blue-800 hover:border-blue-800  rounded-lg
-         shadow transition-all ease-in-out duration-300"
-            >
-              <IoLogIn size={16} />
-              Login
-            </Link>
-          </div>
-        </nav>
-      </div>
-    </>
-  );
-}
+//             <div class="!visible hidden flex-grow basis-[100%] items-center lg:!flex lg:basis-auto"
+//               id="navbarSupportedContentY" data-te-collapse-item>
+//               <ul class="mr-auto lg:flex lg:flex-row" data-te-navbar-nav-ref>
+//                 <li data-te-nav-item-ref>
+//                   <a class="block py-2 pr-2 text-neutral-500 transition duration-150 ease-in-out hover:text-neutral-600 focus:text-neutral-600 disabled:text-black/30 dark:text-neutral-200 dark:hover:text-neutral-300 dark:focus:text-neutral-300 dark:disabled:text-white/30 lg:px-2 [&.active]:text-black/80 dark:[&.active]:text-white/80"
+//                     href="#!" data-te-nav-link-ref data-te-ripple-init data-te-ripple-color="light"
+//                     disabled>Dashboard</a>
+//                 </li>
+//                 <li data-te-nav-item-ref>
+//                   <a class="block py-2 pr-2 text-neutral-500 transition duration-150 ease-in-out hover:text-neutral-600 focus:text-neutral-600 disabled:text-black/30 dark:text-neutral-200 dark:hover:text-neutral-300 dark:focus:text-neutral-300 dark:disabled:text-white/30 lg:px-2 [&.active]:text-black/80 dark:[&.active]:text-white/80"
+//                     href="#!" data-te-nav-link-ref data-te-ripple-init data-te-ripple-color="light">Team</a>
+//                 </li>
+//                 <li class="mb-2 lg:mb-0" data-te-nav-item-ref>
+//                   <a class="block py-2 pr-2 text-neutral-500 transition duration-150 ease-in-out hover:text-neutral-600 focus:text-neutral-600 disabled:text-black/30 dark:text-neutral-200 dark:hover:text-neutral-300 dark:focus:text-neutral-300 dark:disabled:text-white/30 lg:px-2 [&.active]:text-black/80 dark:[&.active]:text-white/80"
+//                     href="#!" data-te-nav-link-ref data-te-ripple-init data-te-ripple-color="light">Projects</a>
+//                 </li>
+//               </ul>
+//             </div>
+//             <div class="my-1 flex items-center lg:my-0 lg:ml-auto">
+//               <button type="button"
+//                 class="mr-2 inline-block rounded px-6 pt-2.5 pb-2 text-xs font-medium uppercase leading-normal text-primary transition duration-150 ease-in-out hover:bg-neutral-500 hover:bg-opacity-10 hover:text-primary-600 focus:text-primary-600 focus:outline-none focus:ring-0 active:text-primary-700 dark:text-primary-400 dark:hover:bg-neutral-700 dark:hover:bg-opacity-60 dark:hover:text-primary-500 dark:focus:text-primary-500 dark:active:text-primary-600"
+//                 data-te-ripple-init data-te-ripple-color="light">
+//                 Login
+//               </button>
+//               <button type="button"
+//                 class="inline-block rounded bg-primary px-6 pt-2.5 pb-2 text-xs font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#3b71ca] transition duration-150 ease-in-out hover:bg-primary-600 hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:bg-primary-600 focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 active:bg-primary-700 active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] dark:shadow-[0_4px_9px_-4px_rgba(59,113,202,0.5)] dark:hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)]"
+//                 data-te-ripple-init data-te-ripple-color="light">
+//                 Sign up for free
+//               </button>
+//             </div>
+//           </div>
+//         </nav>
+//       </div>
+//     </>
+//   );
+// }
