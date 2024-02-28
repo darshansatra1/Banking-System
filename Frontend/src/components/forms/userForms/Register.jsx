@@ -55,7 +55,58 @@ export default function Register() {
         setError("An error occurred. Please try again later.");
       }
     }
-  };
+    // const handleSubmit = async (userData) => {
+    //   try {
+    //     const response = await axios.post('http://localhost:8080/api/user', userData);
+    //     console.log('User registered successfully:', response.data);
+    //   } catch (error) {
+    //     console.error('Error registering user:', error);
+    //   }
+    // };
+
+    // const userData = {
+    //       name: UserName.trim(),
+    //       email: email.trim(),
+    //       password,
+    //       repeatPassword,
+    //     };
+
+    // const handleSubmit = async (userData) => {
+    //   try {
+    //     const response = await axios.post('http://localhost:8080/api/user', userData);
+    //     console.log('User registered successfully:', response.data);
+    //   } catch (error) {
+    //     console.error('Error registering user:', error);
+    //   }
+    // };
+
+    // const userData = {
+    //       name: UserName.trim(),
+    //       email: email.trim(),
+    //       password,
+    //       repeatPassword,
+    //     };
+
+    //set error msg to none first
+    // setFormInputs({ ...formInputs, msg: "" });
+    // //check for password match > then show error msg
+    // if (password !== repeatPassword) {
+    //   setFormInputs({ ...formInputs, msg: "password does not match" });
+    //   return;
+    // }
+  }
+
+  //   const userData = {
+  //     name: `${firstName.trim()} ${lastName.trim()}`,
+  //     email: email.trim(),
+  //     phone: phone.trim(),
+  //     postal: postCode.trim(),
+  //     addresse: address.trim(),
+  //     password,
+  //   };
+
+  //   dispatch(register(formInputs));
+  // };
 
   return (
     <div className="block p-6 rounded shadow-lg shadow-black/20 bg-slate-50 w-full mx-auto">
