@@ -4,7 +4,7 @@ import { RiLoginCircleFill } from "react-icons/ri";
 import FormButton from "../../shared/FormButton";
 import { Logo } from "../../shared/Logo";
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+
 import axios from "axios";
 import Cookies from 'js-cookie';
 
@@ -52,7 +52,7 @@ export default function Login() {
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    const url = "http://localhost:8082/api/user/login";
+    const url = "http://localhost:8080/login";
     try {
       const response = await axios.post(url, inputValue);
       routeAsPerRole(response.data.role);
