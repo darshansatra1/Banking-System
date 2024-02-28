@@ -1,5 +1,4 @@
 import React from "react";
-// import { FcLightAtTheEndOfTunnel } from "react-icons/fc";
 import { FcAreaChart } from "react-icons/fc";
 
 
@@ -14,7 +13,7 @@ export const Logo = ({ textSize = null, bg = true }) => {
       <span
         className={`${
           textSize ? textSize : "text-3xl"
-        } p-1  text-green-800 font-bold `}
+        } p-1  text-green-500 font-bold `}
       >
         SBS
       </span>
