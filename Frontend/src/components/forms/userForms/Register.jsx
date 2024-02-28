@@ -4,7 +4,6 @@ import axios from "axios";
 import { FcCurrencyExchange } from "react-icons/fc";
 import { TiUserAdd } from "react-icons/ti";
 import { useNavigate } from "react-router-dom";
-import { register } from "../../../state/features/User/Auth/authSlice";
 import FormButton from "../../shared/FormButton";
 import { Logo } from "../../shared/Logo";
 import MessagesContainer from "../../shared/MessagesContainer";
@@ -130,6 +129,7 @@ export default function Register() {
             required
           />
         </div>
+
         {/* Role selection */}
         <div className="relative z-0 w-full mb-6">
           <label
