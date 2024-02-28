@@ -5,70 +5,130 @@ import { FcCurrencyExchange } from "react-icons/fc";
 import { TiUserAdd } from "react-icons/ti";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-// import { register } from "../../../state/features/User/Auth/authSlice";
+import { register } from "../../../state/features/User/Auth/authSlice";
 import FormButton from "../../shared/FormButton";
 import { Logo } from "../../shared/Logo";
 import MessagesContainer from "../../shared/MessagesContainer";
 import { InputsValidator } from "../helpers/InputsValidator";
 
+import axios from "axios";
+
 export default function Register() {
   const [formInputs, setFormInputs] = useState({
-    firstName: "",
-    lastName: "",
+    user_name: "",
+    // lastName: "",
     password: "",
-    repeatPassword: "",
+    // repeatPassword: "",
     email: "",
-    phone: "",
-    address: "",
-    postCode: "",
-    msg: "",
+    // phone: "",
+    // address: "",
+    // postCode: "",
+    // msg: "",
+    role: "customer",            
   });
 
   const {
-    postCode,
+    // postCode,
     email,
     password,
-    phone,
-    address,
-    lastName,
-    firstName,
-    repeatPassword,
-    msg,
+    // phone,
+    // address,
+    // lastName,
+    // firstName,
+    user_name,
+    // repeatPassword,
+    // msg,
+    role,
   } = formInputs;
 
+  const [error, setError] = useState("")
   const navigate = useNavigate();
 
   const dispatch = useDispatch();
 
-  // const { user, isError, isSuccess, isLoading, message } = useSelector(
-  //   // (state) => state.userAuth
-  // );
+// Old commented start  
+  const { user, isError, isSuccess, isLoading, message } = useSelector(
+    (state) => state.userAuth
+  );
 
-  // useEffect(() => {
-  //   if (isError) {
-  //     setFormInputs({ ...formInputs, msg: message });
-  //   }
+  function checkEmpty()
+  {
+    if(formInputs["email"] == "" || formInputs["password"] == "" || formInputs["role"] == "" || formInputs["user_name"])
+    {
+      return false
+    }
+    return true
+  }
+  useEffect(() => {
+    if (isError) {
+      setFormInputs({ ...formInputs, msg: message });
+    }
 
-  //   if (user || isSuccess) {
-  //     setFormInputs({
-  //       ...formInputs,
-  //       msg: "Registered Succesfully",
-  //     });
-  //     setTimeout(() => {
-  //       navigate("/login");
-  //     }, 3000);
-  //   }
-  // }, [user, isError, isSuccess, message]);
+    if ((user || isSuccess)&&checkEmpty()) {
+      setFormInputs({
+        ...formInputs,
+        msg: "Registered Succesfully",
+      });
+      setTimeout(() => {
+        navigate("/login");
+      }, 3000);
+    }
+  }, [user, isError, isSuccess, message]);
 
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();
-  //   //set error msg to none first
-  //   setFormInputs({ ...formInputs, msg: "" });
-  //   //check for password match > then show error msg
-  //   if (password !== repeatPassword) {
-  //     setFormInputs({ ...formInputs, msg: "password does not match" });
-  //     return;
-  //   }
+  // old commented end
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    
+    try {
+      if (formInputs["role"] === "customer" || formInputs["role"] === "merchant") {
+        const url = "http://localhost:8080/api/user";
+        const { data: res } = await axios.post(url, formInputs);
+        console.log("customer",res.message);
+        navigate("/login");
+     
+      }
+    
+      if (formInputs["role"] === "employee" || formInputs["role"] === "manager" ) {
+        const url = "http://localhost:8080/api/admin";
+        const { data: res } = await axios.post(url, formInputs);
+        console.log( "admin",res.message);
+        navigate("/login");
+        
+      }
+    } catch (error) {
+      if (
+        error.response &&
+        error.response.status >= 400 &&
+        error.response.status <= 500
+      ) {
+        setError(error.response.data.message);
+      }
+    }
+    // const handleSubmit = async (userData) => {
+    //   try {
+    //     const response = await axios.post('http://localhost:8080/api/user', userData);
+    //     console.log('User registered successfully:', response.data);
+    //   } catch (error) {
+    //     console.error('Error registering user:', error);
+    //   }
+    // };
+
+    // const userData = {
+    //       name: UserName.trim(),
+    //       email: email.trim(),
+    //       password,
+    //       repeatPassword,
+    //     };
+
+    //set error msg to none first
+    // setFormInputs({ ...formInputs, msg: "" });
+    // //check for password match > then show error msg
+    // if (password !== repeatPassword) {
+    //   setFormInputs({ ...formInputs, msg: "password does not match" });
+    //   return;
+    // }
+  }
 
   //   const userData = {
   //     name: `${firstName.trim()} ${lastName.trim()}`,
@@ -79,7 +139,7 @@ export default function Register() {
   //     password,
   //   };
 
-  //   dispatch(register(userData));
+  //   dispatch(register(formInputs));
   // };
 
   return (
@@ -90,27 +150,27 @@ export default function Register() {
         <span>Register</span>
       </h3>
 
-      <form className="mt-10">
+      <form className="mt-10" onSubmit={handleSubmit}>
         <div className="relative z-0 w-full mb-6">
           <label
-            htmlFor="first_name"
+            htmlFor="user_name"
             className="w-full inline-block font-semibold mb-4 p-2 text-gray-800 border-b-4 border-blue-800 rounded shadow bg-blue-200"
           >
-            First name
+            Full name
           </label>
           <input
             type="text"
-            name="first_name"
-            defaultValue={firstName}
+            name="user_name"
+            defaultValue={user_name}
             onChange={(e) =>
-              setFormInputs({ ...formInputs, firstName: e.target.value })
+              setFormInputs({ ...formInputs, user_name: e.target.value })
             }
             className="block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
-            placeholder="Type Your First Name"
+            placeholder="Type Your Full Name"
             required
           />
         </div>
-        <div className="relative z-0 w-full mb-6">
+        {/*<div className="relative z-0 w-full mb-6">
           <label
             htmlFor="last_name"
             className="w-full inline-block font-semibold mb-4 p-2 text-gray-800 border-b-4 border-blue-800 rounded shadow bg-blue-200"
@@ -129,10 +189,10 @@ export default function Register() {
             placeholder="Type Your Last Name"
             required
           />
-        </div>
+        </div> */}
 
         {/* name validator */}
-        <InputsValidator nameInput={`${firstName} ${lastName}`} />
+        {/* <InputsValidator nameInput={`${firstName} ${lastName}`} /> */}
 
         <div className="relative z-0 w-full mb-6">
           <label
@@ -155,7 +215,7 @@ export default function Register() {
           />
         </div>
 
-        <div className="relative z-0 w-full mb-6">
+        {/* <div className="relative z-0 w-full mb-6">
           <label
             htmlFor="address"
             className="w-full inline-block font-semibold mb-4 p-2 text-gray-800 border-b-4 border-blue-800 rounded shadow bg-blue-200"
@@ -174,7 +234,7 @@ export default function Register() {
             placeholder="Type Your Home Address"
             required
           />
-        </div>
+          </div> */}
         <div className="relative z-0 w-full mb-6">
           <label
             htmlFor="password"
@@ -195,7 +255,30 @@ export default function Register() {
             required
           />
         </div>
+        {/* Role selection */}
         <div className="relative z-0 w-full mb-6">
+          <label
+            htmlFor="role"
+            className="w-full inline-block font-semibold mb-4 p-2 text-gray-800 border-b-4 border-blue-800 rounded shadow bg-blue-200"
+          >
+            Select Role
+          </label>
+          <select
+            name="role"
+            value={role}
+            onChange={(e) =>
+              setFormInputs({ ...formInputs, role: e.target.value })
+            }
+            className="block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+          >
+            <option value="customer">Customer</option>
+            <option value="merchant">Merchant</option>
+            <option value="manager">Manager</option>
+            <option value="employee">Employee</option>
+          </select>
+        </div>
+        {/* Role selection */}
+        {/* <div className="relative z-0 w-full mb-6">
           <label
             htmlFor="repeat_password"
             className="w-full inline-block font-semibold mb-4 p-2 text-gray-800 border-b-4 border-blue-800 rounded shadow bg-blue-200"
@@ -214,12 +297,12 @@ export default function Register() {
             placeholder="Repeat Password"
             required
           />
-        </div>
+        </div> */}
 
         {/* password validator */}
         <InputsValidator passwordInput={password} />
 
-        <div className="relative z-0 w-full mb-6">
+        {/* <div className="relative z-0 w-full mb-6">
           <label
             htmlFor="phone"
             className="w-full inline-block font-semibold mb-4 p-2 text-gray-800 border-b-4 border-blue-800 rounded shadow bg-blue-200"
@@ -238,9 +321,9 @@ export default function Register() {
             placeholder="Type Your Mobile Number"
             required
           />
-        </div>
+        </div> */}
 
-        <div className="relative z-0 w-full mb-6">
+        {/* <div className="relative z-0 w-full mb-6">
           <label
             htmlFor="postal"
             className="w-full inline-block font-semibold mb-4 p-2 text-gray-800 border-b-4 border-blue-800 rounded shadow bg-blue-200"
@@ -259,7 +342,7 @@ export default function Register() {
             placeholder="Type Your Postal Code"
             required
           />
-        </div>
+        </div> */}
 
         {/* Request Status and Errors
         {(isError || isSuccess) && (
@@ -269,11 +352,11 @@ export default function Register() {
             // isError={isError}
           />
         )} */}
+       {error && <div className="text-red-600">{error}</div>}
 
         {/*form button */}
         <FormButton
-          text={{ loading: "Processing", default: "Register" }}
-          
+          text={{ loading: "Processing", default: "Register"}}
           icon={<TiUserAdd className="mb-[-2px] ml-1" size={27} />}
         />
       </form>

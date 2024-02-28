@@ -9,6 +9,8 @@ import { UserLoginPage } from "./views/user/UserLoginPage";
 import { RegisterPage } from "./views/guest/RegisterPage";
 import { Index } from "./components/home/Index";
 import NotFoundPage from "./views/NotFound";
+import { useEffect, useState } from "react";
+import axios from 'axios'
 
 
 function App() {

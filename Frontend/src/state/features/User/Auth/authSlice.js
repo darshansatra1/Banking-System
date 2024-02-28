@@ -1,5 +1,8 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import authService from "./authServices";
+import Cookies from 'js-cookie';
+
+
 
 const initialState = {
   user: null,
@@ -9,15 +12,18 @@ const initialState = {
   message: "",
 };
 
-//Login
+//Login//Login
 export const login = createAsyncThunk(
   "auth/login",
   async (userData, thunkAPI) => {
     try {
-      return await authService.login(userData);
+      const response = await authService.login(userData);
+      const { token } = response;
+      // Store token in HTTP-only cookie
+      Cookies.set('token', token, { expires: 1, secure: true, sameSite: 'strict' });
+      return response.user; // Return only user data
     } catch (error) {
       const message = error.response.data;
-
       return thunkAPI.rejectWithValue(message);
     }
   }
@@ -28,10 +34,13 @@ export const register = createAsyncThunk(
   "auth/register",
   async (userData, thunkAPI) => {
     try {
-      return await authService.register(userData);
+      const response = await authService.register(userData);
+      const { token } = response;
+      // Store token in HTTP-only cookie
+      Cookies.set('token', token, { expires: 1, secure: true, sameSite: 'strict' });
+      return response.user; // Return only user data
     } catch (error) {
       const message = error.response.data;
-
       return thunkAPI.rejectWithValue(message);
     }
   }
@@ -39,7 +48,10 @@ export const register = createAsyncThunk(
 
 //Logout
 export const logout = createAsyncThunk("auth/logout", async () => {
+  // Clear token from cookie on logout
+  Cookies.remove('token');
   authService.logout();
+  return null;
 });
 
 export const authSlice = createSlice({
