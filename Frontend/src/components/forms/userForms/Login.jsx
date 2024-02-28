@@ -1,12 +1,15 @@
 // Inside your Login component
 import { FcCurrencyExchange } from "react-icons/fc";
 import { RiLoginCircleFill } from "react-icons/ri";
-import { useDispatch, useSelector } from "react-redux";
+
 import { Link, useNavigate } from "react-router-dom";
 import { login } from "../../../state/features/User/Auth/authSlice"; // Import the login action
 import FormButton from "../../shared/FormButton";
 import { Logo } from "../../shared/Logo";
-import MessagesContainer from "../../shared/MessagesContainer";
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
+import Cookies from 'js-cookie';
 
 
 export default function Login() {
@@ -34,12 +37,12 @@ export default function Login() {
     switch (userRole) {
       case 'customer':
       case 'merchant':
-        path = "/internalUserDashboard"
+        path = "/externalUserDashboard"
         break;
       case 'admin':  
       case 'employee':
       case 'manager':
-        path = "/externalUserDashboard"
+        path =  "/internalUserDashboard"
         break;
       default:
         path = "/login"
