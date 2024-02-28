@@ -4,13 +4,15 @@ import {
   Route,
   Navigate,
 } from "react-router-dom";
-import { AdminLoginPage } from "./views/admin/AdminLoginPage";
-import { UserLoginPage } from "./views/user/UserLoginPage";
-import { RegisterPage } from "./views/guest/RegisterPage";
+import { UserLoginPage } from "./views/UserLoginPage";
+import { RegisterPage } from "./views/RegisterPage";
 import { Index } from "./components/home/Index";
 import NotFoundPage from "./views/NotFound";
 import { useEffect, useState } from "react";
 import axios from 'axios'
+import InternalUserDashboard from "./components/dashboards/InternalUserDashboard";
+import ExternalUserDashboard from "./components/dashboards/ExternalUserDashboard";
+
 
 
 function App() {
@@ -42,8 +44,10 @@ function App() {
         <Routes>
           <Route index element={<Index />} />
           <Route exact path="/register" element={<RegisterPage />} />
-          <Route exact path="/admins/login" element={<AdminLoginPage />} />
           <Route exact path="/login" element={<UserLoginPage />} />
+          <Route exact path="/externalUserDashboard" element={<ExternalUserDashboard />} />
+          <Route exact path="/internalUserDashboard" element={<InternalUserDashboard />} />
+ 
           {paths.map((stringPath) => (
             <Route
               key={"Home"}

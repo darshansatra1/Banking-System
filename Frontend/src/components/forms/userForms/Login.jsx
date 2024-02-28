@@ -1,6 +1,4 @@
 // Inside your Login component
-
-import React, { useState, useEffect } from "react";
 import { FcCurrencyExchange } from "react-icons/fc";
 import { RiLoginCircleFill } from "react-icons/ri";
 import { useDispatch, useSelector } from "react-redux";
@@ -12,31 +10,62 @@ import MessagesContainer from "../../shared/MessagesContainer";
 
 
 export default function Login() {
-  const [formInputs, setFormInputs] = useState({
+  const navigate = useNavigate();
+  const [error, setError] = useState(null);
+
+  const [inputValue, setInputValue] = useState({
     email: "",
-    password: "",
-    role: "Customer", // Default role
-    msg: ""
+    password: ""
   });
 
-  const { email, password, role, msg } = formInputs;
+  const { email, password } = inputValue;
 
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
+  const handleOnChange = (e) => {
+    const { name, value } = e.target;
+    setInputValue({
+      ...inputValue,
+      [name]: value,
+    });
+  };
 
-  const { user, isError, isSuccess, isLoading } = useSelector(
-    (state) => state.userAuth
-  );
-
-  useEffect(() => {
-    if (isSuccess && user) {
-      navigate("/");
+  const routeAsPerRole = async (userRole) => {  
+    console.log(userRole);  
+    let path = "/login";
+    switch (userRole) {
+      case 'customer':
+      case 'merchant':
+        path = "/internalUserDashboard"
+        break;
+      case 'admin':  
+      case 'employee':
+      case 'manager':
+        path = "/externalUserDashboard"
+        break;
+      default:
+        path = "/login"
     }
-  }, [isSuccess, user, navigate]);
+    setTimeout(() => {
+      navigate(path);
+    }, 1000);
 
-  const handleLogin = (e) => {
+  };
+
+
+  const handleLogin = async (e) => {
     e.preventDefault();
-    dispatch(login(formInputs));
+    const url = "http://localhost:8082/api/user/login";
+    try {
+      const response = await axios.post(url, inputValue);
+      routeAsPerRole(response.data.role);
+    } catch (err) {
+      if (err.response && err.response.status === 401) {
+        // Handle 401 Unauthorized error
+        setError('Unauthorized. Please log in.');
+      } else {
+        // Handle other errors
+        setError('An error occurred while processing your request.');
+      }
+    }
   };
 
   return (
@@ -56,7 +85,7 @@ export default function Login() {
             name="email"
             className="block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
             value={email}
-            onChange={(e) => setFormInputs({ ...formInputs, email: e.target.value })}
+            onChange={handleOnChange}
             placeholder="Enter your Email"
             required
           />
@@ -70,42 +99,18 @@ export default function Login() {
             name="password"
             className="block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-800 focus:outline-none"
             value={password}
-            onChange={(e) => setFormInputs({ ...formInputs, password: e.target.value })}
+            onChange={handleOnChange}
             placeholder="Enter Your Password"
             required
           />
         </div>
-        <div className="mb-6">
-          <label htmlFor="role" className="w-full inline-block font-semibold mb-4 p-2 text-gray-800 border-b-4 border-blue-800 rounded shadow bg-blue-200">
-            Select Role
-          </label>
-          <select
-            name="role"
-            value={role}
-            onChange={(e) => setFormInputs({ ...formInputs, role: e.target.value })}
-            className="block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
-          >
-            <option value="customer">Customer</option>
-            <option value="Merchant">Merchant</option>
-            <option value="Admin">Admin</option>
-          </select>
-        </div>
-
-        {(isError || isSuccess) && (
-          <MessagesContainer
-            msg={msg}
-            isSuccess={isSuccess}
-            isError={isError}
-          />
-        )}
 
         <FormButton
           text={{ loading: "Processing", default: "Login" }}
-          isLoading={isLoading}
           icon={<RiLoginCircleFill className="mb-[-2px] ml-1" size={27} />}
           onClick={handleLogin}
         />
-
+        {error && <p>Error: {error}</p>}
         <p className="text-gray-800 mt-6 text-center">
           Not a Client?{" "}
           <Link
