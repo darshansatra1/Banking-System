@@ -7,21 +7,7 @@ const employeeSchema = new mongoose.Schema(
         user_name: {
             type: String,
             required: [true, "Please Type your Name!"],
-            validate: {
-                validator: function (v) {
-                    let regex = new RegExp(
-                        "^(?=[a-zA-Z0-9._ ]{10,35}$)(?!.*[_.]{2})[^_.].*[^_.]$"
-                        /*  no >>> _ or . at the beginning
-                          no >>>__ or _. or ._ or .. inside
-                          no >>> _ or . at the end
-                          [a-zA-Z0-9._] >> allowed characters
-                          username is {10-} characters long
-                          */
-                    );
-                    return regex.test(v);
-                },
-                message: "Please Enter A Valid Name!",
-            },
+            trim: true,
         },
         email: {
             type: String,
@@ -48,6 +34,10 @@ const employeeSchema = new mongoose.Schema(
                 ref: 'User'
             }
         ],
+        supervisor:{
+            type: mongoose.Schema.Types.ObjectId,
+            ref:'Manager',
+        },
     },
     {
         timestamps: true,
