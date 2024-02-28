@@ -4,42 +4,20 @@ import axios from "axios";
 import { FcCurrencyExchange } from "react-icons/fc";
 import { TiUserAdd } from "react-icons/ti";
 import { useNavigate } from "react-router-dom";
-// import { register } from "../../../state/features/User/Auth/authSlice";
 import FormButton from "../../shared/FormButton";
 import { Logo } from "../../shared/Logo";
 import MessagesContainer from "../../shared/MessagesContainer";
 import { InputsValidator } from "../helpers/InputsValidator";
 
-import axios from "axios";
- 
-
 export default function Register() {
   const [formInputs, setFormInputs] = useState({
-    UserName: "",
-    // lastName: "",
+    user_name: "",
     password: "",
-    repeatPassword: "",
     email: "",
-    // phone: "",
-    // address: "",
-    // postCode: "",
-    msg: "",
+    role: "customer",
   });
 
-  const {
-    postCode,
-    email,
-    password,
-    phone,
-    address,
-    lastName,
-    firstName,
-    UserName,
-    repeatPassword,
-    msg,
-  } = formInputs;
-
-  const [error, setError] = useState("")
+  const [error, setError] = useState("");
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -75,42 +53,7 @@ export default function Register() {
         setError("An error occurred. Please try again later.");
       }
     }
-    // const handleSubmit = async (userData) => {
-    //   try {
-    //     const response = await axios.post('http://localhost:8080/api/user', userData);
-    //     console.log('User registered successfully:', response.data);
-    //   } catch (error) {
-    //     console.error('Error registering user:', error);
-    //   }
-    // };
-
-    // const userData = {
-    //       name: UserName.trim(),
-    //       email: email.trim(),
-    //       password,
-    //       repeatPassword,
-    //     };
-
-    //set error msg to none first
-    setFormInputs({ ...formInputs, msg: "" });
-    //check for password match > then show error msg
-    if (password !== repeatPassword) {
-      setFormInputs({ ...formInputs, msg: "password does not match" });
-      return;
-    }
-  }
-
-  //   const userData = {
-  //     name: `${firstName.trim()} ${lastName.trim()}`,
-  //     email: email.trim(),
-  //     phone: phone.trim(),
-  //     postal: postCode.trim(),
-  //     addresse: address.trim(),
-  //     password,
-  //   };
-
-  //   dispatch(register(userData));
-  // };
+  };
 
   return (
     <div className="block p-6 rounded shadow-lg shadow-black/20 bg-slate-50 w-full mx-auto">
@@ -131,7 +74,7 @@ export default function Register() {
           <input
             type="text"
             name="user_name"
-            defaultValue={UserName}
+            value={formInputs.user_name}
             onChange={(e) =>
               setFormInputs({ ...formInputs, UserName: e.target.value })
             }
@@ -207,73 +150,7 @@ export default function Register() {
         </div>
         {/* Role selection */}
 
-          <input
-            type="password"
-            name="repeat_password"
-            defaultValue={repeatPassword}
-            onChange={(e) =>
-              setFormInputs({ ...formInputs, repeatPassword: e.target.value })
-            }
-            className="block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
-            placeholder="Repeat Password"
-            required
-          />
-        </div>
-
-        {/* password validator */}
-        <InputsValidator passwordInput={password} />
-
-        {/* <div className="relative z-0 w-full mb-6">
-          <label
-            htmlFor="phone"
-            className="w-full inline-block font-semibold mb-4 p-2 text-gray-800 border-b-4 border-blue-800 rounded shadow bg-blue-200"
-          >
-            Phone Number Ex:-(01008878980)
-          </label>
-
-          <input
-            type="tel"
-            name="phone"
-            defaultValue={phone}
-            onChange={(e) =>
-              setFormInputs({ ...formInputs, phone: e.target.value })
-            }
-            className="block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
-            placeholder="Type Your Mobile Number"
-            required
-          />
-        </div> */}
-
-        {/* <div className="relative z-0 w-full mb-6">
-          <label
-            htmlFor="postal"
-            className="w-full inline-block font-semibold mb-4 p-2 text-gray-800 border-b-4 border-blue-800 rounded shadow bg-blue-200"
-          >
-            Postal Code Ex:-(12345)
-          </label>
-
-          <input
-            type="text"
-            name="postal"
-            defaultValue={postCode}
-            onChange={(e) =>
-              setFormInputs({ ...formInputs, postCode: e.target.value })
-            }
-            className="block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
-            placeholder="Type Your Postal Code"
-            required
-          />
-        </div> */}
-
-        {/* Request Status and Errors
-        {(isError || isSuccess) && (
-          <MessagesContainer
-            msg={msg}
-            // isSuccess={isSuccess}
-            // isError={isError}
-          />
-        )} */}
-       {error && <div className="text-red-600">{error}</div>}
+        {error && <div className="text-red-600">{error}</div>}
 
         {/*form button */}
         <FormButton
