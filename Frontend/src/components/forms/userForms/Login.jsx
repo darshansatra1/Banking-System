@@ -32,12 +32,12 @@ export default function Login() {
     switch (userRole) {
       case 'customer':
       case 'merchant':
-        path = "/internalUserDashboard"
+        path =  "/externalUserDashboard"
         break;
       case 'admin':  
       case 'employee':
       case 'manager':
-        path = "/externalUserDashboard"
+        path = "/internalUserDashboard" 
         break;
       default:
         path = "/login"
