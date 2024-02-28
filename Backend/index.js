@@ -29,12 +29,23 @@ app.use(mongoSanitize()); // Sanitize data for MongoDB queries
 app.use(express.json()); // Parse JSON data
 app.use(express.urlencoded({ extended: true })); // Parse URL-encoded data (if needed)
 
-// Router for authentication:
-const usersRoute = require("./routes/usersRoute");
+
+const usersRoute = require("./routes/userRoute");
+const customerRoute = require("./routes/customerRoute");
+const merchantRoute = require("./routes/merchantRoute");
+const employeeRoute = require("./routes/employeeRoute");
+const managerRoute = require("./routes/managerRoute");
 const adminRoute = require("./routes/adminRoute");
 
-app.use('/api/user', usersRoute);
-app.use('/api/admin',adminRoute);
+
+app.use('/', usersRoute);
+app.use('/customer',customerRoute);
+app.use('/merchant',merchantRoute);
+app.use('/employee',employeeRoute);
+app.use('/manager',managerRoute);
+app.use('/admin',adminRoute);
+
+
 
 // Error handling middleware:
 app.use(notFound);
