@@ -15,7 +15,9 @@ const { errorHandler, notFound } = require("./middlewares/errorHandler");
 const app = express();
 
 // Database connection 
-dbConnect();
+dbConnect().then(t=>{
+
+});
 
 // Middleware for enhanced security and functionality:
 app.use(morgan("dev")); // Log HTTP requests and responses
