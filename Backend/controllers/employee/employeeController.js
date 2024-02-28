@@ -44,7 +44,11 @@ const getDeposits = asyncHandler(async(req,res)=>{
                 });
 
                 for(const deposit of customerDeposits){
+                    if(deposit.status!=="waiting"){
+                        continue;
+                    }
                     allDeposits.push({
+                        "_id":deposit._id,
                         "client_id":deposit.toCustomer,
                         "user_name":customer.user_name,
                         "status":deposit.status,
@@ -60,7 +64,11 @@ const getDeposits = asyncHandler(async(req,res)=>{
                 });
 
                 for(const deposit of merchantDeposits){
+                    if(deposit.status!=="waiting"){
+                        continue;
+                    }
                     allDeposits.push({
+                        "_id":deposit._id,
                         "client_id":deposit.toMerchant,
                         "user_name":merchant.user_name,
                         "status":deposit.status,
@@ -77,7 +85,59 @@ const getDeposits = asyncHandler(async(req,res)=>{
     }
 });
 
+
+/**
+ * @desc Accept or decline deposit request
+ * @route POST /deposit/:id
+ * @access private(EMPLOYEE)
+ */
+const authorizeDeposit = asyncHandler(async(req,res)=>{
+    const employee = req.employee;
+    const depositId = req.params.id;
+    const {accept} = req.body;
+
+    if(!('accept' in req.body)){
+        return res.status(400).send("Please send the status");
+    }
+
+    try{
+        const deposit = await Deposit.findById(depositId);
+        if(!deposit){
+            return res.status(400).send("Not found!");
+        }
+        if(deposit.status!="waiting"){
+            return res.status(400).send("Transaction already authorized");
+        }
+
+        if(deposit.toCustomer){
+            const customer = await Customer.findById(deposit.toCustomer);
+            if(customer.supervisor.toString()!==employee._id.toString()){
+                return res.status(401).send("You are not authorized");
+            }
+        }
+        if(deposit.toMerchant){
+            const merchant = await Merchant.findById(deposit.toMerchant);
+            if(merchant.supervisor!==employee._id){
+                return res.status(401).send("You are not authorized");
+            }
+        }
+        if(accept){
+            deposit.status = "accept";
+        }else{
+            deposit.status = "decline";
+        }
+        await deposit.save();
+
+        return res.status(200).json({
+            success:true
+        });
+    }catch(error){
+        return res.status(500).send("Ooops!! Something Went Wrong, Try again...");
+    }
+});
+
 module.exports = {
     getProfile,
     getDeposits,
+    authorizeDeposit,
 };
