@@ -30,11 +30,11 @@ app.use(express.json()); // Parse JSON data
 app.use(express.urlencoded({ extended: true })); // Parse URL-encoded data (if needed)
 
 // Router for authentication:
-const usersRoute = require("./routes/usersRoute");
-const adminRoute = require("./routes/adminRoute");
+const usersRoute = require("./routes/userRoute");
+// const adminRoute = require("./routes/adminRoute");
 
-app.use('/api/user', usersRoute);
-app.use('/api/admin',adminRoute);
+app.use('/', usersRoute);
+// app.use('/api/admin',adminRoute);
 
 // Error handling middleware:
 app.use(notFound);

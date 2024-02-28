@@ -1,21 +1,21 @@
 const jwt = require("jsonwebtoken");
 const asyncHandler = require("express-async-handler");
-const User = require("../../models/userModel");
+const Customer = require("../../models/CustomerModel");
 
-const authUserProtect = asyncHandler(async (req, res, next) => {
-    let token, user, decoded;
+const authCustomerProtect = asyncHandler(async (req, res, next) => {
+    let token, customer, decoded;
     if (req.headers.authorization && req.headers.authorization.trim().startsWith("Bearer")) {
         try {
             token = req.headers.authorization.split(" ")[1];
             decoded = jwt.verify(token, process.env.JWT_SECRET);
-            user = await User.findById(decoded.id);
-            if (!user) {
+            customer = await Customer.findById(decoded.id);
+            if (!customer) {
                 return res.status(401).send("Not authorized");
             }
-            req.user = user;
+            req.customer = customer;
             next();
         } catch (error) {
-            if (!decoded || !user) {
+            if (!decoded || !customer) {
                 return res.status(401).send("Not authorized");
             }
             return res.status(500).send("Something went wrong");
@@ -25,4 +25,4 @@ const authUserProtect = asyncHandler(async (req, res, next) => {
     }
 })
 
-module.exports = { authUserProtect };
+module.exports = { authCustomerProtect };

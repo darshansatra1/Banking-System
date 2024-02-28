@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
 const validator = require("validator")
 
-const adminSchema = new mongoose.Schema(
+const managerSchema = new mongoose.Schema(
     {
         user_name: {
             type: String,
@@ -38,25 +38,35 @@ const adminSchema = new mongoose.Schema(
             type: String,
             required: [true, "Please Type A Strong Password!"],
         },
+        employeeCount:{
+            type: Number,
+            default: 0,
+        },
+        employees:[
+            {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: 'Employee'
+            }
+        ],
     },
     {
         timestamps: true,
-        collection: "Admins",
+        collection: "Managers",
     }
 );
 
 // Password hashing middleware
-adminSchema.pre('save', async function (next) {
+managerSchema.pre('save', async function (next) {
     const salt = await bcrypt.genSaltSync(parseInt(process.env.SALT_ROUNDS));
     this.password = await bcrypt.hash(this.password, salt);
     next();
 });
 
-adminSchema.methods.isPasswordMatched = async function (enteredPassword) {
+managerSchema.methods.isPasswordMatched = async function (enteredPassword) {
     return await bcrypt.compare(enteredPassword, this.password);
 }
 
-// Define Admin Model
-const Admin = mongoose.model("Admin", adminSchema);
+// Define Employee Model
+const Manager = mongoose.model("Manager", managerSchema);
 
-module.exports = Admin;
+module.exports = Manager;

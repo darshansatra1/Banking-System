@@ -1,10 +1,10 @@
-const User = require("../../models/userModel");
+const User = require("../../models/CustomerModel");
 const bycrpt = require("bcrypt");
-
+const asyncHandler = require("express-async-handler");
 //
 //
 /***
- * Validate Password before Hashing it 
+ * Validate Password before Hashing it
  * @useCase :- when guest/user register/update an account.
  */
 const validatePassword = (req, res, next) => {
@@ -32,7 +32,20 @@ const validatePassword = (req, res, next) => {
     return next();
 };
 
+const checkPassword = asyncHandler(async (req, res, next) => {
+    try{
+        const user = req.user;
+        if(await user.isPasswordMatched(req.body.password)){
+            return next();
+        }else{
+            return res.status(400).send("Wrong password!");
+        }
+    }catch(error){
+        return res.status(500).send("Ooops!! Something Went Wrong, Try again...");
+    }
+});
 
 module.exports = {
     validatePassword,
+    checkPassword
 }
