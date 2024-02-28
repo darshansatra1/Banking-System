@@ -23,6 +23,23 @@ const authCustomerProtect = asyncHandler(async (req, res, next) => {
     } else {
         return res.status(401).send("Not authorized");
     }
-})
+});
 
-module.exports = { authCustomerProtect };
+const checkPassword = asyncHandler(async (req, res, next) => {
+    try{
+        if(!req.body.password){
+            return res.status(400).send("Please provide password");
+        }
+
+        const customer = req.customer;
+        if(await customer.isPasswordMatched(req.body.password)){
+            return next();
+        }else{
+            return res.status(400).send("Wrong password!");
+        }
+    }catch(error){
+        return res.status(500).send("Ooops!! Something Went Wrong, Try again...");
+    }
+});
+
+module.exports = { authCustomerProtect,checkPassword};

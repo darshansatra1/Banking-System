@@ -73,7 +73,10 @@ const registerCustomer = async (req, res) => {
         });
 
         employee.userCount += 1;
-        employee.users.push(newCustomer._id);
+        employee.users.push({
+            role:"customer",
+            _id: newCustomer._id,
+        });
 
         await employee.save();
 
@@ -104,7 +107,10 @@ const registerMerchant = async (req, res) => {
         });
 
         employee.userCount += 1;
-        employee.users.push(newMerchant._id);
+        employee.users.push({
+            role:"merchant",
+            _id: newMerchant._id,
+        });
 
         await employee.save();
 

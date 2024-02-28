@@ -36,7 +36,7 @@ const transferSchema = new mongoose.Schema(
     }
 );
 
-// Define Admin Model
+// Define Transfer Model
 const Transfer = mongoose.model("Transfer", transferSchema);
 
 module.exports = Transfer;

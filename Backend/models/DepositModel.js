@@ -28,7 +28,7 @@ const depositSchema = new mongoose.Schema(
     }
 );
 
-// Define Admin Model
+// Define Deposit Model
 const Deposit = mongoose.model("Deposit", depositSchema);
 
 module.exports = Deposit;
