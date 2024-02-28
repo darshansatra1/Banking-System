@@ -1,48 +1,80 @@
-import React, { useState, useEffect } from "react";
+// Inside your Login component
 import { FcCurrencyExchange } from "react-icons/fc";
 import { RiLoginCircleFill } from "react-icons/ri";
-import { useDispatch, useSelector } from "react-redux";
+
 import { Link, useNavigate } from "react-router-dom";
+
 import FormButton from "../../shared/FormButton";
 import { Logo } from "../../shared/Logo";
-import MessagesContainer from "../../shared/MessagesContainer";
-import { login } from "../../../state/features/User/Auth/authSlice";
+import React, { useState } from "react";
+
+import axios from "axios";
+import Cookies from 'js-cookie';
 
 export default function Login() {
-  const [formInputs, setFormInputs] = useState({
+  const navigate = useNavigate();
+  const [error, setError] = useState(null);
+
+  const [inputValue, setInputValue] = useState({
     email: "",
-    password: "",
-    role: "Customer", // Default role
-    msg: ""
+    password: ""
   });
 
-  const { email, password, role, msg } = formInputs;
+  const { email, password } = inputValue;
 
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
+  const handleOnChange = (e) => {
+    const { name, value } = e.target;
+    setInputValue({
+      ...inputValue,
+      [name]: value,
+    });
+  };
 
-  const { user, isError, isSuccess, isLoading } = useSelector(
-    (state) => state.userAuth
-  );
-
-  useEffect(() => {
-    if (isError) {
-      setFormInputs({ ...formInputs, msg: message });
+  const routeAsPerRole = async (userRole) => {  
+    console.log(userRole);  
+    let path = "/login";
+    switch (userRole) {
+      case 'customer':
+      case 'merchant':
+        path = "/externalUserDashboard"
+        break;
+      case 'admin':  
+      case 'employee':
+      case 'manager':
+        path =  "/internalUserDashboard"
+        break;
+      default:
+        path = "/login"
     }
+    setTimeout(() => {
+      navigate(path);
+    }, 1000);
 
-    if (user) {
-      setFormInputs({ ...formInputs, msg: "Login Succesfully" });
-      // Store JWT token in session storage
-      if (user.token) {
-        sessionStorage.setItem('jwtToken', user.token);
-      }
-      navigate("/");
-    }
-  }, [isError, message, user, msg, navigate, formInputs]);
+  };
+  // Calculate expiration time for 1 hour from now
+  const expirationTime = new Date();
+  expirationTime.setTime(expirationTime.getTime() + (1 * 60 * 60 * 1000)); // 1 hour in milliseconds
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
-    dispatch(login(formInputs));
+    const url = "http://localhost:8080/login";
+    try {
+      const response = await axios.post(url, inputValue);
+
+      const {user, token} = response.data
+
+      Cookies.set('token', token, { expires: expirationTime, secure: true, sameSite: 'strict', httpOnly: true });
+      console.log(token)
+      routeAsPerRole(response.data.role);
+    } catch (err) {
+      if (err.response && err.response.status === 401) {
+        // Handle 401 Unauthorized error
+        setError('Unauthorized. Please log in.');
+      } else {
+        // Handle other errors
+        setError('An error occurred while processing your request.');
+      }
+    }
   };
 
   return (
@@ -62,7 +94,7 @@ export default function Login() {
             name="email"
             className="block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
             value={email}
-            onChange={(e) => setFormInputs({ ...formInputs, email: e.target.value })}
+            onChange={handleOnChange}
             placeholder="Enter your Email"
             required
           />
@@ -76,42 +108,18 @@ export default function Login() {
             name="password"
             className="block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-800 focus:outline-none"
             value={password}
-            onChange={(e) => setFormInputs({ ...formInputs, password: e.target.value })}
+            onChange={handleOnChange}
             placeholder="Enter Your Password"
             required
           />
         </div>
-        <div className="mb-6">
-          <label htmlFor="role" className="w-full inline-block font-semibold mb-4 p-2 text-gray-800 border-b-4 border-blue-800 rounded shadow bg-blue-200">
-            Select Role
-          </label>
-          <select
-            name="role"
-            value={role}
-            onChange={(e) => setFormInputs({ ...formInputs, role: e.target.value })}
-            className="block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
-          >
-            <option value="customer">Customer</option>
-            <option value="Merchant">Merchant</option>
-            <option value="Admin">Admin</option>
-          </select>
-        </div>
-
-        {(isError || isSuccess) && (
-          <MessagesContainer
-            msg={msg}
-            isSuccess={isSuccess}
-            isError={isError}
-          />
-        )}
 
         <FormButton
           text={{ loading: "Processing", default: "Login" }}
-          isLoading={isLoading}
           icon={<RiLoginCircleFill className="mb-[-2px] ml-1" size={27} />}
           onClick={handleLogin}
         />
-
+        {error && <p>Error: {error}</p>}
         <p className="text-gray-800 mt-6 text-center">
           Not a Client?{" "}
           <Link
