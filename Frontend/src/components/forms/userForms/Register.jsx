@@ -9,7 +9,6 @@ import { Logo } from "../../shared/Logo";
 import MessagesContainer from "../../shared/MessagesContainer";
 import { InputsValidator } from "../helpers/InputsValidator";
 
-import axios from "axios";
  
 
 export default function Register() {
@@ -29,7 +28,7 @@ export default function Register() {
     try {
       if(formInputs["role"] == "customer" || formInputs["role"] == "merchant") {
 
-        const url = "http://localhost:8080/api/user";
+        const url = "http://localhost:8080/register";
         const { data: res } = await axios.post(url, formInputs);
         navigate("/login");
       }
@@ -37,7 +36,7 @@ export default function Register() {
 
       if(formInputs["role"] == "manager" || formInputs["role"] == "employee") {
   
-        const url = "http://localhost:8080/api/admin/";
+        const url = "http://localhost:8080/register";
         const { data: res } = await axios.post(url, formInputs);
         navigate("/login");
         
