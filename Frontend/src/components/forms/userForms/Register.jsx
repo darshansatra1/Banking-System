@@ -121,22 +121,6 @@ export default function Register() {
     //       repeatPassword,
     //     };
 
-    // const handleSubmit = async (userData) => {
-    //   try {
-    //     const response = await axios.post('http://localhost:8080/api/user', userData);
-    //     console.log('User registered successfully:', response.data);
-    //   } catch (error) {
-    //     console.error('Error registering user:', error);
-    //   }
-    // };
-
-    // const userData = {
-    //       name: UserName.trim(),
-    //       email: email.trim(),
-    //       password,
-    //       repeatPassword,
-    //     };
-
     //set error msg to none first
     // setFormInputs({ ...formInputs, msg: "" });
     // //check for password match > then show error msg
