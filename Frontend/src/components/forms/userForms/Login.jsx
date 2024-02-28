@@ -51,13 +51,20 @@ export default function Login() {
     }, 1000);
 
   };
-
+  // Calculate expiration time for 1 hour from now
+  const expirationTime = new Date();
+  expirationTime.setTime(expirationTime.getTime() + (1 * 60 * 60 * 1000)); // 1 hour in milliseconds
 
   const handleLogin = async (e) => {
     e.preventDefault();
     const url = "http://localhost:8080/login";
     try {
       const response = await axios.post(url, inputValue);
+
+      const {user, token} = response.data
+
+      Cookies.set('token', token, { expires: expirationTime, secure: true, sameSite: 'strict', httpOnly: true });
+      console.log(token)
       routeAsPerRole(response.data.role);
     } catch (err) {
       if (err.response && err.response.status === 401) {
