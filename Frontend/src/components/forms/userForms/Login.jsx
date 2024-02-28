@@ -1,12 +1,12 @@
-import React, { useState, useEffect } from "react";
+// Inside your Login component
 import { FcCurrencyExchange } from "react-icons/fc";
 import { RiLoginCircleFill } from "react-icons/ri";
-import { useDispatch, useSelector } from "react-redux";
-import { Link, useNavigate } from "react-router-dom";
 import FormButton from "../../shared/FormButton";
 import { Logo } from "../../shared/Logo";
-import MessagesContainer from "../../shared/MessagesContainer";
-
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
+import Cookies from 'js-cookie';
 
 export default function Login() {
   const navigate = useNavigate();
@@ -27,24 +27,25 @@ export default function Login() {
     });
   };
 
-  const { user, isError, isSuccess, isLoading } = useSelector(
-    (state) => state.userAuth
-  );
-
-  useEffect(() => {
-    if (isError) {
-      setFormInputs({ ...formInputs, msg: message });
+  const routeAsPerRole = async (userRole) => {  
+    console.log(userRole);  
+    let path = "/login";
+    switch (userRole) {
+      case 'customer':
+      case 'merchant':
+        path = "/internalUserDashboard"
+        break;
+      case 'admin':  
+      case 'employee':
+      case 'manager':
+        path = "/externalUserDashboard"
+        break;
+      default:
+        path = "/login"
     }
-
-    if (user) {
-      setFormInputs({ ...formInputs, msg: "Login Succesfully" });
-      // Store JWT token in session storage
-      if (user.token) {
-        sessionStorage.setItem('jwtToken', user.token);
-      }
-      navigate("/");
-    }
-  }, [isError, message, user, msg, navigate, formInputs]);
+    setTimeout(() => {
+      navigate(path);
+    }, 1000);
 
   };
 
