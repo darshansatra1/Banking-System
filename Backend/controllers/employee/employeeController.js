@@ -46,6 +46,7 @@ const getDeposits = asyncHandler(async(req,res)=>{
                 for(const deposit of customerDeposits){
                     allDeposits.push({
                         "client_id":deposit.toCustomer,
+                        "user_name":customer.user_name,
                         "status":deposit.status,
                         "amount":deposit.amount,
                         "date_created":deposit.createdAt,
@@ -61,6 +62,7 @@ const getDeposits = asyncHandler(async(req,res)=>{
                 for(const deposit of merchantDeposits){
                     allDeposits.push({
                         "client_id":deposit.toMerchant,
+                        "user_name":merchant.user_name,
                         "status":deposit.status,
                         "amount":deposit.amount,
                         "date_created":deposit.createdAt,
