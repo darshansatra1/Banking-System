@@ -156,9 +156,51 @@ const authorizeDeposit = asyncHandler(async(req,res)=>{
     }
 });
 
+/**
+ * @desc Get all user lists
+ * @route GET /user
+ * @access private(MANAGER)
+ */
+const getUsers = asyncHandler(async(req,res)=>{
+    const manager = req.manager;
+
+    try{
+        const output = [];
+        for(let i=0;i<manager.employees.length;i++){
+            const employeeId = manager.employees[i];
+            const employee = await Employee.findById(employeeId);
+
+            for(let j=0;j<employee.users.length;j++){
+                const user = employee.users[j];
+                if(user.role==="customer"){
+                    const customer = await Customer.findById(user._id);
+                    output.push({
+                        "_id":customer._id,
+                        "role":"customer",
+                        "user_name":customer.user_name,
+                        "balance":customer.balance,
+                    });
+                }else if(user.role==="merchant"){
+                    const merchant = await Merchant.findById(user._id);
+                    output.push({
+                        "_id":merchant._id,
+                        "role":"merchant",
+                        "user_name":merchant.user_name,
+                        "balance":merchant.balance,
+                    });
+                }
+            }
+        }
+        res.status(200).send(output);
+    }catch(error){
+        return res.status(500).send("Ooops!! Something Went Wrong, Try again...");
+    }
+});
+
 
 module.exports = {
     getProfile,
     getDeposits,
-    authorizeDeposit
+    authorizeDeposit,
+    getUsers,
 };

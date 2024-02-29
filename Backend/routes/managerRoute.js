@@ -1,5 +1,5 @@
 const express = require("express");
-const {getProfile,getDeposits,authorizeDeposit} = require("../controllers/manager/managerController");
+const {getUsers,getProfile,getDeposits,authorizeDeposit} = require("../controllers/manager/managerController");
 const {authManagerProtect} = require("../middlewares/managerMiddleware/authManagerMiddleware");
 
 const router = express.Router();
@@ -12,5 +12,8 @@ router.route("/deposit")
 
 router.route("/deposit/:id")
     .post(authManagerProtect, authorizeDeposit);
+
+router.route("/user")
+    .get(authManagerProtect, getUsers);
 
 module.exports = router;
