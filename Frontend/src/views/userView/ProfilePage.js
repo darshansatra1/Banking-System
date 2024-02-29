@@ -1,22 +1,33 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import Cookies from 'js-cookie';
 
-const ProfilePage = () => {
+const ProfilePage = ({ role }) => {
     const [userData, setUserData] = useState(null);
     const [editableFields, setEditableFields] = useState({
-        username: false,
+        user_name: false,
+        _uid : false,
         email: false,
         balance: false
     });
 
-    // Fetch user data from the backend API
     useEffect(() => {
         const fetchUserData = async () => {
             try {
-                const response = await axios.get('/api/user'); // Replace '/api/user' with your actual API endpoint
-                setUserData(response.data);
+                const token = Cookies.get('token'); // Get token from cookie
+                if (token) {
+                    const response = await axios.get("http://localhost:8080/customer/profile", {
+                        headers: {
+                            Authorization: `Bearer ${token}`,
+                        },
+                    });
+                    setUserData(response.data);
+                    console.log("User data:", response.data);
+                } else {
+                    console.error("Token not found in cookie");
+                }
             } catch (error) {
-                console.error('Error fetching user data:', error);
+                console.error("Error fetching user data:", error);
             }
         };
         fetchUserData();
@@ -45,18 +56,18 @@ const ProfilePage = () => {
                     <h2 className="text-2xl font-semibold mb-4">User Profile</h2>
                     {userData && (
                         <div>
-                            <p><strong>User Name:</strong> {editableFields.username ? (
+                            <p><strong>User Name:</strong> {editableFields.user_name ? (
                                 <input
                                     type="text"
                                     name="username"
-                                    value={userData.username}
+                                    value={userData.user_name}
                                     onChange={handleFieldChange}
                                     onBlur={() => disableEdit('username')}
                                 />
                             ) : (
-                                <span onClick={() => enableEdit('username')}>{userData.username}</span>
+                                <span onClick={() => enableEdit('username')}>{userData.user_name}</span>
                             )}</p>
-                            <p><strong>Account Id:</strong> {userData.accountId}</p>
+                            <p><strong>Account Id:</strong> {userData._uid}</p>
                             <p><strong>Email:</strong> {editableFields.email ? (
                                 <input
                                     type="email"
