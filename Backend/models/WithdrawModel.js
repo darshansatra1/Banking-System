@@ -28,7 +28,7 @@ const withdrawSchema = new mongoose.Schema(
     }
 );
 
-// Define Admin Model
+// Define Withdraw Model
 const Withdraw = mongoose.model("Withdraw", withdrawSchema);
 
 module.exports = Withdraw;
