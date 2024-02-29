@@ -1,5 +1,6 @@
-const Customer = require("../../models/CustomerModel")
-const Deposit = require("../../models/DepositModel")
+const Customer = require("../../models/CustomerModel");
+const Deposit = require("../../models/DepositModel");
+const Employee = require("../../models/EmployeeModel");
 const asyncHandler = require("express-async-handler");
 
 
@@ -12,10 +13,15 @@ const getProfile = asyncHandler(async (req,res)=>{
     const customer = req.customer;
 
     try{
+        const employee = await Employee.findById(customer.supervisor);
+
         return res.json({
             _uid: customer._id,
             user_name: customer.user_name,
             email: customer.email,
+            balance: customer.balance,
+            date_created: customer.createdAt,
+            supervisor: employee.user_name,
         });
     }catch(error){
         return res.status(500).send("Ooops!! Something Went Wrong, Try again...");

@@ -3,6 +3,7 @@ const Deposit = require("../../models/DepositModel");
 const asyncHandler = require("express-async-handler");
 const { generateUserToken } = require("../../helpers/generateUserToken");
 const validator = require("validator");
+const Employee = require("../../models/EmployeeModel");
 
 /**
  * @desc Get merchant
@@ -13,10 +14,14 @@ const getProfile = asyncHandler(async (req,res)=>{
     const merchant = req.merchant;
 
     try{
+        const employee = await Employee.findById(merchant.supervisor);
         return res.json({
             _uid: merchant._id,
             user_name: merchant.user_name,
             email: merchant.email,
+            balance: merchant.balance,
+            date_created: merchant.createdAt,
+            supervisor: employee.user_name,
         });
     }catch(error){
         return res.status(500).send("Ooops!! Something Went Wrong, Try again...");

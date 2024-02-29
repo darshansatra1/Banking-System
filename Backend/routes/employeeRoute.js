@@ -1,5 +1,5 @@
 const express = require("express");
-const {getUsers,getUserDepositLogs,getProfile, getDeposits,authorizeDeposit} = require("../controllers/employee/employeeController");
+const {getUserById,getUsers,getUserDepositLogs,getProfile, getDeposits,authorizeDeposit} = require("../controllers/employee/employeeController");
 const {authEmployeeProtect} = require("../middlewares/employeeMiddleware/authEmployeeMiddleware");
 
 const router = express.Router();
@@ -18,5 +18,8 @@ router.route("/user/:id/deposit")
 
 router.route("/user")
     .get(authEmployeeProtect,getUsers);
+
+router.route("/user/:id")
+    .get(authEmployeeProtect,getUserById);
 
 module.exports = router;

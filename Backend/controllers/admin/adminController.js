@@ -5,6 +5,7 @@ const validator = require("validator");
 const Customer = require("../../models/CustomerModel");
 const Deposit = require("../../models/DepositModel");
 const Merchant = require("../../models/MerchantModel");
+const Employee = require("../../models/EmployeeModel");
 
 
 /**
@@ -165,9 +166,60 @@ const getUsers = asyncHandler(async(req,res)=>{
 });
 
 
+/**
+ * @desc Get user by id
+ * @route GET /user/:id
+ * @access private(ADMIN)
+ */
+const getUserById = asyncHandler(async(req,res)=>{
+    if(!("role" in req.body)){
+        return res.status(400).send("Please specify role");
+    }
+    if(req.body.role!=="customer" && req.body.role!=="merchant"){
+        return res.status(400).send("Wrong role");
+    }
+
+    const admin = req.admin;
+
+    try{
+        if(req.body.role==="customer"){
+            const customer = await Customer.findById(req.params.id);
+            const employee = await Employee.findById(customer.supervisor);
+
+            return res.json({
+                _uid: customer._id,
+                user_name: customer.user_name,
+                email: customer.email,
+                balance: customer.balance,
+                date_created: customer.createdAt,
+                supervisor: employee.user_name,
+                role:"customer",
+            });
+        }else{
+            const merchant = await Merchant.findById(req.params.id);
+            const employee = await Employee.findById(merchant.supervisor);
+
+            return res.json({
+                _uid: merchant._id,
+                user_name: merchant.user_name,
+                email: merchant.email,
+                balance: merchant.balance,
+                date_created: merchant.createdAt,
+                supervisor: employee.user_name,
+                role:"merchant",
+            });
+        }
+    }catch(error){
+        return res.status(500).send("Ooops!! Something Went Wrong, Try again...");
+    }
+});
+
+
+
 module.exports = {
     getProfile,
     getDeposits,
     authorizeDeposit,
-    getUsers
+    getUsers,
+    getUserById
 };
