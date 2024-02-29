@@ -314,6 +314,8 @@ const getUsers = asyncHandler(async(req,res)=>{
                         "role":"customer",
                         "user_name":customer.user_name,
                         "balance":customer.balance,
+                        "email":customer.email,
+                        "supervisor":employee.user_name,
                     });
                 }else if(user.role==="merchant"){
                     const merchant = await Merchant.findById(user._id);
@@ -322,6 +324,8 @@ const getUsers = asyncHandler(async(req,res)=>{
                         "role":"merchant",
                         "user_name":merchant.user_name,
                         "balance":merchant.balance,
+                        "email":merchant.email,
+                        "supervisor":employee.user_name,
                     });
                 }
             }
