@@ -47,7 +47,7 @@ export default function Login() {
         path = "/login"
     }
     setTimeout(() => {
-      navigate(path);
+      navigate(path, {state: {role : userRole}});
     }, 1000);
 
   };
@@ -63,7 +63,7 @@ export default function Login() {
 
       const {user, token} = response.data
 
-      Cookies.set('token', token, { expires: expirationTime, secure: true, sameSite: 'strict', httpOnly: true });
+      Cookies.set('token', token, { expires: expirationTime, secure: true, sameSite: 'strict', /*httpOnly: true */ });
       console.log(token)
       routeAsPerRole(response.data.role);
     } catch (err) {
