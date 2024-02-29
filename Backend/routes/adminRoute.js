@@ -1,5 +1,5 @@
 const express = require("express");
-const {getUsers,getProfile,getDeposits,authorizeDeposit} = require("../controllers/admin/adminController");
+const {getUserById,getUsers,getProfile,getDeposits,authorizeDeposit} = require("../controllers/admin/adminController");
 const {authAdminProtect} = require("../middlewares/adminMiddleware/authAdminMiddleware");
 
 const router = express.Router();
@@ -15,5 +15,8 @@ router.route("/deposit/:id")
 
 router.route("/user")
     .get(authAdminProtect, getUsers);
+
+router.route("/user/:id")
+    .get(authAdminProtect, getUserById);
 
 module.exports = router;
