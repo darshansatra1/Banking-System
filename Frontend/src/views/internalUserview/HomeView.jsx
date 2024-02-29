@@ -3,6 +3,7 @@ import { Logo } from "../../components/shared/Logo";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
+import UserListView from "../../components/shared/admin/UserListView";
 
 
 export default function HomeView() {
@@ -14,10 +15,10 @@ export default function HomeView() {
     const getDepositTransactions = async () => {
       const response = await new Promise(resolve => {
         setTimeout(() => {
-          resolve([{ amount: 1000, user_name: "xyz", user_account_no: 12345 },
-                   { amount : 500, user_name: "abc", user_account_no: 56789},
-                   {amount : 700, user_name: "qwer", user_account_no: 8908}]);
-        }, 1000);
+          resolve([{ balance: 1000, user_name: "User 1", account_id:"65e0108b27cd875bf0a912d5@",email:"user1@gmail.com"},
+                   { balance : 500, user_name: "User 2",account_id:"65e0108b27cd875bf0a912d5@",email:"user2@gmail.com"},
+                   {balance : 700, user_name: "User 3", account_id:"65e0108b27cd875bf0a912d5@",email:"user3@gmail.com"}]);
+        }, 0);
       });
 
       setDepositTransactionsData(response);
@@ -35,19 +36,12 @@ export default function HomeView() {
       </h3>
 
       {depositTransactionsList && depositTransactionsList.map((depositTransaction) => (
-        <div>
-          <p>
-            User name: {depositTransaction.amount}
-          </p>
-          <p>
-            User account no: {depositTransaction.user_name}
-          </p>
-          <p>
-            Amount: {depositTransaction.user_account_no}
-          </p>
-          <br></br>
-
-        </div>
+        <UserListView
+            user_name={depositTransaction.user_name}
+            email={depositTransaction.email}
+            balance={depositTransaction.balance}
+            account_id={depositTransaction.account_id}
+        />
       ))}
     </div>
   );
