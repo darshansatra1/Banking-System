@@ -123,6 +123,10 @@ const authorizeDeposit = asyncHandler(async(req,res)=>{
             if(employee.supervisor.toString()!==manager._id.toString()){
                 return res.status(401).send("You are not authorized");
             }
+            if(accept){
+                customer.balance += deposit.amount;
+                await customer.save();
+            }
         }
 
         if(deposit.toMerchant){
@@ -130,6 +134,10 @@ const authorizeDeposit = asyncHandler(async(req,res)=>{
             const employee = await Employee.findById(merchant.supervisor);
             if(employee.supervisor.toString()!==manager._id.toString()){
                 return res.status(401).send("You are not authorized");
+            }
+            if(accept){
+                merchant.balance += deposit.amount;
+                await merchant.save();
             }
         }
 

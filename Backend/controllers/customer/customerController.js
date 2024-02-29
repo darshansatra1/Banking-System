@@ -28,7 +28,7 @@ const getProfile = asyncHandler(async (req,res)=>{
  * @access private(CUSTOMER)
  */
 const deposit = asyncHandler(async (req,res)=>{
-    if(!req.body.amount){
+    if(!('amount' in req.body)){
         return res.status(400).send("Amount is required");
     }
 

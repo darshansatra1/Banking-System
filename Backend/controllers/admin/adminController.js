@@ -100,6 +100,17 @@ const authorizeDeposit = asyncHandler(async(req,res)=>{
             return res.status(400).send("Transaction already authorized");
         }
 
+        if(deposit.toCustomer && accept){
+            const customer = await Customer.findById(deposit.toCustomer);
+            customer.balance += deposit.amount;
+            await customer.save();
+        }
+        if(deposit.toMerchant && accept){
+            const merchant = await Merchant.findById(deposit.toMerchant);
+            merchant.balance += deposit.amount;
+            await merchant.save();
+        }
+
         if(accept){
             deposit.status = "accept";
         }else{
