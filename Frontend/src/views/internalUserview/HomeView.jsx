@@ -2,11 +2,10 @@ import { FcCurrencyExchange } from "react-icons/fc";
 import { Logo } from "../../components/shared/Logo";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { RiLoginCircleFill } from "react-icons/ri";
 import { Link, useNavigate } from "react-router-dom";
 
 
-export default function WithdrawTransactionListview() {
+export default function HomeView() {
   
   const [depositTransactionsList, setDepositTransactionsData] = useState(null);
   const navigate = useNavigate();
@@ -33,9 +32,9 @@ export default function WithdrawTransactionListview() {
       <Logo />
       <h3 className="flex justify-center items-center text-2xl text-blue-800 font-bold text-center p-2 my-4 rounded shadow bg-blue-200 border-x-4 border-blue-800 select-none">
         <FcCurrencyExchange className="mr-1" size={45} />
-        <span>Withdraw Transactions to Review</span>
+        <span> User List</span>
       </h3>
-    
+
       {depositTransactionsList && depositTransactionsList.map((depositTransaction) => (
         <div>
           <p>

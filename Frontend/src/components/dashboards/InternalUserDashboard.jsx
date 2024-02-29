@@ -31,9 +31,9 @@ import { Link, useNavigate } from "react-router-dom";
       {/* Sidebar */}
       <div className="h-screen bg-gray-800 text-white w-64">
         <nav className="mt-10">
-          <Link to="/profile" className="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700">Profile</Link>
-          <Link to="/depositTransactionListView" className="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700">Deposit</Link>
-          <Link to="/withdrawTransactionListView" className="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700">Deposit</Link>
+          <Link to="/homeView" className="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700">User List</Link>
+          <Link to="/depositTransactionListView" className="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700">Deposit Transactions</Link>
+          <Link to="/withdrawTransactionListView" className="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700">Withdraw Transactions</Link>
           {/* Add more links as needed */}
         </nav>
       </div>

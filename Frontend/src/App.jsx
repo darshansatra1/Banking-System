@@ -12,8 +12,9 @@ import { useEffect, useState } from "react";
 import axios from 'axios'
 import InternalUserDashboard from "./components/dashboards/InternalUserDashboard";
 import ExternalUserDashboard from "./components/dashboards/ExternalUserDashboard";
-import ProfilePage from "./views/commonView/ProfilePage";
 import DepositTransactionListview from "./views/internalUserview/DepositTransactionListView";
+import HomeView from "./views/internalUserview/HomeView";
+import WithdrawTransactionListview from "./views/internalUserview/WithdrawTransactionListView";
 
 
 
@@ -49,17 +50,19 @@ function App() {
           <Route exact path="/login" element={<UserLoginPage />} />
           <Route exact path="/externalUserDashboard" element={<ExternalUserDashboard />} />
           <Route exact path="/internalUserDashboard" element={<InternalUserDashboard />} />
-          <Route exact path="/profile" element={
+          <Route exact path="/homeView" element={
                 <InternalUserDashboard>
-                  <ProfilePage />
-                </InternalUserDashboard>
-              } />
-              <Route exact path="/depositTransactionListView" element={
+                  <HomeView/>
+                </InternalUserDashboard>} />
+          <Route exact path="/depositTransactionListView" element={
                 <InternalUserDashboard>
                   <DepositTransactionListview />
-                </InternalUserDashboard>
-            } />
- 
+                </InternalUserDashboard>} />      
+          <Route exact path="/withdrawTransactionListView" element={
+            <InternalUserDashboard>
+              <WithdrawTransactionListview />
+            </InternalUserDashboard>} />
+
           {paths.map((stringPath) => (
             <Route
               key={"Home"}
