@@ -407,19 +407,27 @@ const getUsers = asyncHandler(async(req,res)=>{
             const user = employee.users[i];
             if(user.role=="customer"){
                 const customer = await Customer.findById(user._id);
+                const employee = await Employee.findById(customer.supervisor);
+
                 output.push({
                     "_id":customer._id,
                     "role":"customer",
                     "user_name":customer.user_name,
                     "balance":customer.balance,
+                    "email":customer.email,
+                    "supervisor":employee.user_name,
                 });
             }else{
                 const merchant = await Merchant.findById(user._id);
+                const employee = await Employee.findById(merchant.supervisor);
+
                 output.push({
                     "_id":merchant._id,
                     "role":"merchant",
                     "user_name":merchant.user_name,
                     "balance":merchant.balance,
+                    "email":merchant.email,
+                    "supervisor":employee.user_name,
                 });
             }
         }
