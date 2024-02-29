@@ -17,6 +17,8 @@ const getProfile = asyncHandler(async (req,res)=>{
             _uid: merchant._id,
             user_name: merchant.user_name,
             email: merchant.email,
+            balance: merchant.balance,
+            date_created: merchant.createdAt,
         });
     }catch(error){
         return res.status(500).send("Ooops!! Something Went Wrong, Try again...");

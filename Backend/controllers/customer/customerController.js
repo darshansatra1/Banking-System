@@ -16,6 +16,8 @@ const getProfile = asyncHandler(async (req,res)=>{
             _uid: customer._id,
             user_name: customer.user_name,
             email: customer.email,
+            balance: customer.balance,
+            date_created: customer.createdAt,
         });
     }catch(error){
         return res.status(500).send("Ooops!! Something Went Wrong, Try again...");
