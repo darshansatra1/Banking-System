@@ -25,7 +25,7 @@ export default function WithdrawTransactionListview() {
           const token = Cookies.get('token');
   
           if (token) {
-            const response = await axios.get("http://localhost:8080/${role}/withdraw", {
+            const response = await axios.get('http://localhost:8080/' +role +'/withdraw', {
               headers: {
                 Authorization: `Bearer ${token}`,
               },
