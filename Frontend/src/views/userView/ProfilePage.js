@@ -8,7 +8,8 @@ const ProfilePage = ({ role }) => {
         user_name: false,
         _uid : false,
         email: false,
-        balance: false
+        balance: false,
+        supervisor : false
     });
 
     useEffect(() => {
@@ -90,12 +91,10 @@ const ProfilePage = ({ role }) => {
                             ) : (
                                 <span onClick={() => enableEdit('balance')}>{userData.balance}</span>
                             )}</p>
-                            <p><strong>Supervisor Name:</strong> {userData.supervisorName}</p>
+                            <p><strong>Supervisor Name:</strong> {userData.supervisor}</p>
                         </div>
                     )}
-                    <button className="bg-blue-500 text-white py-2 px-4 mt-4" onClick={() => disableEdit('')}>
-                        Save
-                    </button>
+                   
                 </div>
             </div>
         </div>

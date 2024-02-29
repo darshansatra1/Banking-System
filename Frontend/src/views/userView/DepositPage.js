@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import Cookies from 'js-cookie';
 
 const DepositPage = () => {
     const [depositAmount, setDepositAmount] = useState('');
@@ -14,19 +15,31 @@ const DepositPage = () => {
         setSuccessMessage('');
 
         // Check deposit amount limit
-        if (parseInt(depositAmount) > 100000) {
-            setErrorMessage('Deposit amount cannot exceed 100,000.');
+        if (parseInt(depositAmount) > 10000) {
+            setErrorMessage('Deposit amount cannot exceed 10,000.');
             setLoading(false);
             return;
         }
 
         try {
-            // Make API request to validate password and deposit amount
-            const response = await axios.post('/api/deposit', { amount: depositAmount, password });
+            // Get token from cookie
+            const token = Cookies.get('token');
+
+            // Make API request to deposit amount
+            const response = await axios.post(
+                'http://localhost:8080/customer/deposit',
+                { amount: parseInt(depositAmount), password },
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`, // Include token in the headers
+                    },
+                }
+            );
+
             if (response.data.success) {
                 setSuccessMessage('Deposit successful!');
             } else {
-                setErrorMessage('Incorrect password.');
+                setErrorMessage('Deposit failed.');
             }
         } catch (error) {
             console.error('Error depositing amount:', error);
@@ -52,7 +65,7 @@ const DepositPage = () => {
                             placeholder="Enter amount"
                             value={depositAmount}
                             onChange={(e) => setDepositAmount(e.target.value)}
-                            max={100000}
+                            max={10000}
                         />
                     </div>
                     <div className="mb-4">

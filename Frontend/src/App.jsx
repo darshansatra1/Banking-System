@@ -14,6 +14,7 @@ import InternalUserDashboard from "./components/dashboards/InternalUserDashboard
 import ExternalUserDashboard from "./components/dashboards/ExternalUserDashboard";
 import ProfilePage from "./views/userView/ProfilePage";
 import DepositPage from "./views/userView/DepositPage";
+import WithdrawalPage from "./views/userView/WithdrawalPage";
 
 
 
@@ -48,6 +49,7 @@ function App() {
           <Route exact path="/register" element={<RegisterPage />} />
           <Route exact path="/login" element={<UserLoginPage />} />
           <Route exact path="/externalUserDashboard" element={<ExternalUserDashboard />} />
+          /externalUserDashboard
           <Route exact path="/internalUserDashboard" element={<InternalUserDashboard />} />
           <Route exact path="/profile" element={
                   <ExternalUserDashboard>
@@ -59,6 +61,12 @@ function App() {
                     <DepositPage />
                   </ExternalUserDashboard>
                 } />
+
+                <Route exact path="/withdraw" element={
+                                  <ExternalUserDashboard>
+                                    <WithdrawalPage />
+                                  </ExternalUserDashboard>
+                                } />
  
           {paths.map((stringPath) => (
             <Route
