@@ -6,6 +6,7 @@ const Customer = require("../../models/CustomerModel");
 const Deposit = require("../../models/DepositModel");
 const Merchant = require("../../models/MerchantModel");
 const Employee = require("../../models/EmployeeModel");
+const Withdraw = require("../../models/WithdrawModel");
 
 
 /**
@@ -51,7 +52,7 @@ const getDeposits = asyncHandler(async(req,res)=>{
                 allDeposits.push({
                     "_id":deposit._id,
                     "client_id":deposit.toCustomer,
-                    "user_name":customer._id,
+                    "user_name":customer.user_name,
                     "status":deposit.status,
                     "amount":deposit.amount,
                     "date_created":deposit.createdAt,
@@ -63,7 +64,7 @@ const getDeposits = asyncHandler(async(req,res)=>{
                 allDeposits.push({
                     "_id":deposit._id,
                     "client_id":deposit.toMerchant,
-                    "user_name":merchant._id,
+                    "user_name":merchant.user_name,
                     "status":deposit.status,
                     "amount":deposit.amount,
                     "date_created":deposit.createdAt,
@@ -97,7 +98,7 @@ const authorizeDeposit = asyncHandler(async(req,res)=>{
         if(!deposit){
             return res.status(400).send("Not found!");
         }
-        if(deposit.status!="waiting"){
+        if(deposit.status!=="waiting"){
             return res.status(400).send("Transaction already authorized");
         }
 
@@ -118,6 +119,116 @@ const authorizeDeposit = asyncHandler(async(req,res)=>{
             deposit.status = "decline";
         }
         await deposit.save();
+
+        return res.status(200).json({
+            success:true
+        });
+    }catch(error){
+        return res.status(500).send("Ooops!! Something Went Wrong, Try again...");
+    }
+});
+
+
+/**
+ * @desc Get all the withdrawal
+ * @route GET /withdraw
+ * @access private(ADMIN)
+ */
+const getWithdraws = asyncHandler(async(req,res)=>{
+    const admin = req.admin;
+
+    try{
+        const allWithdraws = [];
+        const withdraws = await Withdraw.find();
+
+        for(let i=0;i<withdraws.length;i++){
+            const withdraw = withdraws[i];
+            if(withdraw.status!=="waiting"){
+                continue;
+            }
+            if(withdraw.fromCustomer){
+                const customer = await Customer.findById(withdraw.fromCustomer);
+
+                allWithdraws.push({
+                    "_id":withdraw._id,
+                    "client_id":withdraw.fromCustomer,
+                    "user_name":customer.user_name,
+                    "status":withdraw.status,
+                    "amount":withdraw.amount,
+                    "date_created":withdraw.createdAt,
+                    "role":"customer"
+                });
+            }else{
+                const merchant = await Merchant.findById(deposit.fromMerchant);
+
+                allWithdraws.push({
+                    "_id":withdraw._id,
+                    "client_id":withdraw.fromMerchant,
+                    "user_name":merchant.user_name,
+                    "status":withdraw.status,
+                    "amount":withdraw.amount,
+                    "date_created":withdraw.createdAt,
+                    "role":"merchant"
+                });
+            }
+        }
+        return res.status(200).json(allWithdraws);
+    }catch(error){
+        return res.status(500).send("Ooops!! Something Went Wrong, Try again...");
+    }
+});
+
+
+/**
+ * @desc Accept or decline withdraw request
+ * @route POST /withdraw/:id
+ * @access private(ADMIN)
+ */
+const authorizeWithdraw = asyncHandler(async(req,res)=>{
+    const admin = req.admin;
+    const withdrawId = req.params.id;
+    const {accept} = req.body;
+
+    if(!('accept' in req.body)){
+        return res.status(400).send("Please send the status");
+    }
+
+    try{
+        const withdraw = await Withdraw.findById(withdrawId);
+        if(!withdraw){
+            return res.status(400).send("Not found!");
+        }
+        if(withdraw.status!=="waiting"){
+            return res.status(400).send("Transaction already authorized");
+        }
+
+        if(withdraw.fromCustomer){
+            const customer = await Customer.findById(withdraw.fromCustomer);
+            if(accept){
+                if(customer.balance<withdraw.amount){
+                    return res.status(400).send("The customer does not have enough balance for this withdrawal");
+                }
+                customer.balance -= withdraw.amount;
+                await customer.save();
+            }
+        }
+        if(withdraw.fromMerchant){
+            const merchant = await Merchant.findById(withdraw.fromMerchant);
+            if(accept){
+                if(merchant.balance < withdraw.amount){
+                    return res.status(400).send("The merchant does not have enough balance for this withdrawal");
+                }
+                merchant.balance -= withdraw.amount;
+                await merchant.save();
+            }
+        }
+
+        if(accept){
+            withdraw.status = "accept";
+        }else{
+            withdraw.status = "decline";
+        }
+        await withdraw.save();
 
         return res.status(200).json({
             success:true
@@ -271,6 +382,8 @@ module.exports = {
     getProfile,
     getDeposits,
     authorizeDeposit,
+    getWithdraws,
+    authorizeWithdraw,
     getUsers,
     getUserById,
     getUserDepositLogs
