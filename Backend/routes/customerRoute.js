@@ -1,10 +1,14 @@
 const express = require("express");
-const {getProfile} = require("../controllers/customer/customerController");
-const {authCustomerProtect} = require("../middlewares/customerMiddleware/authCustomerMiddleware");
+const {getProfile,deposit,getDeposits} = require("../controllers/customer/customerController");
+const {authCustomerProtect,checkPassword} = require("../middlewares/customerMiddleware/authCustomerMiddleware");
 
 const router = express.Router();
 
 router.route("/profile")
     .get(authCustomerProtect, getProfile);
+
+router.route("/deposit")
+    .post(authCustomerProtect,checkPassword,deposit)
+    .get(authCustomerProtect, getDeposits);
 
 module.exports = router;

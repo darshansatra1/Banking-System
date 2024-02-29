@@ -30,8 +30,10 @@ const employeeSchema = new mongoose.Schema(
         },
         users:[
             {
-                type: mongoose.Schema.Types.ObjectId,
-                ref: 'User'
+                role: String,
+                _id: {
+                    type: mongoose.Schema.Types.ObjectId,
+                }
             }
         ],
         supervisor:{
