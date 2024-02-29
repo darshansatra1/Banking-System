@@ -32,7 +32,7 @@ import Cookies from "js-cookie";
         {isEmployeeOrManager && (
           <Link to="/profile" className="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700">Profile</Link>
         )}
-          <Link to="/homeView" className="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700">User List</Link>
+          <Link to="/userListView" className="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700">User List</Link>
           <Link to="/depositTransactionListView" className="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700">Deposit Transactions</Link>
           <Link to="/withdrawTransactionListView" className="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700">Withdraw Transactions</Link>
           {/* Add more links as needed */}

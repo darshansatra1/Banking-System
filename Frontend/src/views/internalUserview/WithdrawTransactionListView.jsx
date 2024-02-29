@@ -4,29 +4,44 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { RiLoginCircleFill } from "react-icons/ri";
 import { Link, useNavigate } from "react-router-dom";
+import Cookies from "js-cookie"; // Import the Cookies library
 
 
 export default function WithdrawTransactionListview() {
   
-  const [depositTransactionsList, setDepositTransactionsData] = useState(null);
-  const navigate = useNavigate();
+    const [withdrawTransactionsList, setWithdrawTransactionsData] = useState(null);
+    const navigate = useNavigate();
+  
+    useEffect(() => {
+      const getWithdrawTransactions = async () => {
+        try {
 
-  useEffect(() => {
-    const getDepositTransactions = async () => {
-      const response = await new Promise(resolve => {
-        setTimeout(() => {
-          resolve([{ amount: 1000, user_name: "xyz", user_account_no: 12345 },
-                   { amount : 500, user_name: "abc", user_account_no: 56789},
-                   {amount : 700, user_name: "qwer", user_account_no: 8908}]);
-        }, 1000);
-      });
-
-      setDepositTransactionsData(response);
-      console.log("after set");
-    };
-    getDepositTransactions();
-
-  }, []); 
+          const role = Cookies.get('role');
+          if (!role) {
+            console.error("Role not found in cookie");
+            navigate("/login");
+            return;
+          }
+          const token = Cookies.get('token');
+  
+          if (token) {
+            const response = await axios.get("http://localhost:8080/${role}/withdraw", {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            });
+            setWithdrawTransactionsData(response.data);
+            console.log("Transaction data:", response.data);
+          } else {
+            console.error("Token not found in cookie");
+            navigate("/login");          
+          }
+        } catch (error) {
+          console.error("Error fetching transaction data:", error);
+        }
+      };
+      getWithdrawTransactions();
+    }, []);
 
 
   
@@ -39,16 +54,16 @@ export default function WithdrawTransactionListview() {
         <span>Withdraw Transactions to Review</span>
       </h3>
     
-      {depositTransactionsList && depositTransactionsList.map((depositTransaction) => (
+      {withdrawTransactionsList && withdrawTransactionsList.map((withdrawTransaction) => (
         <div>
           <p>
-            User name: {depositTransaction.amount}
+            User name: {withdrawTransaction.user_name}
           </p>
           <p>
-            User account no: {depositTransaction.user_name}
+            User account no: {withdrawTransaction.client_id}
           </p>
           <p>
-            Amount: {depositTransaction.user_account_no}
+            Amount: {withdrawTransaction.amount}
           </p>
           <br></br>
 

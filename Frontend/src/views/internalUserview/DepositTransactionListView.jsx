@@ -4,7 +4,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { RiLoginCircleFill } from "react-icons/ri";
 import { Link, useNavigate } from "react-router-dom";
-
+import Cookies from "js-cookie"; // Import the Cookies library
 
 export default function DepositTransactionListview() {
   
@@ -14,10 +14,18 @@ export default function DepositTransactionListview() {
   useEffect(() => {
     const getDepositTransactions = async () => {
       try {
+
+        const role = Cookies.get('role');        
+        if (!role) {
+          console.error("Role not found in cookie");
+          navigate("/login");
+          return;
+        }
+
         const token = Cookies.get('token');
 
         if (token) {
-          const response = await axios.get("http://localhost:8080/admin/user/", {
+          const response = await axios.get('http://localhost:8080/'+ role+'/deposit', {
             headers: {
               Authorization: `Bearer ${token}`,
             },
@@ -47,13 +55,13 @@ export default function DepositTransactionListview() {
       {depositTransactionsList && depositTransactionsList.map((depositTransaction) => (
         <div>
           <p>
-            User name: {depositTransaction.amount}
+            User name: {depositTransaction.user_name}
           </p>
           <p>
-            User account no: {depositTransaction.user_name}
+            User account no: {depositTransaction.client_id}
           </p>
           <p>
-            Amount: {depositTransaction.user_account_no}
+            Amount: {depositTransaction.amount}
           </p>
           <br></br>
         </div>

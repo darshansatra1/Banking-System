@@ -6,17 +6,24 @@ import { Link, useNavigate } from "react-router-dom";
 import Cookies from "js-cookie"; // Import the Cookies library
 
 
-export default function HomeView() {
+export default function UserListView() {
   const [userData, setUserData] = useState([]);
+  const [role, setRole] = useState([]);
   const navigate = useNavigate(); 
 
   useEffect(() => {
     const getUsers = async () => {
       try {
+        const role = Cookies.get('role');
+        if (!role) {
+          console.error("Role not found in cookie");
+          navigate("/login");
+          return;
+        }
+        setRole(role);
         const token = Cookies.get('token');
-
         if (token) {
-          const response = await axios.get("http://localhost:8080/admin/user/", {
+          const response = await axios.get('http://localhost:8080/'+ role +'/user', {
             headers: {
               Authorization: `Bearer ${token}`,
             },
@@ -51,8 +58,16 @@ export default function HomeView() {
             Account Number: {user._id}
           </p>
           <p>
-            Balance: {user.balance}
+            Email: {user.email}
           </p>
+          <p>
+            Supervisor: {user.supervisor}
+          </p>
+          {role === 'admin' && (
+            <p>
+              Manager: {user.manager}
+            </p>
+          )}
           <br></br>
 
         </div>

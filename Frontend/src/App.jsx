@@ -13,9 +13,10 @@ import axios from 'axios'
 import InternalUserDashboard from "./components/dashboards/InternalUserDashboard";
 import ExternalUserDashboard from "./components/dashboards/ExternalUserDashboard";
 import DepositTransactionListview from "./views/internalUserview/DepositTransactionListView";
-import HomeView from "./views/internalUserview/HomeView";
+import HomeView from "./views/internalUserview/UserListView";
 import WithdrawTransactionListview from "./views/internalUserview/WithdrawTransactionListView";
 import ProfilePage from "./views/commonView/ProfilePage";
+import UserListView from "./views/internalUserview/UserListView";
 
 
 
@@ -56,9 +57,9 @@ function App() {
                     <ProfilePage />
                   </InternalUserDashboard>
                 } />
-          <Route exact path="/homeView" element={
+          <Route exact path="/userListView" element={
                 <InternalUserDashboard>
-                  <HomeView/>
+                  <UserListView/>
                 </InternalUserDashboard>} />
           <Route exact path="/depositTransactionListView" element={
                 <InternalUserDashboard>
