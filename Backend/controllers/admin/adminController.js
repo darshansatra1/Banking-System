@@ -215,11 +215,63 @@ const getUserById = asyncHandler(async(req,res)=>{
 });
 
 
+/**
+ * @desc Get user deposit by user id
+ * @route GET /user/:id/deposit
+ * @access private(ADMIN)
+ */
+const getUserDepositLogs = asyncHandler(async(req,res)=>{
+    if(!('role' in req.body)){
+        return res.status(400).send("Please send the role");
+    }
+    if(req.body.role!=="customer" && req.body.role!=="merchant"){
+        return res.status(400).send("Please send the current role");
+    }
+    try{
+        if(req.body.role=="customer"){
+            const customer = await Customer.findById(req.params.id);
+            const allDeposits = await Deposit.find({
+                toCustomer: customer._id,
+            });
+            const logs = [];
+            for(let i=0;i<allDeposits.length;i++){
+                const deposit = allDeposits[i];
+                logs.push({
+                    "_id":deposit._id,
+                    "status":deposit.status,
+                    "amount":deposit.amount,
+                    "date_created":deposit.createdAt,
+                });
+            }
+            return res.status(200).send(logs);
+        }else{
+            const merchant = await Merchant.findById(req.params.id);
+            const allDeposits = await Deposit.find({
+                toMerchant: merchant._id,
+            });
+            const logs = [];
+            for(let i=0;i<allDeposits.length;i++){
+                const deposit = allDeposits[i];
+                logs.push({
+                    "_id":deposit._id,
+                    "status":deposit.status,
+                    "amount":deposit.amount,
+                    "date_created":deposit.createdAt,
+                });
+            }
+            return res.status(200).send(logs);
+        }
+    }catch(error){
+        return res.status(500).send("Ooops!! Something Went Wrong, Try again...");
+    }
+});
+
 
 module.exports = {
     getProfile,
     getDeposits,
     authorizeDeposit,
     getUsers,
-    getUserById
+    getUserById,
+    getUserDepositLogs
 };
