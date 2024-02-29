@@ -12,6 +12,8 @@ import { useEffect, useState } from "react";
 import axios from 'axios'
 import InternalUserDashboard from "./components/dashboards/InternalUserDashboard";
 import ExternalUserDashboard from "./components/dashboards/ExternalUserDashboard";
+import ProfilePage from "./views/userView/ProfilePage";
+import DepositPage from "./views/userView/DepositPage";
 
 
 
@@ -47,6 +49,16 @@ function App() {
           <Route exact path="/login" element={<UserLoginPage />} />
           <Route exact path="/externalUserDashboard" element={<ExternalUserDashboard />} />
           <Route exact path="/internalUserDashboard" element={<InternalUserDashboard />} />
+          <Route exact path="/profile" element={
+                  <ExternalUserDashboard>
+                    <ProfilePage />
+                  </ExternalUserDashboard>
+                } />
+                <Route exact path="/deposit" element={
+                  <ExternalUserDashboard>
+                    <DepositPage />
+                  </ExternalUserDashboard>
+                } />
  
           {paths.map((stringPath) => (
             <Route
