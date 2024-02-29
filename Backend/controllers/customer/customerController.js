@@ -1,5 +1,6 @@
 const Customer = require("../../models/CustomerModel");
 const Deposit = require("../../models/DepositModel");
+const Withdraw = require("../../models/WithdrawModel");
 const Employee = require("../../models/EmployeeModel");
 const asyncHandler = require("express-async-handler");
 
@@ -80,10 +81,81 @@ const getDeposits = asyncHandler(async (req,res)=>{
         for(let i=0;i<allDeposits.length;i++){
             output.push({
                 "_id":allDeposits[i]._id,
-                "client_id":allDeposits[i].toCustomer,
                 "status":allDeposits[i].status,
                 "amount":allDeposits[i].amount,
                 "date_created":allDeposits[i].createdAt,
+            });
+        }
+
+        return res.status(200).json(output);
+
+    }catch(error){
+        if (error.message.match(/(Balance|Account|validation|deposit)/gi))
+            return res.status(400).send(error.message);
+        res.status(500).send("Ooops!! Something Went Wrong, Try again...");
+    }
+});
+
+
+/**
+ * @desc   Withdraw money
+ * @route  POST  /withdraw
+ * @access private(CUSTOMER)
+ */
+const withdraw = asyncHandler(async (req,res)=>{
+    if(!('amount' in req.body)){
+        return res.status(400).send("Amount is required");
+    }
+
+    const {amount} = req.body;
+    const customer = req.customer;
+
+    try{
+        if(amount<1){
+            return res.status(400).send("You can not withdraw amount less than 1$")
+        }
+        if(amount>customer.balance){
+            return res.status(400).send("You don't have enough balance for the withdrawal");
+        }
+
+        const withdraw = await Withdraw.create({
+            fromCustomer: customer._id,
+            status:"waiting",
+            amount: amount,
+        });
+
+        return res.status(201).json({
+            success: true,
+        });
+    }catch(error){
+        if (error.message.match(/(Balance|Account|validation|deposit)/gi))
+            return res.status(400).send(error.message);
+        res.status(500).send("Ooops!! Something Went Wrong, Try again...");
+    }
+});
+
+
+/**
+ * @desc   Get all withdraw
+ * @route  GET  /withdraw
+ * @access private(CUSTOMER)
+ */
+const getWithdraws = asyncHandler(async (req,res)=>{
+    const customer = req.customer;
+
+    try{
+        const allWithdraws = await Withdraw.find({
+            fromCustomer: customer._id,
+        });
+
+        const output = [];
+
+        for(let i=0;i<allWithdraws.length;i++){
+            output.push({
+                "_id":allWithdraws[i]._id,
+                "status":allWithdraws[i].status,
+                "amount":allWithdraws[i].amount,
+                "date_created":allWithdraws[i].createdAt,
             });
         }
 
@@ -100,4 +172,6 @@ module.exports = {
     getProfile,
     deposit,
     getDeposits,
+    withdraw,
+    getWithdraws
 };
