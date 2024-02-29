@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+<<<<<<< HEAD
 import Cookies from 'js-cookie';
 
 const ProfilePage = ({ role }) => {
@@ -7,10 +8,18 @@ const ProfilePage = ({ role }) => {
     const [editableFields, setEditableFields] = useState({
         user_name: false,
         _uid : false,
+=======
+
+const ProfilePage = () => {
+    const [userData, setUserData] = useState(null);
+    const [editableFields, setEditableFields] = useState({
+        username: false,
+>>>>>>> e2e0c4c (added profile page and Deposit page)
         email: false,
         balance: false
     });
 
+<<<<<<< HEAD
     useEffect(() => {
         const fetchUserData = async () => {
             try {
@@ -28,6 +37,16 @@ const ProfilePage = ({ role }) => {
                 }
             } catch (error) {
                 console.error("Error fetching user data:", error);
+=======
+    // Fetch user data from the backend API
+    useEffect(() => {
+        const fetchUserData = async () => {
+            try {
+                const response = await axios.get('/api/user'); // Replace '/api/user' with your actual API endpoint
+                setUserData(response.data);
+            } catch (error) {
+                console.error('Error fetching user data:', error);
+>>>>>>> e2e0c4c (added profile page and Deposit page)
             }
         };
         fetchUserData();
@@ -56,18 +75,32 @@ const ProfilePage = ({ role }) => {
                     <h2 className="text-2xl font-semibold mb-4">User Profile</h2>
                     {userData && (
                         <div>
+<<<<<<< HEAD
                             <p><strong>User Name:</strong> {editableFields.user_name ? (
                                 <input
                                     type="text"
                                     name="username"
                                     value={userData.user_name}
+=======
+                            <p><strong>User Name:</strong> {editableFields.username ? (
+                                <input
+                                    type="text"
+                                    name="username"
+                                    value={userData.username}
+>>>>>>> e2e0c4c (added profile page and Deposit page)
                                     onChange={handleFieldChange}
                                     onBlur={() => disableEdit('username')}
                                 />
                             ) : (
+<<<<<<< HEAD
                                 <span onClick={() => enableEdit('username')}>{userData.user_name}</span>
                             )}</p>
                             <p><strong>Account Id:</strong> {userData._uid}</p>
+=======
+                                <span onClick={() => enableEdit('username')}>{userData.username}</span>
+                            )}</p>
+                            <p><strong>Account Id:</strong> {userData.accountId}</p>
+>>>>>>> e2e0c4c (added profile page and Deposit page)
                             <p><strong>Email:</strong> {editableFields.email ? (
                                 <input
                                     type="email"
