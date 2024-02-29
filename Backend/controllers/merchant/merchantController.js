@@ -81,7 +81,6 @@ const getDeposits = asyncHandler(async (req,res)=>{
         for(let i=0;i<allDeposits.length;i++){
             output.push({
                 "_id":allDeposits[i]._id,
-                "client_id":allDeposits[i].toMerchant,
                 "status":allDeposits[i].status,
                 "amount":allDeposits[i].amount,
                 "date_created":allDeposits[i].createdAt,
@@ -132,9 +131,44 @@ const withdraw = asyncHandler(async (req,res)=>{
     }
 });
 
+
+/**
+ * @desc   Get all withdraws
+ * @route  GET  /withdraw
+ * @access private(MERCHANT)
+ */
+const getWithdraws = asyncHandler(async (req,res)=>{
+    const merchant = req.merchant;
+
+    try{
+        const allWithdraws = await Withdraw.find({
+            fromMerchant: merchant._id,
+        });
+
+        const output = [];
+
+        for(let i=0;i<allWithdraws.length;i++){
+            output.push({
+                "_id":allWithdraws[i]._id,
+                "status":allWithdraws[i].status,
+                "amount":allWithdraws[i].amount,
+                "date_created":allWithdraws[i].createdAt,
+            });
+        }
+
+        return res.status(200).json(output);
+
+    }catch(error){
+        if (error.message.match(/(Balance|Account|validation|deposit)/gi))
+            return res.status(400).send(error.message);
+        res.status(500).send("Ooops!! Something Went Wrong, Try again...");
+    }
+});
+
 module.exports = {
     getProfile,
     deposit,
     getDeposits,
     withdraw,
+    getWithdraws,
 };
