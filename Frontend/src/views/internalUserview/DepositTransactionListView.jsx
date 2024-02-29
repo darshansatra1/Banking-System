@@ -1,6 +1,6 @@
-import { FcCurrencyExchange } from "react-icons/fc";
-import { Logo } from "../../components/shared/Logo";
-import React, { useState, useEffect } from "react";
+import {FcCurrencyExchange} from "react-icons/fc";
+import {Logo} from "../../components/shared/Logo";
+import React, {useState, useEffect} from "react";
 import axios from "axios";
 import { RiLoginCircleFill } from "react-icons/ri";
 import { Link, useNavigate } from "react-router-dom";
@@ -22,7 +22,7 @@ export default function DepositTransactionListview() {
           return;
         }
 
-        const token = Cookies.get('token');
+                const token = Cookies.get('token');
 
         if (token) {
           const response = await axios.get('http://localhost:8080/'+role+'/deposit', {
