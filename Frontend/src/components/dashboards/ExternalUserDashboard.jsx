@@ -14,8 +14,6 @@ const ExternalUserDashboard = ({ children }) => {
           <Link to="/deposithistory" className="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700">Deposit History</Link>
           <Link to="/withdrawhistory" className="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700">Withdraw History</Link>
           <Link to="/logout" className="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700">Logout</Link>
-
-      
           {/* Add more links as needed */}
         </nav>
       </div>
