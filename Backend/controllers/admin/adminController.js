@@ -378,6 +378,60 @@ const getUserDepositLogs = asyncHandler(async(req,res)=>{
 });
 
 
+
+/**
+ * @desc Get user withdraw by user id
+ * @route GET /user/:id/withdraw
+ * @access private(ADMIN)
+ */
+const getUserWithdrawLogs = asyncHandler(async(req,res)=>{
+    if(!('role' in req.body)){
+        return res.status(400).send("Please send the role");
+    }
+    if(req.body.role!=="customer" && req.body.role!=="merchant"){
+        return res.status(400).send("Please send the current role");
+    }
+
+    try{
+        if(req.body.role=="customer"){
+            const customer = await Customer.findById(req.params.id);
+            const allWithdraws = await Withdraw.find({
+                fromCustomer: customer._id,
+            });
+            const logs = [];
+            for(let i=0;i<allWithdraws.length;i++){
+                const withdraw = allWithdraws[i];
+                logs.push({
+                    "_id":withdraw._id,
+                    "status":withdraw.status,
+                    "amount":withdraw.amount,
+                    "date_created":withdraw.createdAt,
+                });
+            }
+            return res.status(200).send(logs);
+        }else{
+            const merchant = await Merchant.findById(req.params.id);
+            const allWithdraws = await Withdraw.find({
+                fromMerchant: merchant._id,
+            });
+            const logs = [];
+            for(let i=0;i<allWithdraws.length;i++){
+                const withdraw = allWithdraws[i];
+                logs.push({
+                    "_id":withdraw._id,
+                    "status":withdraw.status,
+                    "amount":withdraw.amount,
+                    "date_created":withdraw.createdAt,
+                });
+            }
+            return res.status(200).send(logs);
+        }
+    }catch(error){
+        return res.status(500).send("Ooops!! Something Went Wrong, Try again...");
+    }
+});
+
+
 module.exports = {
     getProfile,
     getDeposits,
@@ -386,5 +440,6 @@ module.exports = {
     authorizeWithdraw,
     getUsers,
     getUserById,
-    getUserDepositLogs
+    getUserDepositLogs,
+    getUserWithdrawLogs,
 };

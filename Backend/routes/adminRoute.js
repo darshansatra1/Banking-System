@@ -1,5 +1,5 @@
 const express = require("express");
-const {getWithdraws, authorizeWithdraw,getUserDepositLogs,getUserById,getUsers,getProfile,getDeposits,authorizeDeposit} = require("../controllers/admin/adminController");
+const {getUserWithdrawLogs,getWithdraws, authorizeWithdraw,getUserDepositLogs,getUserById,getUsers,getProfile,getDeposits,authorizeDeposit} = require("../controllers/admin/adminController");
 const {authAdminProtect} = require("../middlewares/adminMiddleware/authAdminMiddleware");
 
 const router = express.Router();
@@ -21,6 +21,9 @@ router.route("/withdraw/:id")
 
 router.route("/user/:id/deposit")
     .get(authAdminProtect, getUserDepositLogs);
+
+router.route("/user/:id/withdraw")
+    .get(authAdminProtect, getUserWithdrawLogs);
 
 router.route("/user")
     .get(authAdminProtect, getUsers);
