@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 import Cookies from 'js-cookie';
 
 const ProfilePage = ({ role }) => {
@@ -24,10 +25,18 @@ const ProfilePage = ({ role }) => {
         user_name: false,
         _uid : false,
 >>>>>>> bfa6654 (Profile is visble now)
+=======
+
+const ProfilePage = () => {
+    const [userData, setUserData] = useState(null);
+    const [editableFields, setEditableFields] = useState({
+        username: false,
+>>>>>>> 442dbb8 (added profile page and Deposit page)
         email: false,
         balance: false
     });
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
     useEffect(() => {
@@ -73,6 +82,16 @@ const ProfilePage = ({ role }) => {
 =======
                 console.error("Error fetching user data:", error);
 >>>>>>> bfa6654 (Profile is visble now)
+=======
+    // Fetch user data from the backend API
+    useEffect(() => {
+        const fetchUserData = async () => {
+            try {
+                const response = await axios.get('/api/user'); // Replace '/api/user' with your actual API endpoint
+                setUserData(response.data);
+            } catch (error) {
+                console.error('Error fetching user data:', error);
+>>>>>>> 442dbb8 (added profile page and Deposit page)
             }
         };
         fetchUserData();
@@ -103,17 +122,21 @@ const ProfilePage = ({ role }) => {
                         <div>
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
                             <p><strong>User Name:</strong> {editableFields.user_name ? (
                                 <input
                                     type="text"
                                     name="username"
                                     value={userData.user_name}
 =======
+=======
+>>>>>>> 442dbb8 (added profile page and Deposit page)
                             <p><strong>User Name:</strong> {editableFields.username ? (
                                 <input
                                     type="text"
                                     name="username"
                                     value={userData.username}
+<<<<<<< HEAD
 >>>>>>> e2e0c4c (added profile page and Deposit page)
 =======
                             <p><strong>User Name:</strong> {editableFields.user_name ? (
@@ -122,10 +145,13 @@ const ProfilePage = ({ role }) => {
                                     name="username"
                                     value={userData.user_name}
 >>>>>>> bfa6654 (Profile is visble now)
+=======
+>>>>>>> 442dbb8 (added profile page and Deposit page)
                                     onChange={handleFieldChange}
                                     onBlur={() => disableEdit('username')}
                                 />
                             ) : (
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
                                 <span onClick={() => enableEdit('username')}>{userData.user_name}</span>
@@ -141,6 +167,11 @@ const ProfilePage = ({ role }) => {
                             )}</p>
                             <p><strong>Account Id:</strong> {userData._uid}</p>
 >>>>>>> bfa6654 (Profile is visble now)
+=======
+                                <span onClick={() => enableEdit('username')}>{userData.username}</span>
+                            )}</p>
+                            <p><strong>Account Id:</strong> {userData.accountId}</p>
+>>>>>>> 442dbb8 (added profile page and Deposit page)
                             <p><strong>Email:</strong> {editableFields.email ? (
                                 <input
                                     type="email"
