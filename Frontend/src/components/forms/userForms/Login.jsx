@@ -47,7 +47,7 @@ export default function Login() {
         path = "/login"
     }
     setTimeout(() => {
-      navigate(path);
+      navigate(path, {state: {role : userRole}});
     }, 1000);
 
   };

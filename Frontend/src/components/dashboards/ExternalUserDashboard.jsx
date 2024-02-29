@@ -10,7 +10,11 @@ const ExternalUserDashboard = ({ children }) => {
         <nav className="mt-10">
           <Link to="/profile" className="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700">Profile</Link>
           <Link to="/deposit" className="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700">Deposit</Link>
-          <Link to="/deposit" className="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700">Deposit</Link>
+          <Link to="/transfer" className="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700">Transfer Fund</Link>
+          <Link to="/credit" className="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700">Credit Fund</Link>
+          <Link to="/logout" className="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700">Logout</Link>
+
+      
           {/* Add more links as needed */}
         </nav>
       </div>
