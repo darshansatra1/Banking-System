@@ -1,5 +1,6 @@
 const Customer = require("../../models/CustomerModel");
 const Deposit = require("../../models/DepositModel");
+const Withdraw = require("../../models/WithdrawModel");
 const Employee = require("../../models/EmployeeModel");
 const asyncHandler = require("express-async-handler");
 
@@ -96,8 +97,44 @@ const getDeposits = asyncHandler(async (req,res)=>{
     }
 });
 
+
+/**
+ * @desc   Withdraw money
+ * @route  POST  /withdraw
+ * @access private(CUSTOMER)
+ */
+const withdraw = asyncHandler(async (req,res)=>{
+    if(!('amount' in req.body)){
+        return res.status(400).send("Amount is required");
+    }
+
+    const {amount} = req.body;
+    const customer = req.customer;
+
+    try{
+        if(amount<1){
+            return res.status(400).send("You can not withdraw amount less than 1$")
+        }
+
+        const withdraw = await Withdraw.create({
+            fromCustomer: customer._id,
+            status:"waiting",
+            amount: amount,
+        });
+
+        return res.status(201).json({
+            success: true,
+        });
+    }catch(error){
+        if (error.message.match(/(Balance|Account|validation|deposit)/gi))
+            return res.status(400).send(error.message);
+        res.status(500).send("Ooops!! Something Went Wrong, Try again...");
+    }
+});
+
 module.exports = {
     getProfile,
     deposit,
     getDeposits,
+    withdraw,
 };
