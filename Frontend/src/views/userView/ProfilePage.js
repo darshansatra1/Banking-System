@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 <<<<<<< HEAD
+<<<<<<< HEAD
 import Cookies from 'js-cookie';
 
 const ProfilePage = ({ role }) => {
@@ -9,16 +10,25 @@ const ProfilePage = ({ role }) => {
         user_name: false,
         _uid : false,
 =======
+=======
+import Cookies from 'js-cookie';
+>>>>>>> bfa6654 (Profile is visble now)
 
-const ProfilePage = () => {
+const ProfilePage = ({ role }) => {
     const [userData, setUserData] = useState(null);
     const [editableFields, setEditableFields] = useState({
+<<<<<<< HEAD
         username: false,
 >>>>>>> e2e0c4c (added profile page and Deposit page)
+=======
+        user_name: false,
+        _uid : false,
+>>>>>>> bfa6654 (Profile is visble now)
         email: false,
         balance: false
     });
 
+<<<<<<< HEAD
 <<<<<<< HEAD
     useEffect(() => {
         const fetchUserData = async () => {
@@ -39,14 +49,30 @@ const ProfilePage = () => {
                 console.error("Error fetching user data:", error);
 =======
     // Fetch user data from the backend API
+=======
+>>>>>>> bfa6654 (Profile is visble now)
     useEffect(() => {
         const fetchUserData = async () => {
             try {
-                const response = await axios.get('/api/user'); // Replace '/api/user' with your actual API endpoint
-                setUserData(response.data);
+                const token = Cookies.get('token'); // Get token from cookie
+                if (token) {
+                    const response = await axios.get("http://localhost:8080/customer/profile", {
+                        headers: {
+                            Authorization: `Bearer ${token}`,
+                        },
+                    });
+                    setUserData(response.data);
+                    console.log("User data:", response.data);
+                } else {
+                    console.error("Token not found in cookie");
+                }
             } catch (error) {
+<<<<<<< HEAD
                 console.error('Error fetching user data:', error);
 >>>>>>> e2e0c4c (added profile page and Deposit page)
+=======
+                console.error("Error fetching user data:", error);
+>>>>>>> bfa6654 (Profile is visble now)
             }
         };
         fetchUserData();
@@ -76,6 +102,7 @@ const ProfilePage = () => {
                     {userData && (
                         <div>
 <<<<<<< HEAD
+<<<<<<< HEAD
                             <p><strong>User Name:</strong> {editableFields.user_name ? (
                                 <input
                                     type="text"
@@ -88,10 +115,18 @@ const ProfilePage = () => {
                                     name="username"
                                     value={userData.username}
 >>>>>>> e2e0c4c (added profile page and Deposit page)
+=======
+                            <p><strong>User Name:</strong> {editableFields.user_name ? (
+                                <input
+                                    type="text"
+                                    name="username"
+                                    value={userData.user_name}
+>>>>>>> bfa6654 (Profile is visble now)
                                     onChange={handleFieldChange}
                                     onBlur={() => disableEdit('username')}
                                 />
                             ) : (
+<<<<<<< HEAD
 <<<<<<< HEAD
                                 <span onClick={() => enableEdit('username')}>{userData.user_name}</span>
                             )}</p>
@@ -101,6 +136,11 @@ const ProfilePage = () => {
                             )}</p>
                             <p><strong>Account Id:</strong> {userData.accountId}</p>
 >>>>>>> e2e0c4c (added profile page and Deposit page)
+=======
+                                <span onClick={() => enableEdit('username')}>{userData.user_name}</span>
+                            )}</p>
+                            <p><strong>Account Id:</strong> {userData._uid}</p>
+>>>>>>> bfa6654 (Profile is visble now)
                             <p><strong>Email:</strong> {editableFields.email ? (
                                 <input
                                     type="email"
