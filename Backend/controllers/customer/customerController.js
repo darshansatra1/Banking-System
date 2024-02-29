@@ -114,6 +114,9 @@ const withdraw = asyncHandler(async (req,res)=>{
         if(amount<1){
             return res.status(400).send("You can not withdraw amount less than 1$")
         }
+        if(amount>customer.balance){
+            return res.status(400).send("You don't have enough balance for the withdrawal");
+        }
 
         const withdraw = await Withdraw.create({
             fromCustomer: customer._id,
