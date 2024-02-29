@@ -5,6 +5,7 @@ const validator = require("validator");
 const Customer = require("../../models/CustomerModel");
 const Deposit = require("../../models/DepositModel");
 const Merchant = require("../../models/MerchantModel");
+const Manager = require("../../models/ManagerModel");
 const Employee = require("../../models/EmployeeModel");
 const Withdraw = require("../../models/WithdrawModel");
 
@@ -252,22 +253,34 @@ const getUsers = asyncHandler(async(req,res)=>{
         const customers = await Customer.find();
         for(let i=0;i<customers.length;i++){
             const customer = customers[i];
+            const employee = await Employee.findById(customer.supervisor);
+            const manager = await Manager.findById(employee.supervisor);
+
             output.push({
                 "_id":customer._id,
                 "role":"customer",
                 "user_name":customer.user_name,
                 "balance":customer.balance,
+                "email":customer.email,
+                "supervisor":employee.user_name,
+                "manager":manager.user_name,
             });
         }
 
         const merchants = await Merchant.find();
         for(let i=0;i<merchants.length;i++){
             const merchant = merchants[i];
+            const employee = await Employee.findById(merchant.supervisor);
+            const manager = await Manager.findById(employee.supervisor);
+
             output.push({
                 "_id":merchant._id,
                 "role":"merchant",
                 "user_name":merchant.user_name,
                 "balance":merchant.balance,
+                "email":merchant.email,
+                "supervisor":employee.user_name,
+                "manager":manager.user_name,
             });
         }
         return res.status(200).send(output);
@@ -296,6 +309,7 @@ const getUserById = asyncHandler(async(req,res)=>{
         if(req.body.role==="customer"){
             const customer = await Customer.findById(req.params.id);
             const employee = await Employee.findById(customer.supervisor);
+            const manager = await Manager.findById(employee.supervisor);
 
             return res.json({
                 _uid: customer._id,
@@ -304,11 +318,13 @@ const getUserById = asyncHandler(async(req,res)=>{
                 balance: customer.balance,
                 date_created: customer.createdAt,
                 supervisor: employee.user_name,
+                manager:manager.user_name,
                 role:"customer",
             });
         }else{
             const merchant = await Merchant.findById(req.params.id);
             const employee = await Employee.findById(merchant.supervisor);
+            const manager = await Manager.findById(employee.supervisor);
 
             return res.json({
                 _uid: merchant._id,
@@ -317,6 +333,7 @@ const getUserById = asyncHandler(async(req,res)=>{
                 balance: merchant.balance,
                 date_created: merchant.createdAt,
                 supervisor: employee.user_name,
+                manager:manager.user_name,
                 role:"merchant",
             });
         }
