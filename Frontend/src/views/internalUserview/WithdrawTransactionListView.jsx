@@ -28,6 +28,9 @@ export default function WithdrawTransactionListview() {
 
   }, []); 
 
+
+  
+
   return (
     <div className="w-full lg:w-[40%] max-w-md block p-6 rounded shadow-lg shadow-black/20 bg-slate-50 mx-auto">
       <Logo />

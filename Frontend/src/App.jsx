@@ -15,6 +15,7 @@ import ExternalUserDashboard from "./components/dashboards/ExternalUserDashboard
 import DepositTransactionListview from "./views/internalUserview/DepositTransactionListView";
 import HomeView from "./views/internalUserview/HomeView";
 import WithdrawTransactionListview from "./views/internalUserview/WithdrawTransactionListView";
+import ProfilePage from "./views/commonView/ProfilePage";
 
 
 
@@ -50,6 +51,11 @@ function App() {
           <Route exact path="/login" element={<UserLoginPage />} />
           <Route exact path="/externalUserDashboard" element={<ExternalUserDashboard />} />
           <Route exact path="/internalUserDashboard" element={<InternalUserDashboard />} />
+          <Route exact path="/profile" element={
+                  <InternalUserDashboard>
+                    <ProfilePage />
+                  </InternalUserDashboard>
+                } />
           <Route exact path="/homeView" element={
                 <InternalUserDashboard>
                   <HomeView/>

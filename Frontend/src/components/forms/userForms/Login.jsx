@@ -63,7 +63,8 @@ export default function Login() {
 
       const {user, token} = response.data
 
-      Cookies.set('token', token, { expires: expirationTime, secure: true, sameSite: 'strict', httpOnly: true });
+      Cookies.set('token', token, { expires: expirationTime, secure: true, sameSite: 'strict' });
+      Cookies.set('role', response.data.role);
       console.log(token)
       routeAsPerRole(response.data.role);
     } catch (err) {

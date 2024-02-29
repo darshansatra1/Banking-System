@@ -13,46 +13,27 @@ export default function DepositTransactionListview() {
 
   useEffect(() => {
     const getDepositTransactions = async () => {
-      const response = await new Promise(resolve => {
-        setTimeout(() => {
-          resolve([{ amount: 1000, user_name: "xyz", user_account_no: 12345 },
-                   { amount : 500, user_name: "abc", user_account_no: 56789},
-                   {amount : 700, user_name: "qwer", user_account_no: 8908}]);
-        }, 1000);
-      });
+      try {
+        const token = Cookies.get('token');
 
-      setDepositTransactionsData(response);
-      console.log("after set");
+        if (token) {
+          const response = await axios.get("http://localhost:8080/admin/user/", {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          });
+          setDepositTransactionsData(response.data);
+          console.log("Transaction data:", response.data);
+        } else {
+          console.error("Token not found in cookie");
+          navigate("/login");          
+        }
+      } catch (error) {
+        console.error("Error fetching transaction data:", error);
+      }
     };
     getDepositTransactions();
-
-  }, []); 
-
-
-  const handleView = async (view) => {  
-    console.log(view);  
-    let path;
-    switch (view) {
-      case 'depositTransaction':
-        path = "/depositTransactionListView"
-        break;
-      case 'withdrawTransaction':
-        path = "/withdrawTransactionListView"
-        break;  
-      case 'transferTransaction':
-        path = "/transferTransactionListView"
-        break;
-      case 'viewHistory':
-        path = "/transactionHistoryListView"
-        break;  
-      default:
-        path = "/internalUserDashboard"
-    }
-    setTimeout(() => {
-      navigate(path);
-    }, 1000);
-  };
- 
+  }, []);
 
 
   return (

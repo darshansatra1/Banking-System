@@ -3,29 +3,36 @@ import { Logo } from "../../components/shared/Logo";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
+import Cookies from "js-cookie"; // Import the Cookies library
 
 
 export default function HomeView() {
-  
-  const [depositTransactionsList, setDepositTransactionsData] = useState(null);
-  const navigate = useNavigate();
+  const [userData, setUserData] = useState([]);
+  const navigate = useNavigate(); 
 
   useEffect(() => {
-    const getDepositTransactions = async () => {
-      const response = await new Promise(resolve => {
-        setTimeout(() => {
-          resolve([{ amount: 1000, user_name: "xyz", user_account_no: 12345 },
-                   { amount : 500, user_name: "abc", user_account_no: 56789},
-                   {amount : 700, user_name: "qwer", user_account_no: 8908}]);
-        }, 1000);
-      });
+    const getUsers = async () => {
+      try {
+        const token = Cookies.get('token');
 
-      setDepositTransactionsData(response);
-      console.log("after set");
+        if (token) {
+          const response = await axios.get("http://localhost:8080/admin/user/", {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          });
+          setUserData(response.data);
+          console.log("User data:", response.data);
+        } else {
+          console.error("Token not found in cookie");
+          navigate("/login");          
+        }
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+      }
     };
-    getDepositTransactions();
-
-  }, []); 
+    getUsers();
+  }, []);
 
   return (
     <div className="w-full lg:w-[40%] max-w-md block p-6 rounded shadow-lg shadow-black/20 bg-slate-50 mx-auto">
@@ -35,16 +42,16 @@ export default function HomeView() {
         <span> User List</span>
       </h3>
 
-      {depositTransactionsList && depositTransactionsList.map((depositTransaction) => (
+      {userData && userData.map((user) => (
         <div>
           <p>
-            User name: {depositTransaction.amount}
+            Name: {user.user_name}
           </p>
           <p>
-            User account no: {depositTransaction.user_name}
+            Account Number: {user._id}
           </p>
           <p>
-            Amount: {depositTransaction.user_account_no}
+            Balance: {user.balance}
           </p>
           <br></br>
 
