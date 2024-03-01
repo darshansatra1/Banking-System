@@ -40,10 +40,12 @@ const DepositHistory = ({ role }) => { // Accept 'role' as a prop
 
     return (
        <div className="container mx-auto py-8">
-    <div className="max-w-xl mx-auto bg-white rounded-lg overflow-hidden shadow-md"> {/* Adjust max-w-xl to your desired width */}
-        <div className="p-2">
+            <div className="max-w block p-6 rounded shadow-lg shadow-black/20 bg-gray-800 mx-auto">
+                <div className="p-6">
 
-                    <h2 className="text-2xl font-semibold mb-4">Deposit History</h2>
+                    <h3 className="flex justify-center items-center text-2xl text-blue-600 font-bold text-center p-2 my-4 rounded shadow bg-blue-200 border-x-4 select-none">
+                        <span>Deposit History</span>
+                    </h3>
                     {loading ? (
                         <p>Loading deposit history...</p>
                     ) : errorMessage ? (
@@ -53,9 +55,26 @@ const DepositHistory = ({ role }) => { // Accept 'role' as a prop
                     ) : (
                         <ul>
                             {depositHistory.map((deposit, index) => (
-                                <li key={index} className="mb-2">
-                                    <span className="font-bold">Amount:</span> {deposit.amount}, <span className="font-bold">Date:</span> {deposit.date_created}<span className="font-bold">Status:</span> {deposit.status}
-                                </li>
+                                <li class="block w-full cursor-pointer rounded-lg p-4 text-left transition duration-500 hover:bg-white-100 hover:text-white-500 focus:bg-white-100 focus:text-white-500 focus:ring-0 dark:hover:bg-teal-900 dark:hover:text-white-200 dark:focus:bg-green-600 dark:focus:text-white-200">
+                    <div
+                        class="flex items-center space-x-4 rtl:space-x-reverse text-slate-900 group-hover:text-white text-sm">
+                        <div class="flex-shrink-0 w-8 h-8 rounded-full">
+                            {/* <img class="w-8 h-8 rounded-full" src="" alt="Neil image"> */}
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <p className="text-sm text-gray-100 truncate dark:text-gray-100">
+                                <strong>Amount: </strong> {deposit.amount}
+                            </p>
+                            <p className="text-sm text-gray-100 truncate dark:text-gray-100">
+                                <strong>Date Created: </strong> {deposit.date_created}
+                            </p>
+                        </div>
+                        <div
+                            class="text-white bg-blue-700 rounded-lg text-sm px-6 py-2.5 me-2 mb-2 dark:bg-blue-600 focus:outline-none dark:focus:ring-blue-800">
+                            <strong>Status:</strong> {deposit.status}
+                        </div>
+                    </div>
+                </li>
                             ))}
                         </ul>
                     )}

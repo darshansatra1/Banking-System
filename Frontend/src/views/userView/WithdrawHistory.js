@@ -39,9 +39,12 @@ const WithdrawalHistory = ({ role }) => { // Accept 'role' as a prop
 
     return (
         <div className="container mx-auto py-8">
-            <div className="max-w-xl mx-auto bg-white rounded-lg overflow-hidden shadow-md"> {/* Adjust max-w-xl to your desired width */}
-                <div className="p-2">
-                    <h2 className="text-2xl font-semibold mb-4">Withdrawal History</h2>
+            <div className="max-w block p-6 rounded shadow-lg shadow-black/20 bg-gray-800 mx-auto">
+                <div className="p-6">
+
+                    <h3 className="flex justify-center items-center text-2xl text-blue-600 font-bold text-center p-2 my-4 rounded shadow bg-blue-200 border-x-4 select-none">
+                        <span>Withdrawal History</span>
+                    </h3>
                     {loading ? (
                         <p>Loading withdrawal history...</p>
                     ) : errorMessage ? (
@@ -51,9 +54,28 @@ const WithdrawalHistory = ({ role }) => { // Accept 'role' as a prop
                     ) : (
                         <ul>
                             {withdrawalHistory.map((withdrawal, index) => (
-                                <li key={index} className="mb-2">
-                                    <span className="font-bold">Amount:</span> {withdrawal.amount}, <span className="font-bold">Date:</span> {withdrawal.date_created}, <span className="font-bold">Status:</span> {withdrawal.status}
+                                <li key={index} className="block w-full cursor-pointer rounded-lg p-4 text-left transition duration-500 hover:bg-white-100 hover:text-white-500 focus:bg-white-100 focus:text-white-500 focus:ring-0 dark:hover:bg-teal-900 dark:hover:text-white-200 dark:focus:bg-green-600 dark:focus:text-white-200">
+                                    {/* <span className="font-bold">Amount:</span> {withdrawal.amount}, <span className="font-bold">Date:</span> {withdrawal.date_created}, <span className="font-bold">Status:</span> {withdrawal.status} */}
+                                    <div
+                                        class="flex items-center space-x-4 rtl:space-x-reverse text-slate-900 group-hover:text-white text-sm">
+                                        <div class="flex-shrink-0 w-8 h-8 rounded-full">
+                                            {/* <img class="w-8 h-8 rounded-full" src="" alt="Neil image"> */}
+                                        </div>
+                                        <div class="flex-1 min-w-0">
+                                            <p className="text-sm text-gray-100 truncate dark:text-gray-100">
+                                                <strong>Amount: </strong> {withdrawal.amount}
+                                            </p>
+                                            <p className="text-sm text-gray-100 truncate dark:text-gray-100">
+                                                <strong>Date Created: </strong> {withdrawal.date_created}
+                                            </p>
+                                        </div>
+                                        <div
+                                            class="text-white bg-blue-700 rounded-lg text-sm px-6 py-2.5 me-2 mb-2 dark:bg-blue-600 focus:outline-none dark:focus:ring-blue-800">
+                                            <strong>Status:</strong> {withdrawal.status}
+                                        </div>
+                                    </div>
                                 </li>
+                                
                             ))}
                         </ul>
                     )}
