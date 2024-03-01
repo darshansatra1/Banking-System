@@ -49,6 +49,7 @@ const ExternalUserDashboard = ({ children }) => {
           <Link to="/transfer" className="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700">Transfer Fund</Link>
           <Link to="/credit" className="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700">Credit Fund</Link>
           <Link to="/logout" className="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700">Logout</Link>          
+          
           {/* Add more links as needed */}
 
         </nav>

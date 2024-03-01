@@ -95,6 +95,7 @@ export default function WithdrawTransactionListview() {
         {withdrawTransactionsList && Array.isArray(withdrawTransactionsList) && withdrawTransactionsList.map((withdrawTransaction) => (
             <WithdrawCard
                 withdraw_id = {withdrawTransaction._id}
+
                 user_name={withdrawTransaction.user_name}
                 client_id={withdrawTransaction.client_id}
                 amount={withdrawTransaction.amount}
