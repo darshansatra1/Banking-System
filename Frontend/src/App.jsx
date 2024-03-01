@@ -51,6 +51,7 @@ function App() {
           <Route exact path="/register" element={<RegisterPage />} />
           <Route exact path="/login" element={<UserLoginPage />} />
           <Route exact path="/externalUserDashboard" element={<ExternalUserDashboard />} />
+          /externalUserDashboard
           <Route exact path="/internalUserDashboard" element={<InternalUserDashboard />} />
           <Route exact path="/profile" element={
                   <InternalUserDashboard>
