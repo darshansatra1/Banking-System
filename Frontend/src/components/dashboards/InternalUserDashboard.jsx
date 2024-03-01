@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
+import { Logo } from "../../components/shared/Logo";
+import Footer from "../../components/home/components/layout/Footer";
 
 
 // export default const InternalUserDashboard() = ({ children }) => {
