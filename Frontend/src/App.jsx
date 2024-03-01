@@ -17,6 +17,10 @@ import HomeView from "./views/internalUserview/UserListView";
 import WithdrawTransactionListview from "./views/internalUserview/WithdrawTransactionListView";
 import ProfilePage from "./views/commonView/ProfilePage";
 import UserListView from "./views/internalUserview/UserListView";
+import MyProfilePage from "./views/userView/MyProfilePage";
+import DepositPage from "./views/userView/DepositPage";
+import WithdrawalPage from "./views/userView/WithdrawalPage";
+import DepositHistory from "./views/userView/DepositHistory";
 
 
 
@@ -51,12 +55,9 @@ function App() {
           <Route exact path="/register" element={<RegisterPage />} />
           <Route exact path="/login" element={<UserLoginPage />} />
           <Route exact path="/externalUserDashboard" element={<ExternalUserDashboard />} />
+          /externalUserDashboard
           <Route exact path="/internalUserDashboard" element={<InternalUserDashboard />} />
-          <Route exact path="/profile" element={
-                  <InternalUserDashboard>
-                    <ProfilePage />
-                  </InternalUserDashboard>
-                } />
+         
           <Route exact path="/userListView" element={
                 <InternalUserDashboard>
                   <UserListView/>
@@ -70,6 +71,30 @@ function App() {
               <WithdrawTransactionListview />
             </InternalUserDashboard>} />
 
+            <Route exact path ="/profile" element = {
+              <ExternalUserDashboard>
+                <MyProfilePage></MyProfilePage>
+              </ExternalUserDashboard>
+            }/>
+
+
+            <Route exact path ="/deposit" element = {
+                          <ExternalUserDashboard>
+                            <DepositPage></DepositPage>
+                          </ExternalUserDashboard>
+                        }/>
+
+              <Route exact path ="/withdraw" element = {
+                                        <ExternalUserDashboard>
+                                          <WithdrawalPage></WithdrawalPage>
+                                        </ExternalUserDashboard>
+                                      }/>
+
+              <Route exact path ="/deposithistory" element = {
+                                                    <ExternalUserDashboard>
+                                                      <DepositHistory></DepositHistory>
+                                                    </ExternalUserDashboard>
+                                                  }/>
           {paths.map((stringPath) => (
             <Route
               key={"Home"}
