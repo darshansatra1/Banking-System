@@ -63,12 +63,14 @@ const MyProfilePage = () => {
 
     return (
         <div className="container mx-auto py-8">
-            <div className="max-w-md mx-auto bg-white rounded-lg overflow-hidden shadow-md">
+            <div className="max-w block p-6 rounded shadow-lg shadow-black/20 bg-gray-800 mx-auto">
                 <div className="p-6">
-                    <h2 className="text-2xl font-semibold mb-4">User Profile</h2>
+                    <h3 className="flex justify-center items-center text-2xl text-blue-600 font-bold text-center p-2 my-4 rounded shadow bg-blue-200 border-x-4 select-none">
+                        <span>User Profile</span>
+                    </h3>
                     {userData && (
                         <div>
-                            <p><strong>User Name:</strong> {editableFields.user_name ? (
+                            <p className='text-slate-100'><strong>User Name:</strong> {editableFields.user_name ? (
                                 <input
                                     type="text"
                                     name="username"
@@ -79,8 +81,8 @@ const MyProfilePage = () => {
                             ) : (
                                 <span onClick={() => enableEdit('username')}>{userData.user_name}</span>
                             )}</p>
-                            <p><strong>Account Id:</strong> {userData._uid}</p>
-                            <p><strong>Email:</strong> {editableFields.email ? (
+                            <p className='text-slate-100'><strong>Account Id:</strong> {userData._uid}</p>
+                            <p className='text-slate-100'><strong>Email:</strong> {editableFields.email ? (
                                 <input
                                     type="email"
                                     name="email"
@@ -91,7 +93,7 @@ const MyProfilePage = () => {
                             ) : (
                                 <span onClick={() => enableEdit('email')}>{userData.email}</span>
                             )}</p>
-                            <p><strong>Balance:</strong> {editableFields.balance ? (
+                            <p className='text-slate-100'><strong>Balance:</strong> {editableFields.balance ? (
                                 <input
                                     type="text"
                                     name="balance"
@@ -102,7 +104,7 @@ const MyProfilePage = () => {
                             ) : (
                                 <span onClick={() => enableEdit('balance')}>{userData.balance}</span>
                             )}</p>
-                            <p><strong>Supervisor Name:</strong> {userData.supervisor}</p>
+                            <p className='text-slate-100'><strong>Supervisor Name:</strong> {userData.supervisor}</p>
                         </div>
                     )}
                    
