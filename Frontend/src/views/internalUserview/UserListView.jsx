@@ -55,7 +55,7 @@ export default function UserListView() {
             Name: {user.user_name}
           </p>
           <p>
-            Account Number: {user._id}
+            Account Number: {user.client_id}
           </p>
           <p>
             Email: {user.email}
