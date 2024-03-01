@@ -8,7 +8,7 @@ router.route("/profile")
     .get(authMerchantProtect, getProfile);
 
 router.route("/deposit")
-    .post(authMerchantProtect, checkPassword, deposit)
+    .post(authMerchantProtect, deposit)
     .get(authMerchantProtect, getDeposits);
 
 router.route("/withdraw")

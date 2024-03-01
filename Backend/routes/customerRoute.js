@@ -8,7 +8,7 @@ router.route("/profile")
     .get(authCustomerProtect, getProfile);
 
 router.route("/deposit")
-    .post(authCustomerProtect,checkPassword,deposit)
+    .post(authCustomerProtect,deposit)
     .get(authCustomerProtect, getDeposits);
 
 router.route("/withdraw")
