@@ -1,9 +1,8 @@
-import { FcCurrencyExchange } from "react-icons/fc";
-import { Logo } from "../../components/shared/Logo";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
-import Cookies from "js-cookie"; // Import the Cookies library
+import Cookies from "js-cookie";
+import UserListCard from "../../components/shared/admin/UserListCard"; // Import the Cookies library
 
 
 export default function UserListView() {
@@ -42,36 +41,21 @@ export default function UserListView() {
   }, []);
 
   return (
-    <div className="w-full lg:w-[40%] max-w-md block p-6 rounded shadow-lg shadow-black/20 bg-slate-50 mx-auto">
-      <Logo />
-      <h3 className="flex justify-center items-center text-2xl text-blue-800 font-bold text-center p-2 my-4 rounded shadow bg-blue-200 border-x-4 border-blue-800 select-none">
-        <FcCurrencyExchange className="mr-1" size={45} />
-        <span> User List</span>
-      </h3>
-
-      {userData && userData.map((user) => (
-        <div>
-          <p>
-            Name: {user.user_name}
-          </p>
-          <p>
-            Account Number: {user._id}
-          </p>
-          <p>
-            Email: {user.email}
-          </p>
-          <p>
-            Supervisor: {user.supervisor}
-          </p>
-          {role === 'admin' && (
-            <p>
-              Manager: {user.manager}
-            </p>
-          )}
-          <br></br>
-
-        </div>
-      ))}
-    </div>
+      <div className="w-full max-w block p-6 rounded shadow-lg shadow-black/20 bg-gray-800 mx-auto">
+        <h3 className="flex justify-center items-center text-2xl text-blue-600 font-bold text-center p-2 my-4 rounded shadow bg-blue-200 border-x-4 select-none">
+          <span> User List</span>
+        </h3>
+        {userData && userData.map((user) => (
+            <UserListCard
+                user_name={user.user_name}
+                email={user.email}
+                balance={user.balance}
+                account_id={user._id}
+                role={user.role}
+                supervisor={user.supervisor}
+                manager={user.manager}
+            />
+        ))}
+      </div>
   );
 }
