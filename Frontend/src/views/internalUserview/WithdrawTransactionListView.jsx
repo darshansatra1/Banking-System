@@ -10,11 +10,9 @@ export default function WithdrawTransactionListview() {
     const [withdrawTransactionsList, setWithdrawTransactionsData] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-
     const navigate = useNavigate();
   
-    useEffect(() => {
-      const getWithdrawTransactions = async () => {
+    const getWithdrawTransactions = async () => {
         try {
 
           const role = Cookies.get('role');
@@ -44,11 +42,13 @@ export default function WithdrawTransactionListview() {
             setLoading(false); // Set loading to false regardless of success or failure
           }
         };
+        
+    useEffect(() => {
       getWithdrawTransactions();
     }, []);
 
 
-    const handleAction = async (clientId, accept) => {
+    const onClick = async (withdrawId, accept) => {
         try {
           setLoading(true);
           setError(null);
@@ -63,7 +63,7 @@ export default function WithdrawTransactionListview() {
           }
       
           const response = await axios.post(
-            'http://localhost:8080/'+role+'/withdraw/'+ clientId,
+            'http://localhost:8080/'+role+'/withdraw/'+ withdrawId,
             { accept },
             {
               headers: {
@@ -72,8 +72,7 @@ export default function WithdrawTransactionListview() {
             }
           );
       
-          // Handle success - Refresh the list view
-          window.location.reload(); // Reload the page on OK
+          getWithdrawTransactions();
         } catch (error) {
           window.alert(error.message, () => {
           window.location.reload(); // Reload the page on OK
@@ -86,8 +85,6 @@ export default function WithdrawTransactionListview() {
 
   return (
     <div>
-    {/* Loading state */}
-    {loading && <p>Loading...</p>}
 
     {/* Original page */}
     {!loading && !error && (
@@ -98,11 +95,13 @@ export default function WithdrawTransactionListview() {
         </h3>
         {withdrawTransactionsList && Array.isArray(withdrawTransactionsList) && withdrawTransactionsList.map((withdrawTransaction) => (
             <WithdrawCard
+                withdraw_id = {withdrawTransaction._id}
                 user_name={withdrawTransaction.user_name}
                 client_id={withdrawTransaction.client_id}
                 amount={withdrawTransaction.amount}
                 date_created={withdrawTransaction.date_created}
                 role={withdrawTransaction.role}
+                onClick={onClick}
             />
         ))}
      </div>

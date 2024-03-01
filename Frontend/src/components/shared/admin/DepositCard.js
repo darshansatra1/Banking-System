@@ -1,8 +1,15 @@
 import React from 'react';
 
-const DepositCard = ({user_name, client_id,amount, date_created,role}) => {
-    const onClick = async () => {
+const DepositCard = ({deposit_id, user_name, client_id,amount, date_created,role,onClick}) => { 
 
+    const clickAccept = async(e)=>{
+        e.preventDefault();
+        await onClick(deposit_id,true);
+    }
+
+    const clickDecline = async(e)=>{
+        e.preventDefault();
+        await onClick(deposit_id,false);
     }
     return (
         <div>
@@ -19,13 +26,13 @@ const DepositCard = ({user_name, client_id,amount, date_created,role}) => {
                     </div>
 
                     <div>
-                        <button type="button" data-te-ripple-init data-te-ripple-color="light"
+                        <button onClick={clickAccept} type="button" data-te-ripple-init data-te-ripple-color="light"
                                 className="mb-6 inline-block w-full rounded bg-[hsl(143,74%,45%)] px-6 pt-2.5 pb-2 text-sm font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#3b71ca] transition duration-150 ease-in-out hover:bg-[hsl(218,81%,75%)] hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] dark:shadow-[0_4px_9px_-4px_rgba(59,113,202,0.5)] dark:hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)]">
                             Accept
                         </button>
                     </div>
                     <div>
-                        <button type="button" data-te-ripple-init data-te-ripple-color="light"
+                        <button onClick={clickDecline} type="button" data-te-ripple-init data-te-ripple-color="light"
                                 className="mb-6 inline-block w-full rounded bg-[hsl(355,88,63)] px-6 pt-2.5 pb-2 text-sm font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#3b71ca] transition duration-150 ease-in-out hover:bg-[hsl(218,81%,75%)] hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] dark:shadow-[0_4px_9px_-4px_rgba(59,113,202,0.5)] dark:hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)]">
                             Reject
                         </button>

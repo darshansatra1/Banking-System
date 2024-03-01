@@ -11,96 +11,42 @@ export default function DepositTransactionListview() {
   const [error, setError] = useState(null);
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const getDepositTransactions = async () => {
-      try {
-        const role = Cookies.get('role');
-        if (!role) {
-          console.error("Role not found in cookie");
-          navigate("/login");
-          return;
-        }
-
-                const token = Cookies.get('token');
-
-        if (token) {
-          const response = await axios.get('http://localhost:8080/'+role+'/deposit', {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          });
-          setDepositTransactionsData(response.data);
-          console.log("Transaction data:", response.data);
-        } else {
-          console.error("Token not found in cookie");
-          navigate("/login");
-        }
-      } catch (error) {
-        console.error("Error fetching transaction data:", error);
-        setError(error.message || "An error occurred");
-      } finally {
-        setLoading(false); // Set loading to false regardless of success or failure
-      }
-    };
-    getDepositTransactions();
-  }, []);
-        if (token) {
-          const response = await axios.get('http://localhost:8080/'+role+'/deposit', {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          });
-          setDepositTransactionsData(response.data);
-          console.log("Transaction data:", response.data);
-        } else {
-          console.error("Token not found in cookie");
-          navigate("/login");
-        }
-      } catch (error) {
-        console.error("Error fetching transaction data:", error);
-        setError(error.message || "An error occurred");
-      } finally {
-        setLoading(false); // Set loading to false regardless of success or failure
-      }
-    };
-    getDepositTransactions();
-  }, []);
-
-  const handleAction = async (clientId, accept) => {
+  const getDepositTransactions = async () => {
     try {
-      setLoading(true);
-      setError(null);
-  
       const role = Cookies.get('role');
-      const token = Cookies.get('token');
-  
-      if (!role || !token) {
-        console.error("Role or token not found in cookie");
+      if (!role) {
+        console.error("Role not found in cookie");
         navigate("/login");
         return;
       }
-  
-      const response = await axios.post(
-        'http://localhost:8080/'+role+'/deposit/'+ clientId,
-        { accept },
-        {
+
+      const token = Cookies.get('token');
+
+      if (token) {
+        const response = await axios.get(`http://localhost:8080/${role}/deposit`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
-        }
-      );
-  
-      // Handle success - Refresh the list view
-      window.location.reload(); // Reload the page on OK
+        });
+        setDepositTransactionsData(response.data);
+        console.log("Transaction data:", response.data);
+      } else {
+        console.error("Token not found in cookie");
+        navigate("/login");
+      }
     } catch (error) {
-      window.alert(error.message, () => {
-      window.location.reload(); // Reload the page on OK
-      });
+      console.error("Error fetching transaction data:", error);
+      setError(error.message || "An error occurred");
     } finally {
-      setLoading(false); // Set loading to false regardless of success or failure
+      setLoading(false);
     }
   };
-  const handleAction = async (clientId, accept) => {
+
+  useEffect(() => {
+    getDepositTransactions();
+  }, []);
+
+  const onClick = async (depositId, accept) => {
     try {
       setLoading(true);
       setError(null);
@@ -115,7 +61,7 @@ export default function DepositTransactionListview() {
       }
   
       const response = await axios.post(
-        'http://localhost:8080/'+role+'/deposit/'+ clientId,
+        'http://localhost:8080/'+role+'/deposit/'+ depositId,
         { accept },
         {
           headers: {
@@ -123,9 +69,8 @@ export default function DepositTransactionListview() {
           },
         }
       );
-  
-      // Handle success - Refresh the list view
-      window.location.reload(); // Reload the page on OK
+      console.log("done");
+      getDepositTransactions();
     } catch (error) {
       window.alert(error.message, () => {
       window.location.reload(); // Reload the page on OK
@@ -136,10 +81,7 @@ export default function DepositTransactionListview() {
   };
 
     return (
-        <div>
-        {/* Loading state */}
-        {loading && <p>Loading...</p>}
-  
+        <div>  
         {/* Original page */}
         {!loading && !error && (
     
@@ -149,11 +91,13 @@ export default function DepositTransactionListview() {
             </h3>
             {depositTransactionsList && Array.isArray(depositTransactionsList) && depositTransactionsList.map((depositTransaction) => (
                 <DepositCard
+                    deposit_id = {depositTransaction._id}
                     user_name= {depositTransaction.user_name}
                     client_id= {depositTransaction.client_id}
                     amount= {depositTransaction.amount}
                     date_created= {depositTransaction.date_created}
                     role= {depositTransaction.role}
+                    onClick={onClick}
                 />
             ))}
         </div>
