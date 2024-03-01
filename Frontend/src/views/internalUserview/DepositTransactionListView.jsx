@@ -1,10 +1,9 @@
-import {FcCurrencyExchange} from "react-icons/fc";
-import {Logo} from "../../components/shared/Logo";
 import React, {useState, useEffect} from "react";
 import axios from "axios";
-import { RiLoginCircleFill } from "react-icons/ri";
-import { Link, useNavigate } from "react-router-dom";
-import Cookies from "js-cookie"; 
+import {Link, useNavigate} from "react-router-dom";
+import Cookies from "js-cookie";
+import DepositCard from "../../components/shared/admin/DepositCard"; // Import the Cookies library
+
 
 export default function DepositTransactionListview() {
   const [depositTransactionsList, setDepositTransactionsData] = useState(null);
@@ -81,41 +80,27 @@ export default function DepositTransactionListview() {
     }
   };
 
-  return (
-    <div>
-      {/* Loading state */}
-      {loading && <p>Loading...</p>}
-
-      {/* Original page */}
-      {!loading && !error && (
-        <div className="w-full lg:w-[40%] max-w-md block p-6 rounded shadow-lg shadow-black/20 bg-slate-50 mx-auto">
-          <Logo />
-          <h3 className="flex justify-center items-center text-2xl text-blue-800 font-bold text-center p-2 my-4 rounded shadow bg-blue-200 border-x-4 border-blue-800 select-none">
-            <FcCurrencyExchange className="mr-1" size={45} />
-            <span>Deposit Transactions to Review</span>
-          </h3>
-
-          {depositTransactionsList && Array.isArray(depositTransactionsList) && depositTransactionsList.map((depositTransaction) => (
-            <div key={depositTransaction.client_id}>
-              <p>
-                User name: {depositTransaction.user_name}
-              </p>
-              <p>
-                User account no: {depositTransaction.client_id}
-              </p>
-              <p>
-                Amount: {depositTransaction.amount}
-              </p>
-              <button onClick={() => handleAction(depositTransaction._id, true)} disabled={loading}>
-                Approve
-              </button> 
-              <button onClick={() => handleAction(depositTransaction._id, false)} disabled={loading}>
-                Reject
-              </button>
-              <p><br></br></p>
-            </div>
-          ))}
-        </div>
+    return (
+        <div>
+        {/* Loading state */}
+        {loading && <p>Loading...</p>}
+  
+        {/* Original page */}
+        {!loading && !error && ( 
+        <div className="w-full max-w block p-6 rounded shadow-lg shadow-black/20 bg-gray-800 mx-auto">
+            <h3 className="flex justify-center items-center text-2xl text-blue-600 font-bold text-center p-2 my-4 rounded shadow bg-blue-200 border-x-4 select-none">
+                <span>Deposit Transactions to Review</span>
+            </h3>
+            {depositTransactionsList && depositTransactionsList.map((depositTransaction) => (
+                <DepositCard
+                    user_name= {depositTransaction.user_name}
+                    client_id= {depositTransaction.client_id}
+                    amount= {depositTransaction.amount}
+                    date_created= {depositTransaction.date_created}
+                    role= {depositTransaction.role}
+                />
+            ))}
+          </div>
       )}
     </div>
   );
