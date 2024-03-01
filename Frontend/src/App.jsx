@@ -21,6 +21,8 @@ import MyProfilePage from "./views/userView/MyProfilePage";
 import DepositPage from "./views/userView/DepositPage";
 import WithdrawalPage from "./views/userView/WithdrawalPage";
 import DepositHistory from "./views/userView/DepositHistory";
+import WithdrawalHistory from "./views/userView/WithdrawHistory";
+import LogoutPage from "./views/userView/LogoutPage";
 
 
 function App() {
@@ -93,6 +95,18 @@ function App() {
                         <DepositHistory></DepositHistory>
                     </ExternalUserDashboard>
                 }/>
+
+            <Route exact path="/withdrawhistory" element={
+                                <ExternalUserDashboard>
+                                    <WithdrawalHistory></WithdrawalHistory>
+                                </ExternalUserDashboard>
+                            }/>
+
+<Route exact path="/logout" element={
+                                <ExternalUserDashboard>
+                                    <LogoutPage></LogoutPage>
+                                </ExternalUserDashboard>
+                            }/>
                 {paths.map((stringPath) => (
                     <Route
                         key={"Home"}

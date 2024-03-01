@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import Cookies from 'js-cookie';
 
 const DepositPage = () => {
     const [depositAmount, setDepositAmount] = useState('');
@@ -22,12 +23,23 @@ const DepositPage = () => {
 
         try {
             // Make API request to validate password and deposit amount
-            const response = await axios.post('/api/deposit', { amount: depositAmount, password });
+            const role = Cookies.get('role')
+            const token = Cookies.get('token')
+
+            // Check if token exists
+            if (token) {
+                // Make API request to fetch deposit histor
+            const response = await axios.post('http://localhost:8080/customer/deposit', { amount: depositAmount, password },  
+              {headers: {
+                Authorization: `Bearer ${token}`, // Include token in the headers
+            }},
+
+            );
             if (response.data.success) {
                 setSuccessMessage('Deposit successful!');
             } else {
                 setErrorMessage('Incorrect password.');
-            }
+            }}
         } catch (error) {
             console.error('Error depositing amount:', error);
             setErrorMessage('An error occurred. Please try again later.');

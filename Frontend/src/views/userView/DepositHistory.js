@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import Cookies from 'js-cookie'; // Import Cookies
 
-const DepositHistory = () => {
+const DepositHistory = ({ role }) => { // Accept 'role' as a prop
     const [depositHistory, setDepositHistory] = useState([]);
     const [loading, setLoading] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
@@ -10,8 +11,17 @@ const DepositHistory = () => {
         setLoading(true);
         setErrorMessage('');
 
-        // Make API request to fetch deposit history
-        axios.get('http://localhost:8080/merchant/deposit')
+        const token = Cookies.get('token'); // Get token from cookies
+        const role = Cookies.get('role')
+
+        // Check if token exists
+        if (token) {
+            // Make API request to fetch deposit history
+            axios.get(`http://localhost:8080/${role}/deposit`, {
+                headers: {
+                    Authorization: `Bearer ${token}`, // Include token in the headers
+                },
+            })
             .then(response => {
                 setDepositHistory(response.data);
             })
@@ -22,12 +32,17 @@ const DepositHistory = () => {
             .finally(() => {
                 setLoading(false);
             });
-    }, []);
+        } else {
+            console.error('Token not found in cookies');
+            setLoading(false);
+        }
+    }, [role]); // Add 'role' to the dependency array
 
     return (
-        <div className="container mx-auto py-8">
-            <div className="max-w-md mx-auto bg-white rounded-lg overflow-hidden shadow-md">
-                <div className="p-6">
+       <div className="container mx-auto py-8">
+    <div className="max-w-xl mx-auto bg-white rounded-lg overflow-hidden shadow-md"> {/* Adjust max-w-xl to your desired width */}
+        <div className="p-2">
+
                     <h2 className="text-2xl font-semibold mb-4">Deposit History</h2>
                     {loading ? (
                         <p>Loading deposit history...</p>
@@ -39,7 +54,7 @@ const DepositHistory = () => {
                         <ul>
                             {depositHistory.map((deposit, index) => (
                                 <li key={index} className="mb-2">
-                                    <span className="font-bold">Amount:</span> {deposit.amount}, <span className="font-bold">Date:</span> {deposit.date}
+                                    <span className="font-bold">Amount:</span> {deposit.amount}, <span className="font-bold">Date:</span> {deposit.date_created}<span className="font-bold">Status:</span> {deposit.status}
                                 </li>
                             ))}
                         </ul>
