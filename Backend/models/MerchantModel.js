@@ -23,6 +23,27 @@ var merchantSchema = new mongoose.Schema({
         type: String,
         required: [true, "Please Type A Password!"],
     },
+    address: {
+        type:String,
+        required: [true, "Please enter your address!"],
+    },
+    phone_number: {
+        type: String,
+        required: [true, "Please enter your mobile number!"],
+        trim: true,
+        validate: {
+            validator: function(value) {
+                return /^\+?([1-9]{1}[0-9]{2}[-\s]\d{3}[-\s]\d{4})?$/.test(value);
+            },
+            message: 'Invalid mobile number format. Please enter a 10-digit number (optional +1 country code).'
+        }
+    },
+    dob: {
+        type: Date,
+        required: [true, "Please enter your date of birth."],
+        min: '1924-01-01',
+        max: '2006-12-31'
+    },
     balance:{
         type:Number,
         default:0,
