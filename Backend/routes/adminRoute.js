@@ -1,11 +1,12 @@
 const express = require("express");
-const {getUserWithdrawLogs,getWithdraws, authorizeWithdraw,getUserDepositLogs,getUserById,getUsers,getProfile,getDeposits,authorizeDeposit} = require("../controllers/admin/adminController");
+const {updateProfile,getUserWithdrawLogs,getWithdraws, authorizeWithdraw,getUserDepositLogs,getUserById,getUsers,getProfile,getDeposits,authorizeDeposit} = require("../controllers/admin/adminController");
 const {authAdminProtect} = require("../middlewares/adminMiddleware/authAdminMiddleware");
 
 const router = express.Router();
 
 router.route("/profile")
-    .get(authAdminProtect, getProfile);
+    .get(authAdminProtect, getProfile)
+    .put(authAdminProtect, updateProfile);
 
 router.route("/deposit")
     .get(authAdminProtect, getDeposits);
