@@ -41,7 +41,9 @@ const managerSchema = new mongoose.Schema(
         },
         dob: {
             type: Date,
-            required: [true, "Please enter your date of birth."]
+            required: [true, "Please enter your date of birth."],
+            min: '1924-01-01',
+            max: '2006-12-31'
         },
         employeeCount:{
             type: Number,
