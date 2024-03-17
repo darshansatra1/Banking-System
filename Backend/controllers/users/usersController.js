@@ -8,8 +8,8 @@ const {register} = require("./register");
 
 
 /**
- * @desc Create a user
- * @route POST /register
+ * @desc   Create a user
+ * @route  POST /register
  * @access public
  */
 const registerUser = asyncHandler(async (req,res)=>{
@@ -41,7 +41,7 @@ const registerUser = asyncHandler(async (req,res)=>{
  * @access public
  */
 const loginUser = asyncHandler(async (req, res) => {
-    if (!req.body.email || !req.body.password) {
+    if (!('email' in req.body) || !('password' in req.body)){
         return res.status(401).send("Invalid credentails");
     }
 
