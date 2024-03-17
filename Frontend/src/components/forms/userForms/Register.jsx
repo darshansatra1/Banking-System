@@ -55,7 +55,7 @@ export default function Register() {
               You are only a few steps away from completely revolutionizing your online banking journey.
             </p>
           </div>
-          <div className="relative mb-12 lg:mb-0">
+          <div  class="relative backdrop-blur-[25px] backdrop-saturate-[200%] block rounded-lg px-6 py-12  dark:bg-[hsla(0,0%,15%,0.9)] dark:shadow-black/20 md:px-12">
             {/* Form */}
             <form onSubmit={handleSubmit}>
               {/* Full Name */}
