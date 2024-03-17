@@ -20,6 +20,15 @@ const adminSchema = new mongoose.Schema(
                 message: 'Invalid email format'
             }
         },
+        address: {
+            type:String,
+            required: [true, "Please enter your address!"],
+        },
+        phone_number: {
+            type: String,
+            required: [true, "Please enter your mobile number!"],
+            trim: true,
+        },
         password: {
             type: String,
             required: [true, "Please Type A Strong Password!"],

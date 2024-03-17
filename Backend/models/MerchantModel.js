@@ -23,6 +23,15 @@ var merchantSchema = new mongoose.Schema({
         type: String,
         required: [true, "Please Type A Password!"],
     },
+    address: {
+        type:String,
+        required: [true, "Please enter your address!"],
+    },
+    phone_number: {
+        type: String,
+        required: [true, "Please enter your mobile number!"],
+        trim: true,
+    },
     balance:{
         type:Number,
         default:0,

@@ -21,7 +21,16 @@ var customerSchema = new mongoose.Schema({
     },
     password: {
         type: String,
-        required: [true, "Please Type A Password!"],
+        required: [true, "Please type A Password!"],
+    },
+    address: {
+        type:String,
+        required: [true, "Please enter your address!"],
+    },
+    phone_number: {
+        type: String,
+        required: [true, "Please enter your mobile number!"],
+        trim: true,
     },
     balance: {
         type: Number,
