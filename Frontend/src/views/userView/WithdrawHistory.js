@@ -46,11 +46,11 @@ const WithdrawalHistory = ({ role }) => { // Accept 'role' as a prop
                         <span>Withdrawal History</span>
                     </h3>
                     {loading ? (
-                        <p>Loading withdrawal history...</p>
+                        <p className="text-gray-100">Loading withdrawal history...</p>
                     ) : errorMessage ? (
                         <p className="text-red-500">{errorMessage}</p>
                     ) : withdrawalHistory.length === 0 ? (
-                        <p>No withdrawal history available.</p>
+                        <p className="text-gray-100">No withdrawal history available.</p>
                     ) : (
                         <ul>
                             {withdrawalHistory.map((withdrawal, index) => (

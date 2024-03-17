@@ -7,7 +7,7 @@ export default function Hero() {
     <section class="background-radial-gradient mb-40">
 
       <nav
-        class="relative flex w-full items-center justify-between bg-white py-2 shadow-sm shadow-neutral-700/10 dark:bg-neutral-800 dark:shadow-black/30 lg:flex-wrap lg:justify-start"
+        class="relative flex w-full items-center justify-between bg-neutral-800 py-2 shadow-sm shadow-black/30 dark:bg-neutral-800 dark:shadow-black/30 lg:flex-wrap lg:justify-start"
         data-te-navbar-ref>
         <div class="flex w-full flex-wrap items-center justify-between px-6">
           <div class="flex items-center">

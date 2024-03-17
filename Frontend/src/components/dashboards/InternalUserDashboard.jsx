@@ -29,7 +29,7 @@ import Footer from "../../components/home/components/layout/Footer";
   return (
     <>
     <nav
-        class="relative flex w-full items-center justify-between bg-white py-2 shadow-sm shadow-neutral-700/10 dark:bg-neutral-800 dark:shadow-black/30 lg:flex-wrap lg:justify-start"
+        class="relative flex w-full items-center justify-between bg-neutral-800 py-2 shadow-sm shadow-black/30 dark:bg-neutral-800 dark:shadow-black/30 lg:flex-wrap lg:justify-start"
         data-te-navbar-ref>
         <div class="flex w-full flex-wrap items-center justify-between px-6">
           <div class="flex items-center">
@@ -58,7 +58,7 @@ import Footer from "../../components/home/components/layout/Footer";
       </nav>
     <div className="flex">
       {/* Sidebar */}
-      <div className="h-screen bg-white py-2 shadow-sm shadow-neutral-700/10 dark:bg-neutral-800 dark:shadow-black/30 text-white w-64">
+      <div className="h-screen bg-neutral-800 py-2 shadow-sm shadow-black/30 dark:bg-neutral-800 dark:shadow-black/30 text-white w-64">
         <nav className="mt-10">
         {isEmployeeOrManager && (
           <Link to="/profile" className="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700">Profile</Link>

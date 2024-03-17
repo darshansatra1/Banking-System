@@ -17,7 +17,7 @@ const DepositCard = ({deposit_id, user_name, client_id,amount, date_created,role
             <div className="pb-3 sm:pb-4">
                 <div className="flex items-center space-x-4 rtl:space-x-reverse">
                     <div className="flex-1 min-w-0">
-                        <p className="text-sm font-medium text-gray-900 truncate dark:text-white">
+                        <p className="text-sm font-medium text-gray-100 truncate dark:text-white">
                             {user_name}
                         </p>
                     </div>
