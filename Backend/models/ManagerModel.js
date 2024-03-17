@@ -32,6 +32,12 @@ const managerSchema = new mongoose.Schema(
             type: String,
             required: [true, "Please enter your mobile number!"],
             trim: true,
+            validate: {
+                validator: function(value) {
+                    return /^\+?([1-9]{1}[0-9]{2}[-\s]\d{3}[-\s]\d{4})?$/.test(value);
+                },
+                message: 'Invalid mobile number format. Please enter a 10-digit number (optional +1 country code).'
+            }
         },
         employeeCount:{
             type: Number,
