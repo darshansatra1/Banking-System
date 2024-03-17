@@ -38,6 +38,10 @@ var customerSchema = new mongoose.Schema({
             message: 'Invalid mobile number format. Please enter a 10-digit number (optional +1 country code).'
         }
     },
+    dob: {
+        type: Date,
+        required: [true, "Please enter your date of birth."]
+    },
     balance: {
         type: Number,
         default: 0,
