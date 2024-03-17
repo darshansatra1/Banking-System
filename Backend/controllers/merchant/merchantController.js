@@ -21,6 +21,9 @@ const getProfile = asyncHandler(async (req,res)=>{
             user_name: merchant.user_name,
             email: merchant.email,
             balance: merchant.balance,
+            address: merchant.address,
+            phone_number: merchant.phone_number,
+            dob: merchant.dob,
             date_created: merchant.createdAt,
             supervisor: employee.user_name,
         });
@@ -28,6 +31,47 @@ const getProfile = asyncHandler(async (req,res)=>{
         return res.status(500).send("Ooops!! Something Went Wrong, Try again...");
     }
 });
+
+/**
+ * @desc Update merchant
+ * @route PUT /profile
+ * @access private(MERCHANT)
+ */
+const updateProfile = asyncHandler(async (req,res)=>{
+    const merchant = req.merchant;
+
+    try{
+
+        if('address' in req.body){
+            merchant.address = req.body.address;
+        }
+        if('phone_number' in req.body){
+            merchant.phone_number = req.body.phone_number;
+        }
+        if('dob' in req.body){
+            merchant.dob = req.body.dob;
+        }
+        await merchant.save();
+        const employee = await Employee.findById(merchant.supervisor);
+
+        return res.json({
+            _uid: merchant._id,
+            user_name: merchant.user_name,
+            email: merchant.email,
+            balance: merchant.balance,
+            address: merchant.address,
+            phone_number: merchant.phone_number,
+            dob: merchant.dob,
+            date_created: merchant.createdAt,
+            supervisor: employee.user_name,
+        });
+    }catch(error){
+        if (error.message.match(/(email|password|name|phone|addresee|dob|date)/gi))
+            return res.status(400).send(error.message);
+        return res.status(500).send("Ooops!! Something Went Wrong, Try again...");
+    }
+});
+
 
 /**
  * @desc   Deposit money
@@ -171,6 +215,7 @@ const getWithdraws = asyncHandler(async (req,res)=>{
 
 module.exports = {
     getProfile,
+    updateProfile,
     deposit,
     getDeposits,
     withdraw,

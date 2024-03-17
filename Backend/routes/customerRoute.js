@@ -1,11 +1,12 @@
 const express = require("express");
-const {getWithdraws,withdraw,getProfile,deposit,getDeposits} = require("../controllers/customer/customerController");
+const {updateProfile,getWithdraws,withdraw,getProfile,deposit,getDeposits} = require("../controllers/customer/customerController");
 const {authCustomerProtect,checkPassword} = require("../middlewares/customerMiddleware/authCustomerMiddleware");
 
 const router = express.Router();
 
 router.route("/profile")
-    .get(authCustomerProtect, getProfile);
+    .get(authCustomerProtect, getProfile)
+    .put(authCustomerProtect, updateProfile);
 
 router.route("/deposit")
     .post(authCustomerProtect,deposit)

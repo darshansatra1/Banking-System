@@ -23,9 +23,50 @@ const getProfile = asyncHandler(async (req,res)=>{
             _uid: employee._id,
             user_name: employee.user_name,
             email: employee.email,
+            address: employee.address,
+            phone_number: employee.phone_number,
+            dob: employee.dob,
             supervisor: manager.user_name,
         });
     }catch(error){
+        return res.status(500).send("Ooops!! Something Went Wrong, Try again...");
+    }
+});
+
+/**
+ * @desc Update employee
+ * @route PUT /profile
+ * @access private(EMPLOYEE)
+ */
+const updateProfile = asyncHandler(async (req,res)=>{
+    const employee = req.employee;
+
+    try{
+        if('address' in req.body){
+            employee.address = req.body.address;
+        }
+        if('phone_number' in req.body){
+            employee.phone_number = req.body.phone_number;
+        }
+        if('dob' in req.body){
+            employee.dob = req.body.dob;
+        }
+        await employee.save();
+
+        const manager = await Manager.findById(employee.supervisor);
+
+        return res.json({
+            _uid: employee._id,
+            user_name: employee.user_name,
+            email: employee.email,
+            address: employee.address,
+            phone_number: employee.phone_number,
+            dob: employee.dob,
+            supervisor: manager.user_name,
+        });
+    }catch(error){
+        if (error.message.match(/(email|password|name|phone|addresee|dob|date)/gi))
+            return res.status(400).send(error.message);
         return res.status(500).send("Ooops!! Something Went Wrong, Try again...");
     }
 });
@@ -491,6 +532,7 @@ const getUserById = asyncHandler(async(req,res)=>{
 
 module.exports = {
     getProfile,
+    updateProfile,
     getDeposits,
     authorizeDeposit,
     getWithdraws,

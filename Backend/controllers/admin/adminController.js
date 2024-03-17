@@ -23,6 +23,43 @@ const getProfile = asyncHandler(async (req,res)=>{
             _uid: admin._id,
             user_name: admin.user_name,
             email: admin.email,
+            address: admin.address,
+            phone_number: admin.phone_number,
+            dob: admin.dob,
+        });
+    }catch(error){
+        return res.status(500).send("Ooops!! Something Went Wrong, Try again...");
+    }
+});
+
+
+/**
+ * @desc Update admin
+ * @route PUT /profile
+ * @access private(ADMIN)
+ */
+const updateProfile = asyncHandler(async (req,res)=>{
+    const admin = req.admin;
+
+    try{
+        if('address' in req.body){
+            admin.address = req.body.address;
+        }
+        if('phone_number' in req.body){
+            admin.phone_number = req.body.phone_number;
+        }
+        if('dob' in req.body){
+            admin.dob = req.body.dob;
+        }
+        await admin.save();
+
+        return res.json({
+            _uid: admin._id,
+            user_name: admin.user_name,
+            email: admin.email,
+            address: admin.address,
+            phone_number: admin.phone_number,
+            dob: admin.dob,
         });
     }catch(error){
         return res.status(500).send("Ooops!! Something Went Wrong, Try again...");
@@ -451,6 +488,7 @@ const getUserWithdrawLogs = asyncHandler(async(req,res)=>{
 
 module.exports = {
     getProfile,
+    updateProfile,
     getDeposits,
     authorizeDeposit,
     getWithdraws,
