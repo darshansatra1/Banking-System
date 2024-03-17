@@ -13,7 +13,7 @@ const {register} = require("./register");
  * @access public
  */
 const registerUser = asyncHandler(async (req,res)=>{
-    if (!req.body.email || !req.body.password || !req.body.user_name || !req.body.role) {
+    if(!('email' in req.body) || !('password' in req.body) || !('user_name' in req.body) || !('role' in req.body) || !('address' in req.body) || !('phone_number' in req.body) || !('dob' in req.body)){
         return res.status(400).send("Invalid credentials");
     }
 
