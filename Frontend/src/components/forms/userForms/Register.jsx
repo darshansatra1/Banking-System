@@ -3,9 +3,11 @@ import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 
 export default function Register() {
+
+
   const [formInputs, setFormInputs] = useState({
     user_name: "",
-    address: "", // Combined address field
+    address: "",
     user_number: "",
     password: "",
     email: "",
