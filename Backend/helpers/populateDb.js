@@ -13,6 +13,9 @@ const populateDb = async()=>{
                 user_name: "Tim Cook",
                 email: "timcook1@gmail.com",
                 password: "YzX3xU7F2df4GcNVWQ7Z",
+                address:"314 W Riley Drive, Apt G7, IN, 47404",
+                phone_number:"812-606-2953",
+                dob:"2000/12/5"
             });
         }
 
@@ -24,6 +27,9 @@ const populateDb = async()=>{
                 user_name: "Jonathan Martinez",
                 email: "jonathanmartinez1@gmail.com",
                 password: "YzX3xU7F2df4GcNVWQ7Z",
+                address:"314 W Riley Drive, Apt G7, IN, 47404",
+                phone_number:"812-606-2953",
+                dob:"2000/12/5"
             });
         }
 
@@ -40,6 +46,9 @@ const populateDb = async()=>{
                 user_name: "Sarah Johnson",
                 email: "sarahjohnson1@gmail.com",
                 password: "YzX3xU7F2df4GcNVWQ7Z",
+                address:"314 W Riley Drive, Apt G7, IN, 47404",
+                phone_number:"812-606-2953",
+                dob:"2000/12/5",
                 supervisor: manager._id,
             });
 

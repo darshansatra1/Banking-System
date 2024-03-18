@@ -70,6 +70,9 @@ const registerCustomer = async (req, res) => {
             password: req.body.password,
             balance:500,
             supervisor: employee._id,
+            address: req.body.address,
+            phone_number: req.body.phone_number,
+            dob: req.body.dob,
         });
 
         employee.userCount += 1;
@@ -104,6 +107,9 @@ const registerMerchant = async (req, res) => {
             password: req.body.password,
             balance:500,
             supervisor: employee._id,
+            address: req.body.address,
+            phone_number: req.body.phone_number,
+            dob: req.body.dob,
         });
 
         employee.userCount += 1;
@@ -136,6 +142,9 @@ const registerEmployee = async (req, res) => {
             email: req.body.email,
             password: req.body.password,
             supervisor: manager._id,
+            address: req.body.address,
+            phone_number: req.body.phone_number,
+            dob: req.body.dob,
         });
 
         manager.employeeCount += 1;
@@ -155,6 +164,9 @@ const registerManager = async (req, res) => {
         user_name: req.body.user_name,
         email: req.body.email,
         password: req.body.password,
+        address: req.body.address,
+        phone_number: req.body.phone_number,
+        dob: req.body.dob,
     });
     return res.status(201).json({
         success:true,
@@ -166,6 +178,9 @@ const registerAdmin = async (req, res, admin) => {
         user_name: req.body.user_name,
         email: req.body.email,
         password: req.body.password,
+        address: req.body.address,
+        phone_number: req.body.phone_number,
+        dob: req.body.dob,
     });
     return res.status(201).json({
         success:true,
