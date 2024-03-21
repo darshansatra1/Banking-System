@@ -2,6 +2,10 @@ import React, { useState } from "react";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
+
+
 export default function Register() {
 
 
@@ -12,6 +16,7 @@ export default function Register() {
     password: "",
     email: "",
     role: "customer",
+    date_of_birth: "",
   });
 
   const [error, setError] = useState("");
@@ -42,6 +47,8 @@ export default function Register() {
     const isValid = /^\d{0,10}$/.test(value); // Allow maximum 10 digits
     return isValid;
   };
+
+  const [selectedDate, setSelectedDate] = useState(null)
 
   return (
     <div className="px-6 py-12 text-center md:px-12 lg:py-24 lg:text-left">
@@ -146,6 +153,24 @@ export default function Register() {
                 </label>
               </div>
 
+              {/* DOB */}
+              <div className="relative z-1 w-full mb-6">
+              <label htmlFor="role" className="block">
+                  <span className="block text-sm font-medium text-slate-100">Date of birth</span>
+                    <DatePicker
+                      className="py-2 px-2 ps-2 z-50 block w-full border-gray-100 shadow-sm rounded-lg text-sm focus:z-10 focus:border-slate-300 focus:ring-slate-300 disabled:opacity-50 disabled:pointer-events-none dark:bg-slate-300 dark:border-gray-300 dark:text-gray-900 dark:focus:ring-gray-300"
+                    // It accepts the inputs but in following 2 lines, make changes to the logic in order for it to be
+                    // accepted alongwith the form inputs. 
+                      selected={selectedDate}
+                      onChange={date => setSelectedDate(date)}
+                      filterDate={date => date.getDay() != 5}
+                      showYearDropdown
+                      scrollableMonthYearDropdown
+                      placeholder="MM/DD/YYYY"
+                    />
+              </label>
+              </div>
+
               {/* Role selection */}
               <div className="relative z-0 w-full mb-6">
                 <label htmlFor="role" className="block">
@@ -163,6 +188,7 @@ export default function Register() {
                   </select>
                 </label>
               </div>
+
 
               {error && <div className="mt-2 text-pink-600 text-sm">{error}</div>}
 
