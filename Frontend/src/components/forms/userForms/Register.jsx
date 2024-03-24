@@ -12,11 +12,11 @@ export default function Register() {
   const [formInputs, setFormInputs] = useState({
     user_name: "",
     address: "",
-    user_number: "",
+    phone_number: "",
     password: "",
     email: "",
     role: "customer",
-    date_of_birth: "",
+    dob: "",
   });
 
   const [error, setError] = useState("");
@@ -48,7 +48,6 @@ export default function Register() {
     return isValid;
   };
 
-  const [selectedDate, setSelectedDate] = useState(null)
 
   return (
     <div className="px-6 py-12 text-center md:px-12 lg:py-24 lg:text-left">
@@ -122,11 +121,11 @@ export default function Register() {
                   <input
                     type="tel"
                     name="user_number"
-                    value={formInputs.user_number}
+                    value={formInputs.phone_number}
                     onChange={(e) => {
                       const value = e.target.value;
                       if (validateMobileNumber(value)) {
-                        setFormInputs({ ...formInputs, user_number: value });
+                        setFormInputs({ ...formInputs, phone_number: value });
                       }
                     }}
                     pattern="[0-9]*"
@@ -161,9 +160,9 @@ export default function Register() {
                       className="py-2 px-2 ps-2 z-50 block w-full border-gray-100 shadow-sm rounded-lg text-sm focus:z-10 focus:border-slate-300 focus:ring-slate-300 disabled:opacity-50 disabled:pointer-events-none dark:bg-slate-300 dark:border-gray-300 dark:text-gray-900 dark:focus:ring-gray-300"
                     // It accepts the inputs but in following 2 lines, make changes to the logic in order for it to be
                     // accepted alongwith the form inputs. 
-                      selected={selectedDate}
-                      onChange={date => setSelectedDate(date)}
-                      filterDate={date => date.getDay() != 5}
+                      selected={formInputs.dob}
+                      onChange={date => setFormInputs({ ...formInputs, dob: date })}
+                      // filterDate={date => date.getDay() != 5}
                       showYearDropdown
                       scrollableMonthYearDropdown
                       placeholder="MM/DD/YYYY"

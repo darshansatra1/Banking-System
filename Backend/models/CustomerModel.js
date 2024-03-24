@@ -33,7 +33,7 @@ var customerSchema = new mongoose.Schema({
         trim: true,
         validate: {
             validator: function(value) {
-                return /^\+?([1-9]{1}[0-9]{2}[-\s]\d{3}[-\s]\d{4})?$/.test(value);
+                return /^\+?([1-9]{1}[0-9]{2}\d{3}\d{4})?$/.test(value);
             },
             message: 'Invalid mobile number format. Please enter a 10-digit number (optional +1 country code).'
         }
