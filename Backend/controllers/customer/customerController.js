@@ -217,8 +217,11 @@ const withdraw = asyncHandler(async (req,res)=>{
     if(!('amount' in req.body)){
         return res.status(400).send("Amount is required");
     }
+    if(!('otp' in req.body)){
+        return res.status(400).send("OTP is required");
+    }
 
-    const {amount} = req.body;
+    const {amount,otp} = req.body;
     const customer = req.customer;
 
     try{
@@ -229,15 +232,31 @@ const withdraw = asyncHandler(async (req,res)=>{
             return res.status(400).send("You don't have enough balance for the withdrawal");
         }
 
-        const withdraw = await Withdraw.create({
-            fromCustomer: customer._id,
-            status:"waiting",
-            amount: amount,
+        const verifiedOtp = await Otp.findOne({
+            customerUserId: customer._id,
+            code: otp,
+            expiresAt: {
+                $gt: Date.now()
+            }
         });
 
-        return res.status(201).json({
-            success: true,
-        });
+        if(verifiedOtp){
+            await Otp.deleteOne({_id: verifiedOtp._id});
+
+            const withdraw = await Withdraw.create({
+                fromCustomer: customer._id,
+                status:"waiting",
+                amount: amount,
+            });
+
+            return res.status(201).json({
+                success: true,
+            });
+        }else{
+            return res.status(401).json({
+                message:"Invalid OTP"
+            });
+        }
     }catch(error){
         if (error.message.match(/(Balance|Account|validation|deposit)/gi))
             return res.status(400).send(error.message);
