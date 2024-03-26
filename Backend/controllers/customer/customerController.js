@@ -2,7 +2,11 @@ const Customer = require("../../models/CustomerModel");
 const Deposit = require("../../models/DepositModel");
 const Withdraw = require("../../models/WithdrawModel");
 const Employee = require("../../models/EmployeeModel");
+const Otp = require("../../models/OtpModel");
+const transporter = require("../../config/mailer");
+
 const asyncHandler = require("express-async-handler");
+const nodemailer = require("nodemailer");
 
 
 /**
@@ -81,8 +85,11 @@ const deposit = asyncHandler(async (req,res)=>{
     if(!('amount' in req.body)){
         return res.status(400).send("Amount is required");
     }
+    if(!('otp' in req.body)){
+        return res.status(400).send("OTP is required");
+    }
 
-    const {amount} = req.body;
+    const {amount,otp} = req.body;
     const customer = req.customer;
 
     try{
@@ -90,14 +97,73 @@ const deposit = asyncHandler(async (req,res)=>{
             return res.status(400).send("You can not deposit amount less than 1$")
         }
 
-        const deposit = await Deposit.create({
-            toCustomer: customer._id,
-            status:"waiting",
-            amount: amount,
+        const verifiedOtp = await Otp.findOne({
+            customerUserId: customer._id,
+            code: otp,
+            expiresAt: {
+                $gt: Date.now()
+            }
         });
 
-        return res.status(201).json({
-            success: true,
+        if(verifiedOtp){
+            await Otp.deleteOne({_id: verifiedOtp._id});
+            const deposit = await Deposit.create({
+                toCustomer: customer._id,
+                status:"waiting",
+                amount: amount,
+            });
+
+            return res.status(201).json({
+                success:true
+            })
+        }else{
+            return res.status(401).json({
+                message:"Invalid OTP"
+            });
+        }
+    }catch(error){
+        if (error.message.match(/(Balance|Account|validation|deposit)/gi))
+            return res.status(400).send(error.message);
+        res.status(500).send("Ooops!! Something Went Wrong, Try again...");
+    }
+});
+
+
+/**
+ * @desc   Get OTP
+ * @route  GET  /otp
+ * @access private(CUSTOMER)
+ */
+const getOtp = asyncHandler(async (req,res)=>{
+    const customer = req.customer;
+
+    try{
+
+        const otp = Math.floor(Math.random() * 1000000).toString().padStart(6, '0');
+        const mailOptions = {
+            from: 'sbs@gmail.com',
+            to: customer.email,
+            subject: 'Your OTP for SBS',
+            text: `Your OTP is ${otp}`,
+        };
+
+        const existingOTp = await Otp.findOne({
+            customerUserId: customer._id
+        }).sort({createdAt: -1});
+
+        if(existingOTp && existingOTp.expiresAt > Date.now()){
+            return res.status(201).json({
+                message:"An OTP is already active, you can use that to authenticate"
+            })
+        }
+
+        const newOtp = new Otp({customerUserId: customer._id,code:otp,expiresAt: Date.now() + 60*2*1000}); // Expires in 2 minutes
+        await newOtp.save();
+
+        await transporter.sendMail(mailOptions);
+
+        return res.status(200).json({
+            message:'OTP sent succesfully'
         });
     }catch(error){
         if (error.message.match(/(Balance|Account|validation|deposit)/gi))
@@ -105,6 +171,8 @@ const deposit = asyncHandler(async (req,res)=>{
         res.status(500).send("Ooops!! Something Went Wrong, Try again...");
     }
 });
+
+
 
 /**
  * @desc   Get all deposits
@@ -215,6 +283,7 @@ module.exports = {
     getProfile,
     updateProfile,
     deposit,
+    getOtp,
     getDeposits,
     withdraw,
     getWithdraws
