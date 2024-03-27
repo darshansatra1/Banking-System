@@ -1,5 +1,5 @@
 const express = require("express");
-const {updateProfile,getWithdraws,withdraw,getProfile, deposit,getDeposits} = require("../controllers/merchant/merchantController");
+const {getOtp,updateProfile,getWithdraws,withdraw,getProfile, deposit,getDeposits} = require("../controllers/merchant/merchantController");
 const {authMerchantProtect, checkPassword} = require("../middlewares/merchantMiddleware/authMerchantMiddleware");
 
 const router = express.Router();
@@ -11,6 +11,9 @@ router.route("/profile")
 router.route("/deposit")
     .post(authMerchantProtect, deposit)
     .get(authMerchantProtect, getDeposits);
+
+router.route("/otp")
+    .get(authMerchantProtect, getOtp);
 
 router.route("/withdraw")
     .post(authMerchantProtect, withdraw)
