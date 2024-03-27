@@ -14,7 +14,7 @@ const populateDb = async()=>{
                 email: "timcook1@gmail.com",
                 password: "YzX3xU7F2df4GcNVWQ7Z",
                 address:"314 W Riley Drive, Apt G7, IN, 47404",
-                phone_number:"812-606-2953",
+                phone_number:"8126062953",
                 dob:"2000/12/5"
             });
         }
@@ -28,7 +28,7 @@ const populateDb = async()=>{
                 email: "jonathanmartinez1@gmail.com",
                 password: "YzX3xU7F2df4GcNVWQ7Z",
                 address:"314 W Riley Drive, Apt G7, IN, 47404",
-                phone_number:"812-606-2953",
+                phone_number:"8126062953",
                 dob:"2000/12/5"
             });
         }
@@ -47,7 +47,7 @@ const populateDb = async()=>{
                 email: "sarahjohnson1@gmail.com",
                 password: "YzX3xU7F2df4GcNVWQ7Z",
                 address:"314 W Riley Drive, Apt G7, IN, 47404",
-                phone_number:"812-606-2953",
+                phone_number:"8126062953",
                 dob:"2000/12/5",
                 supervisor: manager._id,
             });
