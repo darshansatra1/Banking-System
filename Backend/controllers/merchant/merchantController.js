@@ -5,6 +5,8 @@ const { generateUserToken } = require("../../helpers/generateUserToken");
 const validator = require("validator");
 const Employee = require("../../models/EmployeeModel");
 const Withdraw = require("../../models/WithdrawModel");
+const transporter = require("../../config/mailer");
+const Otp = require("../../models/OtpModel");
 
 /**
  * @desc Get merchant
@@ -72,6 +74,48 @@ const updateProfile = asyncHandler(async (req,res)=>{
     }
 });
 
+/**
+ * @desc   Get OTP
+ * @route  GET /otp
+ * @access private(MERCHANT)
+ */
+const getOtp = asyncHandler(async (req,res)=>{
+    const merchant = req.merchant;
+
+    try{
+        const otp = Math.floor(Math.random() * 1000000).toString().padStart(6, '0');
+        const mailOptions = {
+            from: 'sbs@gmail.com',
+            to: merchant.email,
+            subject: 'Your OTP for SBS',
+            text: `Your OTP is ${otp}`,
+        };
+
+        const existingOTp = await Otp.findOne({
+            merchantUserId: merchant._id
+        }).sort({createdAt: -1});
+
+        if(existingOTp && existingOTp.expiresAt > Date.now()){
+            return res.status(201).json({
+                message:"An OTP is already active, you can use that to authenticate"
+            })
+        }
+
+        const newOtp = new Otp({merchantUserId: merchant._id,code:otp,expiresAt: Date.now() + 60*2*1000}); // Expires in 2 minutes
+        await newOtp.save();
+
+        await transporter.sendMail(mailOptions);
+
+        return res.status(200).json({
+            message:'OTP sent succesfully'
+        });
+    }catch(error){
+        if (error.message.match(/(Balance|Account|validation|deposit)/gi))
+            return res.status(400).send(error.message);
+        res.status(500).send("Ooops!! Something Went Wrong, Try again...");
+    }
+});
+
 
 /**
  * @desc   Deposit money
@@ -82,8 +126,11 @@ const deposit = asyncHandler(async (req,res)=>{
     if(!('amount' in req.body)){
         return res.status(400).send("Amount is required");
     }
+    if(!('otp' in req.body)){
+        return res.status(400).send("OTP is required");
+    }
 
-    const {amount} = req.body;
+    const {amount,otp} = req.body;
     const merchant = req.merchant;
 
     try{
@@ -91,15 +138,29 @@ const deposit = asyncHandler(async (req,res)=>{
             return res.status(400).send("You can not deposit amount less than 1$")
         }
 
-        const deposit = await Deposit.create({
-            toMerchant: merchant._id,
-            status:"waiting",
-            amount: amount,
+        const verifiedOtp = await Otp.findOne({
+            merchantUserId: merchant._id,
+            code: otp,
+            expiresAt: {
+                $gt: Date.now()
+            }
         });
 
-        return res.status(201).json({
-            success: true,
-        });
+        if(verifiedOtp){
+            await Otp.deleteOne({_id: verifiedOtp._id});
+            const deposit = await Deposit.create({
+                toMerchant: merchant._id,
+                status:"waiting",
+                amount: amount,
+            });
+            return res.status(201).json({
+                success: true,
+            })
+        }else{
+            return res.status(401).json({
+                message:"Invalid OTP"
+            });
+        }
     }catch(error){
         if (error.message.match(/(Balance|Account|validation|deposit)/gi))
             return res.status(400).send(error.message);
@@ -150,8 +211,11 @@ const withdraw = asyncHandler(async (req,res)=>{
     if(!('amount' in req.body)){
         return res.status(400).send("Amount is required");
     }
+    if(!('otp' in req.body)){
+        return res.status(400).send("OTP is required");
+    }
 
-    const {amount} = req.body;
+    const {amount,otp} = req.body;
     const merchant = req.merchant;
 
     try{
@@ -159,19 +223,33 @@ const withdraw = asyncHandler(async (req,res)=>{
             return res.status(400).send("You can not withdraw amount less than 1$")
         }
 
-        if(amount>customer.balance){
+        if(amount>merchant.balance){
             return res.status(400).send("You don't have enough balance for the withdrawal");
         }
 
-        const withdraw = await Withdraw.create({
-            fromMerchant: merchant._id,
-            status:"waiting",
-            amount: amount,
+        const verifiedOtp = await Otp.findOne({
+            merchantUserId: merchant._id,
+            code: otp,
+            expiresAt: {
+                $gt: Date.now()
+            }
         });
 
-        return res.status(201).json({
-            success: true,
-        });
+        if(verifiedOtp){
+            await Otp.deleteOne({_id: verifiedOtp._id});
+            const withdraw = await Withdraw.create({
+                fromMerchant: merchant._id,
+                status:"waiting",
+                amount: amount,
+            });
+            return res.status(201).json({
+                success: true,
+            });
+        }else{
+            return res.status(401).json({
+                message:"Invalid OTP"
+            });
+        }
     }catch(error){
         if (error.message.match(/(Balance|Account|validation|deposit)/gi))
             return res.status(400).send(error.message);
@@ -216,6 +294,7 @@ const getWithdraws = asyncHandler(async (req,res)=>{
 module.exports = {
     getProfile,
     updateProfile,
+    getOtp,
     deposit,
     getDeposits,
     withdraw,

@@ -76,6 +76,50 @@ const updateProfile = asyncHandler(async (req,res)=>{
     }
 });
 
+
+/**
+ * @desc   Get OTP
+ * @route  GET  /otp
+ * @access private(CUSTOMER)
+ */
+const getOtp = asyncHandler(async (req,res)=>{
+    const customer = req.customer;
+
+    try{
+
+        const otp = Math.floor(Math.random() * 1000000).toString().padStart(6, '0');
+        const mailOptions = {
+            from: 'sbs@gmail.com',
+            to: customer.email,
+            subject: 'Your OTP for SBS',
+            text: `Your OTP is ${otp}`,
+        };
+
+        const existingOTp = await Otp.findOne({
+            customerUserId: customer._id
+        }).sort({createdAt: -1});
+
+        if(existingOTp && existingOTp.expiresAt > Date.now()){
+            return res.status(201).json({
+                message:"An OTP is already active, you can use that to authenticate"
+            })
+        }
+
+        const newOtp = new Otp({customerUserId: customer._id,code:otp,expiresAt: Date.now() + 60*2*1000}); // Expires in 2 minutes
+        await newOtp.save();
+
+        await transporter.sendMail(mailOptions);
+
+        return res.status(200).json({
+            message:'OTP sent succesfully'
+        });
+    }catch(error){
+        if (error.message.match(/(Balance|Account|validation|deposit)/gi))
+            return res.status(400).send(error.message);
+        res.status(500).send("Ooops!! Something Went Wrong, Try again...");
+    }
+});
+
 /**
  * @desc   Deposit money
  * @route  POST  /deposit
@@ -127,51 +171,6 @@ const deposit = asyncHandler(async (req,res)=>{
         res.status(500).send("Ooops!! Something Went Wrong, Try again...");
     }
 });
-
-
-/**
- * @desc   Get OTP
- * @route  GET  /otp
- * @access private(CUSTOMER)
- */
-const getOtp = asyncHandler(async (req,res)=>{
-    const customer = req.customer;
-
-    try{
-
-        const otp = Math.floor(Math.random() * 1000000).toString().padStart(6, '0');
-        const mailOptions = {
-            from: 'sbs@gmail.com',
-            to: customer.email,
-            subject: 'Your OTP for SBS',
-            text: `Your OTP is ${otp}`,
-        };
-
-        const existingOTp = await Otp.findOne({
-            customerUserId: customer._id
-        }).sort({createdAt: -1});
-
-        if(existingOTp && existingOTp.expiresAt > Date.now()){
-            return res.status(201).json({
-                message:"An OTP is already active, you can use that to authenticate"
-            })
-        }
-
-        const newOtp = new Otp({customerUserId: customer._id,code:otp,expiresAt: Date.now() + 60*2*1000}); // Expires in 2 minutes
-        await newOtp.save();
-
-        await transporter.sendMail(mailOptions);
-
-        return res.status(200).json({
-            message:'OTP sent succesfully'
-        });
-    }catch(error){
-        if (error.message.match(/(Balance|Account|validation|deposit)/gi))
-            return res.status(400).send(error.message);
-        res.status(500).send("Ooops!! Something Went Wrong, Try again...");
-    }
-});
-
 
 
 /**
