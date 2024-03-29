@@ -6,6 +6,7 @@ import { AuthProvider } from "./hooks/useAuth";
 import { RegistrationPage } from "./pages/Registration/RegistrationPage";
 import PageNotFound from "./pages/PageNotFound";
 import { UserDashboard } from "./pages/User/UserDashboard";
+import { UserProfilePage } from "./pages/User/Profile/UserProfilePage";
 
 
 function App() {
@@ -16,7 +17,8 @@ function App() {
         <Route path="login" element={<LoginPage/>}/> 
         <Route path="register" element={<RegistrationPage/>}/> 
         <Route path="user" element={<ProtectedRoute children={<UserDashboard/>}/>}>
-          <Route index element={<LoginPage/>} /> 
+          <Route index element={<UserProfilePage/>} /> 
+          <Route path="profile" element={<UserProfilePage/>} /> 
         </Route>
         <Route path="*" element={<PageNotFound/>}/>
       </Routes>
