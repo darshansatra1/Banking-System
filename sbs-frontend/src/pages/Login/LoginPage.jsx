@@ -3,6 +3,7 @@ import { useAuth } from "../../hooks/useAuth";
 import axios from "axios";
 import {Navbar} from "../../components/Navbar";
 import { Link, useNavigate } from "react-router-dom";
+import Footer from "../../components/Footer";
 
 export const LoginPage = () => { 
     const navigate = useNavigate();
@@ -127,6 +128,7 @@ export const LoginPage = () => {
             </div>
           </div>
         </div>
+        <Footer/>
     </>
   )
 }
