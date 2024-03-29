@@ -333,17 +333,17 @@ const getUsers = asyncHandler(async(req,res)=>{
  * @access private(ADMIN)
  */
 const getUserById = asyncHandler(async(req,res)=>{
-    if(!("role" in req.body)){
+    if(!("role" in req.query)){
         return res.status(400).send("Please specify role");
     }
-    if(req.body.role!=="customer" && req.body.role!=="merchant"){
+    if(req.query.role!=="customer" && req.query.role!=="merchant"){
         return res.status(400).send("Wrong role");
     }
 
     const admin = req.admin;
 
     try{
-        if(req.body.role==="customer"){
+        if(req.query.role==="customer"){
             const customer = await Customer.findById(req.params.id);
             const employee = await Employee.findById(customer.supervisor);
             const manager = await Manager.findById(employee.supervisor);
@@ -386,14 +386,14 @@ const getUserById = asyncHandler(async(req,res)=>{
  * @access private(ADMIN)
  */
 const getUserDepositLogs = asyncHandler(async(req,res)=>{
-    if(!('role' in req.body)){
+    if(!('role' in req.query)){
         return res.status(400).send("Please send the role");
     }
-    if(req.body.role!=="customer" && req.body.role!=="merchant"){
+    if(req.query.role!=="customer" && req.query.role!=="merchant"){
         return res.status(400).send("Please send the current role");
     }
     try{
-        if(req.body.role=="customer"){
+        if(req.query.role=="customer"){
             const customer = await Customer.findById(req.params.id);
             const allDeposits = await Deposit.find({
                 toCustomer: customer._id,
@@ -439,15 +439,15 @@ const getUserDepositLogs = asyncHandler(async(req,res)=>{
  * @access private(ADMIN)
  */
 const getUserWithdrawLogs = asyncHandler(async(req,res)=>{
-    if(!('role' in req.body)){
+    if(!('role' in req.query)){
         return res.status(400).send("Please send the role");
     }
-    if(req.body.role!=="customer" && req.body.role!=="merchant"){
+    if(req.query.role!=="customer" && req.query.role!=="merchant"){
         return res.status(400).send("Please send the current role");
     }
 
     try{
-        if(req.body.role=="customer"){
+        if(req.query.role=="customer"){
             const customer = await Customer.findById(req.params.id);
             const allWithdraws = await Withdraw.find({
                 fromCustomer: customer._id,

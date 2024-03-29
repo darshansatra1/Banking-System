@@ -323,15 +323,15 @@ const authorizeWithdraw = asyncHandler(async(req,res)=>{
  * @access private(EMPLOYEE)
  */
 const getUserDepositLogs = asyncHandler(async(req,res)=>{
-    if(!('role' in req.body)){
+    if(!('role' in req.query)){
         return res.status(400).send("Please send the role");
     }
-    if(req.body.role!=="customer" && req.body.role!=="merchant"){
+    if(req.query.role!=="customer" && req.query.role!=="merchant"){
         return res.status(400).send("Please send the current role");
     }
     const employee = req.employee;
     try{
-        if(req.body.role=="customer"){
+        if(req.query.role=="customer"){
             const customer = await Customer.findById(req.params.id);
             if(customer.supervisor.toString()!==employee._id.toString()){
                 return res.status(401).send("You are not authorized");
@@ -382,15 +382,15 @@ const getUserDepositLogs = asyncHandler(async(req,res)=>{
  * @access private(EMPLOYEE)
  */
 const getUserWithdrawLogs = asyncHandler(async(req,res)=>{
-    if(!('role' in req.body)){
+    if(!('role' in req.query)){
         return res.status(400).send("Please send the role");
     }
-    if(req.body.role!=="customer" && req.body.role!=="merchant"){
+    if(req.query.role!=="customer" && req.query.role!=="merchant"){
         return res.status(400).send("Please send the current role");
     }
     const employee = req.employee;
     try{
-        if(req.body.role=="customer"){
+        if(req.query.role=="customer"){
             const customer = await Customer.findById(req.params.id);
             if(customer.supervisor.toString()!==employee._id.toString()){
                 return res.status(401).send("You are not authorized");
@@ -485,17 +485,17 @@ const getUsers = asyncHandler(async(req,res)=>{
  * @access private(EMPLOYEE)
  */
 const getUserById = asyncHandler(async(req,res)=>{
-    if(!("role" in req.body)){
+    if(!("role" in req.query)){
         return res.status(400).send("Please specify role");
     }
-    if(req.body.role!=="customer" && req.body.role!=="merchant"){
+    if(req.query.role!=="customer" && req.query.role!=="merchant"){
         return res.status(400).send("Wrong role");
     }
 
     const employee = req.employee;
 
     try{
-        if(req.body.role==="customer"){
+        if(req.query.role==="customer"){
             const customer = await Customer.findById(req.params.id);
             if(customer.supervisor.toString()!==employee._id.toString()){
                 return res.status(401).send("You are not authorized");
