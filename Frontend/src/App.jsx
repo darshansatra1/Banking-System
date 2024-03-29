@@ -8,14 +8,10 @@ import {UserLoginPage} from "./views/UserLoginPage";
 import {RegisterPage} from "./views/RegisterPage";
 import {Index} from "./components/home/Index";
 import NotFoundPage from "./views/NotFound";
-import {useEffect, useState} from "react";
-import axios from 'axios'
 import InternalUserDashboard from "./components/dashboards/InternalUserDashboard";
 import ExternalUserDashboard from "./components/dashboards/ExternalUserDashboard";
 import DepositTransactionListview from "./views/internalUserview/DepositTransactionListView";
-import HomeView from "./views/internalUserview/UserListView";
 import WithdrawTransactionListview from "./views/internalUserview/WithdrawTransactionListView";
-import ProfilePage from "./views/commonView/ProfilePage";
 import UserListView from "./views/internalUserview/UserListView";
 import MyProfilePage from "./views/userView/MyProfilePage";
 import DepositPage from "./views/userView/DepositPage";
@@ -23,6 +19,10 @@ import WithdrawalPage from "./views/userView/WithdrawalPage";
 import DepositHistory from "./views/userView/DepositHistory";
 import WithdrawalHistory from "./views/userView/WithdrawHistory";
 import LogoutPage from "./views/userView/LogoutPage";
+import UserNavigationPage from "./views/internalUserview/UserNavigationPage";
+import UserDepositHistory from "./views/internalUserview/UserDepositHistory";
+import UserProfile from "./views/internalUserview/UserProfile";
+import UserWithdrawHistory from "./views/internalUserview/UserWithdrawHistory";
 
 
 function App() {
@@ -71,6 +71,26 @@ function App() {
                         <WithdrawTransactionListview/>
                     </InternalUserDashboard>}/>
 
+                <Route path="/userNavigationPage/:userId" element={ 
+                    <InternalUserDashboard>
+                        <UserNavigationPage />
+                    </InternalUserDashboard>} />
+
+                <Route path="/userNavigationPage/:userId/profile" element={ 
+                    <InternalUserDashboard>
+                        <UserProfile />
+                    </InternalUserDashboard>} />
+
+                <Route path="/userNavigationPage/:userId/deposit" element={ 
+                    <InternalUserDashboard>
+                        <UserDepositHistory />
+                    </InternalUserDashboard>} />
+
+                <Route path="/userNavigationPage/:userId/withdraw" element={ 
+                    <InternalUserDashboard>
+                        <UserWithdrawHistory />
+                    </InternalUserDashboard>} />    
+        
                 <Route exact path="/profile" element={
                     <ExternalUserDashboard>
                         <MyProfilePage></MyProfilePage>

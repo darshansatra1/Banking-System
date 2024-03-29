@@ -66,8 +66,8 @@ import Footer from "../../components/home/components/layout/Footer";
           <Link to="/userListView" className="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700">User List</Link>
           <Link to="/depositTransactionListView" className="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700">Deposit Transactions</Link>
           <Link to="/withdrawTransactionListView" className="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700">Withdraw Transactions</Link>
-          {/* Add more links as needed */}
-        </nav>
+          <Link to="/logout" className="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700">Logout</Link>          
+          </nav>
       </div>
       {/* Page Content */}
       <div className="flex-1 p-5">

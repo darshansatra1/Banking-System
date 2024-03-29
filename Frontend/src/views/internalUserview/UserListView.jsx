@@ -40,6 +40,10 @@ export default function UserListView() {
     getUsers();
   }, []);
 
+  const onClick = async (userId) => {
+      navigate(`/userNavigationPage/${userId}`);
+  };
+
   return (
       <div className="w-full max-w block p-6 rounded shadow-lg shadow-black/20 bg-gray-800 mx-auto">
         <h3 className="flex justify-center items-center text-2xl text-blue-600 font-bold text-center p-2 my-4 rounded shadow bg-blue-200 border-x-4 select-none">
@@ -54,6 +58,8 @@ export default function UserListView() {
                 role={user.role}
                 supervisor={user.supervisor}
                 manager={user.manager}
+                user_id={user._id}
+                onClick={onClick}
             />
         ))}
       </div>
