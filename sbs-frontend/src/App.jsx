@@ -4,15 +4,21 @@ import { LoginPage } from "./pages/Login/LoginPage";
 import { ProtectedRoute } from "./pages/ProtectedRoute";
 import { AuthProvider } from "./hooks/useAuth";
 import { RegistrationPage } from "./pages/Registration/RegistrationPage";
+import PageNotFound from "./pages/PageNotFound";
+import { UserDashboard } from "./pages/User/UserDashboard";
 
 
 function App() {
   return (
     <AuthProvider>
       <Routes>
-        <Route path="/" element={<HomePage/>}/>
-        <Route path="/login" element={<LoginPage/>}/> 
-        <Route path="/register" element={<RegistrationPage/>}/> 
+        <Route index element={<HomePage/>}/>
+        <Route path="login" element={<LoginPage/>}/> 
+        <Route path="register" element={<RegistrationPage/>}/> 
+        <Route path="user" element={<ProtectedRoute children={<UserDashboard/>}/>}>
+          <Route index element={<LoginPage/>} /> 
+        </Route>
+        <Route path="*" element={<PageNotFound/>}/>
       </Routes>
     </AuthProvider>
   );

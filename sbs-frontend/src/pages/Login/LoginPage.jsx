@@ -28,13 +28,15 @@ export const LoginPage = () => {
         switch (userRole) {
           case 'customer':
             path = "/user"
+            break
           case 'merchant':
             path = "/user" 
+            break
           default:
             path = "/admin"
         }
         setTimeout(() => {
-          navigate("/", {replace:true});
+          navigate(path, {replace:true});
         }, 1000);
     };
 

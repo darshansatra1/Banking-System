@@ -25,7 +25,7 @@ export const RegistrationPage = () => {
 
     try {
         const url = "http://localhost:8080/register";
-        const { data: res } = await axios.post(url, formInputs);
+        await axios.post(url, formInputs);
         navigate("/login");
     } catch (error) {
         if (
