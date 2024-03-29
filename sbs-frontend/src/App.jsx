@@ -1,15 +1,18 @@
 import {Routes, Route} from "react-router-dom";
-import {Home} from "./pages/home/Home";
+import { HomePage } from "./pages/home/HomePage";
+import { LoginPage } from "./pages/Login/LoginPage"; 
+import { ProtectedRoute } from "./pages/ProtectedRoute";
+import { AuthProvider } from "./hooks/useAuth";
 
 
 function App() {
   return (
-    <Routes>
-      <Route
-          path="/"
-          element={<Home/>}
-      />
-    </Routes>
+    <AuthProvider>
+      <Routes>
+        <Route path="/" element={<HomePage/>}/>
+        <Route path="/login" element={<LoginPage/>}/> 
+      </Routes>
+    </AuthProvider>
   );
 }
 
