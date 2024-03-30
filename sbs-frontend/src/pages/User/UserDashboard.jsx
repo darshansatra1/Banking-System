@@ -17,7 +17,7 @@ export const UserDashboard = () => {
                 <Link to="/user/withdraw" className="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700">Withdraw</Link>
                 <Link to="/user/deposit_history" className="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700">Deposit History</Link>
                 <Link to="/user/withdraw_history" className="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700">Withdraw History</Link> 
-                <Link to="/logout" className="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700">Logout</Link>          
+                <Link to="/user/logout" className="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700">Logout</Link>          
                 
                 {/* Add more links as needed */}
 
