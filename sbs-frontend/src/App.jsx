@@ -17,6 +17,7 @@ import { AdminProfilePage } from "./pages/Admin/Profile/AdminProfilePage";
 import { AdminUserListPage } from "./pages/Admin/Users/AdminUserListPage";
 import { AdminDepositTransactionPage } from "./pages/Admin/Deposit/AdminDepositTransactionPage";
 import { AdminWithdrawTransactionPage } from "./pages/Admin/Withdraw/AdminWithdrawTransactionPage";
+import { AdminLogoutPage } from "./pages/Admin/Logout/AdminLogoutPage";
 
 
 function App() {
@@ -43,6 +44,7 @@ function App() {
           <Route path="users" element={<AdminUserListPage/>} />
           <Route path="depositTransactions" element={<AdminDepositTransactionPage/>} />
           <Route path="withdrawTransactions" element={<AdminWithdrawTransactionPage/>} />
+          <Route path="logout" element={<AdminLogoutPage/>} />
         </Route>
 
         <Route path="*" element={<PageNotFound/>}/>
