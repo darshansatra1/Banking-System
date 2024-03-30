@@ -12,6 +12,9 @@ import { UserWithdrawPage } from "./pages/User/Withdraw/UserWithdrawPage";
 import { UserDepositHistoryPage } from "./pages/User/Deposit/UserDepositHistoryPage";
 import { UserWithdrawHistoryPage } from "./pages/User/Withdraw/UserWithdrawHistoryPage";
 import { UserLogoutPage } from "./pages/User/Logout/UserLogoutPage";
+import { AdminDashboard } from "./pages/Admin/AdminDashboard";
+import { AdminProfilePage } from "./pages/Admin/Profile/AdminProfilePage";
+import { AdminUserListPage } from "./pages/Admin/Users/AdminUserListPage";
 
 
 function App() {
@@ -21,6 +24,7 @@ function App() {
         <Route index element={<HomePage/>}/>
         <Route path="login" element={<LoginPage/>}/> 
         <Route path="register" element={<RegistrationPage/>}/> 
+
         <Route path="user" element={<ProtectedRoute children={<UserDashboard/>}/>}>
           <Route index element={<UserProfilePage/>} /> 
           <Route path="profile" element={<UserProfilePage/>} /> 
@@ -30,6 +34,13 @@ function App() {
           <Route path="withdraw_history" element={<UserWithdrawHistoryPage/>} /> 
           <Route path="logout" element={<UserLogoutPage/>} /> 
         </Route>
+
+        <Route path="admin" element={<ProtectedRoute children={<AdminDashboard/>}/>}>
+          <Route index element={<AdminProfilePage/>} />
+          <Route path="profile" element={<AdminProfilePage/>} />
+          <Route path="users" element={<AdminUserListPage/>} />
+        </Route>
+
         <Route path="*" element={<PageNotFound/>}/>
       </Routes>
     </AuthProvider>
