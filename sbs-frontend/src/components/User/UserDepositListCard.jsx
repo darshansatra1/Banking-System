@@ -2,7 +2,7 @@ import React from 'react'
 
 export const UserDepositListCard = ({deposit}) => {
   return (
-    <div>
+    <div class="block w-full cursor-pointer rounded-lg p-4 text-left transition duration-500 hover:bg-white-100 hover:text-white-500 focus:bg-white-100 focus:.0text-white-500 focus:ring-0 dark:hover:bg-teal-900 dark:hover:text-white-200 dark:focus:bg-green-600 dark:focus:text-white-200">
         <div
             class="flex items-center space-x-4 rtl:space-x-reverse text-slate-900 group-hover:text-white text-sm">
             <div class="flex-shrink-0 w-8 h-8 rounded-full">

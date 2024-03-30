@@ -10,6 +10,7 @@ import { UserProfilePage } from "./pages/User/Profile/UserProfilePage";
 import { UserDepositPage } from "./pages/User/Deposit/UserDepositPage";
 import { UserWithdrawPage } from "./pages/User/Withdraw/UserWithdrawPage";
 import { UserDepositHistoryPage } from "./pages/User/Deposit/UserDepositHistoryPage";
+import { UserWithdrawHistoryPage } from "./pages/User/Withdraw/UserWithdrawHistoryPage";
 
 
 function App() {
@@ -25,6 +26,7 @@ function App() {
           <Route path="deposit" element={<UserDepositPage/>} /> 
           <Route path="withdraw" element={<UserWithdrawPage/>} /> 
           <Route path="deposit_history" element={<UserDepositHistoryPage/>} /> 
+          <Route path="withdraw_history" element={<UserWithdrawHistoryPage/>} /> 
         </Route>
         <Route path="*" element={<PageNotFound/>}/>
       </Routes>
