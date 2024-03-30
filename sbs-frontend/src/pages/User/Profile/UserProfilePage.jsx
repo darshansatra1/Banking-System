@@ -5,7 +5,7 @@ import {useAuth} from "../../../hooks/useAuth";
 
 export const UserProfilePage = () => {
     const [userData, setUserData] = useState(null);
-    const {user, login} = useAuth();
+    const {user} = useAuth();
     const navigate = useNavigate();
 
     useEffect(() => {

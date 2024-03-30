@@ -12,8 +12,8 @@ export const UserDashboard = () => {
         {/* Sidebar */}
             <div className="h-screen bg-neutral-800 py-2 shadow-sm shadow-black/30 dark:bg-neutral-800 dark:shadow-black/30 text-white w-64">
                 <nav className="mt-10">
-                <Link to="/user/profile" className="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700">Profile</Link>
-                <Link to="/deposit" className="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700">Deposit</Link>
+                <Link to="/user" className="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700">Profile</Link>
+                <Link to="/user/deposit" className="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700">Deposit</Link>
                 <Link to="/withdraw" className="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700">Withdraw</Link>
                 <Link to="/deposithistory" className="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700">Deposit History</Link>
                 <Link to="/withdrawhistory" className="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700">Withdraw History</Link>
