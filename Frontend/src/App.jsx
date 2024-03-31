@@ -12,17 +12,21 @@ import {useEffect, useState} from "react";
 import axios from 'axios'
 import InternalUserDashboard from "./components/dashboards/InternalUserDashboard";
 import ExternalUserDashboard from "./components/dashboards/ExternalUserDashboard";
-import DepositTransactionListview from "./views/internalUserview/DepositTransactionListView";
-import HomeView from "./views/internalUserview/UserListView";
-import WithdrawTransactionListview from "./views/internalUserview/WithdrawTransactionListView";
-import ProfilePage from "./views/commonView/ProfilePage";
-import UserListView from "./views/internalUserview/UserListView";
-import MyProfilePage from "./views/userView/MyProfilePage";
-import DepositPage from "./views/userView/DepositPage";
-import WithdrawalPage from "./views/userView/WithdrawalPage";
-import DepositHistory from "./views/userView/DepositHistory";
-import WithdrawalHistory from "./views/userView/WithdrawHistory";
-import LogoutPage from "./views/userView/LogoutPage";
+import DepositTransactionListview from "./views/InternalView/DepositTransactionListView";
+
+import WithdrawTransactionListview from "./views/InternalView/WithdrawTransactionListView";
+
+import UserListView from "./views/InternalView/UserListView"; // Changed path
+import MyProfilePage from "./views/ExternalView/MyProfilePage"; // Changed path
+import DepositPage from "./views/ExternalView/DepositPage"; // Changed path
+import WithdrawalPage from "./views/ExternalView/WithdrawalPage"; // Changed path
+import DepositHistory from "./views/ExternalView/DepositHistory"; // Changed path
+import WithdrawalHistory from "./views/ExternalView/WithdrawHistory"; // Changed path
+import LogoutPage from "./views/ExternalView/LogoutPage"; // Changed path
+import InternalProfilePage from "./views/InternalView/InternalProfilePage";
+import InternalLogoutPage from "./views/InternalView/InternalLogoutPage";
+
+
 
 
 function App() {
@@ -56,12 +60,27 @@ function App() {
                 <Route exact path="/register" element={<RegisterPage/>}/>
                 <Route exact path="/login" element={<UserLoginPage/>}/>
                 <Route exact path="/externalUserDashboard" element={<ExternalUserDashboard/>}/>
-                /externalUserDashboard
+
+
+        
                 <Route exact path="/internalUserDashboard" element={<InternalUserDashboard/>}/>
+
+
+
+
+                <Route exact path="/Internalprofile" element={
+
+                    <InternalUserDashboard>
+                        <InternalProfilePage/>
+                    </InternalUserDashboard>}/>
+
+                    
                 <Route exact path="/userListView" element={
+
                     <InternalUserDashboard>
                         <UserListView/>
                     </InternalUserDashboard>}/>
+                    
                 <Route exact path="/depositTransactionListView" element={
                     <InternalUserDashboard>
                         <DepositTransactionListview/>
@@ -71,11 +90,24 @@ function App() {
                         <WithdrawTransactionListview/>
                     </InternalUserDashboard>}/>
 
+                    <Route exact path="/internallogout" element={
+                    <InternalUserDashboard>
+                        <InternalLogoutPage/>
+                    </InternalUserDashboard>}/>
+
+
+
+
+                   {/* External Dashboard */}
+
+
                 <Route exact path="/profile" element={
                     <ExternalUserDashboard>
                         <MyProfilePage></MyProfilePage>
                     </ExternalUserDashboard>
                 }/>
+
+
 
 
                 <Route exact path="/deposit" element={
