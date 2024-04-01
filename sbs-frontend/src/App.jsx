@@ -18,6 +18,10 @@ import { AdminUserListPage } from "./pages/Admin/Users/AdminUserListPage";
 import { AdminDepositTransactionPage } from "./pages/Admin/Deposit/AdminDepositTransactionPage";
 import { AdminWithdrawTransactionPage } from "./pages/Admin/Withdraw/AdminWithdrawTransactionPage";
 import { AdminLogoutPage } from "./pages/Admin/Logout/AdminLogoutPage";
+import { AdminUserProfilePage } from "./pages/Admin/Users/AdminUserProfilePage";
+import { AdminUserDepositHistoryPage } from "./pages/Admin/Users/AdminUserDepositHistoryPage";
+import { AdminUserWithdrawHistoryPage } from "./pages/Admin/Users/AdminUserWithdrawHistoryPage";
+import { AdminUserNavigationPage } from "./pages/Admin/Users/AdminUserNavigationPage";
 
 
 function App() {
@@ -44,8 +48,13 @@ function App() {
           <Route path="users" element={<AdminUserListPage/>} />
           <Route path="depositTransactions" element={<AdminDepositTransactionPage/>} />
           <Route path="withdrawTransactions" element={<AdminWithdrawTransactionPage/>} />
+          <Route path="users/:userId" element={<AdminUserNavigationPage/>} />
+          <Route path="users/:userId/profile" element={<AdminUserProfilePage/>} />
+          <Route path="users/:userId/deposit" element={<AdminUserDepositHistoryPage/>} />
+          <Route path="users/:userId/withdraw" element={<AdminUserWithdrawHistoryPage/>} />
           <Route path="logout" element={<AdminLogoutPage/>} />
         </Route>
+
 
         <Route path="*" element={<PageNotFound/>}/>
       </Routes>

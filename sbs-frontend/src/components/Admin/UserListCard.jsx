@@ -1,8 +1,9 @@
 import React from 'react';
 
-const UserListCard = ({user_name, email, balance, account_id,role,supervisor, manager}) => {
-    const onClick = async () => {
-
+const UserListCard = ({user_name, email, balance, account_id,role,supervisor, manager, user_id, onClick}) => {
+    const handleViewUser = async (e) => {
+        e.preventDefault();
+        await onClick(user_id);
     }
     return (
         <div>
@@ -41,6 +42,15 @@ const UserListCard = ({user_name, email, balance, account_id,role,supervisor, ma
                             class="text-white bg-blue-700 rounded-lg text-sm px-6 py-2.5 me-2 mb-2 dark:bg-blue-600 focus:outline-none dark:focus:ring-blue-800">
                             <strong>Balance:</strong> ${balance}
                         </div>
+                        <div>
+                            <p><button type="button" 
+                                    data-te-ripple-init 
+                                    data-te-ripple-color="light" 
+                                    onClick={handleViewUser}
+                                    class="mb-6 inline-block w-full rounded bg-[hsl(143,74%,45%)] px-6 pt-2.5 pb-2 text-xs font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#3b71ca] transition duration-150 ease-in-out hover:bg-[hsl(218,81%,75%)] hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] dark:shadow-[0_4px_9px_-4px_rgba(59,113,202,0.5)] dark:hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)]">
+                            View User
+                            </button></p>
+                        </div>  
                     </div>
                 </li>
             </ul>
