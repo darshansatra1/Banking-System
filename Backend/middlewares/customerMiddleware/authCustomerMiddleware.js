@@ -14,7 +14,7 @@ const authCustomerProtect = asyncHandler(async (req, res, next) => {
             }
             req.customer = customer;
 
-            if(!customer.is_active){
+            if(customer.is_active === false){
                 return res.status(404).send("User not found");
             }
             next();

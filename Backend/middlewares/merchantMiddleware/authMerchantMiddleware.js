@@ -14,7 +14,7 @@ const authMerchantProtect = asyncHandler(async (req, res, next) => {
             }
             req.merchant = merchant;
 
-            if(!merchant.is_active){
+            if(merchant.is_active === false){
                 return res.status(404).send("User not found");
             }
 
