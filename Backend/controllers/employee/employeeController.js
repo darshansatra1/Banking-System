@@ -536,6 +536,77 @@ const getUserById = asyncHandler(async(req,res)=>{
 });
 
 
+/**
+ * @desc   Update user
+ * @route  PUT /user/:id
+ * @access private(EMPLOYEE)
+ */
+const updateUserProfile = asyncHandler(async (req,res)=>{
+    const employee = req.employee;
+
+    if(!('role' in req.body)){
+        return res.status(400).send("Role is required");
+    }
+    if(req.body.role!=="customer" && req.body.role!=="merchant") {
+        return res.status(400).send("Wrong role");
+    }
+
+    const id = req.params.id;
+
+    try{
+        if(req.body.role==="customer") {
+            const customer = await Customer.findById(id);
+
+            if (customer.supervisor.toString() !== employee._id.toString()) {
+                return res.status(401).send("You are not authorized");
+            }
+
+            if ('address' in req.body) {
+                customer.address = req.body.address;
+            }
+            if ('phone_number' in req.body) {
+                customer.phone_number = req.body.phone_number;
+            }
+            if ('dob' in req.body) {
+                customer.dob = req.body.dob;
+            }
+
+            await customer.save();
+
+            return res.status(200).json({
+                success: true
+            });
+        }else{
+            const merchant = await Merchant.findById(id);
+
+            if (merchant.supervisor.toString() !== employee._id.toString()) {
+                return res.status(401).send("You are not authorized");
+            }
+
+            if ('address' in req.body) {
+                merchant.address = req.body.address;
+            }
+            if ('phone_number' in req.body) {
+                merchant.phone_number = req.body.phone_number;
+            }
+            if ('dob' in req.body) {
+                merchant.dob = req.body.dob;
+            }
+
+            await merchant.save();
+
+            return res.status(200).json({
+                success: true
+            });
+        }
+    }catch(error){
+        if (error.message.match(/(email|password|name|phone|addresee|dob|date)/gi))
+            return res.status(400).send(error.message);
+        return res.status(500).send("Ooops!! Something Went Wrong, Try again...");
+    }
+});
+
+
 module.exports = {
     getProfile,
     updateProfile,
@@ -547,4 +618,5 @@ module.exports = {
     getUserWithdrawLogs,
     getUsers,
     getUserById,
+    updateUserProfile
 };
