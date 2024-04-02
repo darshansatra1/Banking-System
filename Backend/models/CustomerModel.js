@@ -53,6 +53,10 @@ var customerSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Employee',
     },
+    is_active: {
+        type: Boolean,
+        default: true
+    },
 }, {
     timestamps: true,
     collection: "Customers",
