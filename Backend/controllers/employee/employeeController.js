@@ -559,7 +559,7 @@ const updateUserProfile = asyncHandler(async (req,res)=>{
         if(req.body.role==="customer") {
             const customer = await Customer.findById(id);
 
-            if(customer.is_active){
+            if(customer.is_active === false){
                 return res.status(401).send("User is not active");
             }
 
@@ -585,7 +585,7 @@ const updateUserProfile = asyncHandler(async (req,res)=>{
         }else{
             const merchant = await Merchant.findById(id);
 
-            if(merchant.is_active){
+            if(merchant.is_active === false){
                 return res.status(401).send("User is not active");
             }
 
