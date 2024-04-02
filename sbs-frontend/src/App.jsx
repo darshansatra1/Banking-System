@@ -48,10 +48,10 @@ function App() {
           <Route path="users" element={<AdminUserListPage/>} />
           <Route path="depositTransactions" element={<AdminDepositTransactionPage/>} />
           <Route path="withdrawTransactions" element={<AdminWithdrawTransactionPage/>} />
-          <Route path="users/:userId" element={<AdminUserNavigationPage/>} />
-          <Route path="users/:userId/profile" element={<AdminUserProfilePage/>} />
-          <Route path="users/:userId/deposit" element={<AdminUserDepositHistoryPage/>} />
-          <Route path="users/:userId/withdraw" element={<AdminUserWithdrawHistoryPage/>} />
+          <Route path="users/:userId/:userRole" element={<AdminUserNavigationPage/>} />
+          <Route path="users/:userId/:userRole/profile" element={<AdminUserProfilePage/>} />
+          <Route path="users/:userId/:userRole/deposit" element={<AdminUserDepositHistoryPage/>} />
+          <Route path="users/:userId/:userRole/withdraw" element={<AdminUserWithdrawHistoryPage/>} />
           <Route path="logout" element={<AdminLogoutPage/>} />
         </Route>
 

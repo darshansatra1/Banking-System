@@ -1,9 +1,9 @@
 import React from 'react';
 
-const UserListCard = ({user_name, email, balance, account_id,role,supervisor, manager, user_id, onClick}) => {
+const UserListCard = ({user_name, email, balance, account_id, role, supervisor, manager, user_id, onClick}) => {
     const handleViewUser = async (e) => {
         e.preventDefault();
-        await onClick(user_id);
+        await onClick(user_id, role);
     }
     return (
         <div>

@@ -27,7 +27,7 @@ export const AdminUserListPage = () => {
               setUserData(response.data);
             })
             .catch(error => {
-                setErrorMessage('An error occurred while fetching user list.');
+                setErrorMessage('An error occurred while fetching user list. Please try again later.');
             })
             .finally(() => {
                 setLoading(false);
@@ -38,8 +38,8 @@ export const AdminUserListPage = () => {
         }
     }, []);  
 
-    const onClick = async (userId) => {
-        navigate(`${userId}`);
+    const onClick = async (userId, userRole) => {
+        navigate(`${userId}/${userRole}`);
     };    
 
     return (
