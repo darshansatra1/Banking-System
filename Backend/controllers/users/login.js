@@ -49,6 +49,9 @@ const login  = async(req,res)=>{
 }
 
 const loginCustomer = async(req,res,customer)=>{
+    if(customer.is_active === false){
+        return res.status(404).send("User not found");
+    }
     if(customer.isPasswordMatched(req.body.password)) {
         return res.json({
             _uid: customer?._id,
@@ -64,6 +67,9 @@ const loginCustomer = async(req,res,customer)=>{
 }
 
 const loginMerchant = async(req,res,merchant)=>{
+    if(merchant.is_active === false){
+        return res.status(404).send("User not found");
+    }
     if(merchant.isPasswordMatched(req.body.password)) {
         return res.json({
             _uid: merchant?._id,

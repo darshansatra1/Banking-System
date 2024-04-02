@@ -13,6 +13,11 @@ const authMerchantProtect = asyncHandler(async (req, res, next) => {
                 return res.status(401).send("Not authorized");
             }
             req.merchant = merchant;
+
+            if(merchant.is_active === false){
+                return res.status(404).send("User not found");
+            }
+
             next();
         } catch (error) {
             if (!decoded || !merchant) {
