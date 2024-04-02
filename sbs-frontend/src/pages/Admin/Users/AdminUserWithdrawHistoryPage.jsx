@@ -5,7 +5,7 @@ import { useParams } from 'react-router-dom';
 import { UserWithdrawListCard } from '../../../components/User/UserWithdrawListCard';
 
 export const AdminUserWithdrawHistoryPage = () => {
-    const { userId } = useParams();
+    const { userId, userRole } = useParams();
     const [withdrawalHistory, setWithdrawalHistory] = useState([]);
     const [loading, setLoading] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
@@ -18,7 +18,7 @@ export const AdminUserWithdrawHistoryPage = () => {
         // Check if token exists
         if (user.token) {
             // Make API request to fetch withdrawal history
-            axios.get(`http://localhost:8080/${user.role}/user/${userId}/withdraw?role=customer`, {
+            axios.get(`http://localhost:8080/${user.role}/user/${userId}/withdraw?role=${userRole}`, {
                 headers: {
                     Authorization: `Bearer ${user.token}`, // Include token in the headers
                 },
@@ -27,7 +27,7 @@ export const AdminUserWithdrawHistoryPage = () => {
                 setWithdrawalHistory(response.data);
             })
             .catch(error => { 
-                setErrorMessage('An error occurred while fetching withdrawal history.');
+                setErrorMessage('An error occurred while fetching withdrawal history. Please try again later.');
             })
             .finally(() => {
                 setLoading(false);

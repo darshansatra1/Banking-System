@@ -5,7 +5,7 @@ import { UserDepositListCard } from '../../../components/User/UserDepositListCar
 import { useParams } from 'react-router-dom';
 
 export const AdminUserDepositHistoryPage = () => {
-    const { userId } = useParams();
+    const { userId, userRole } = useParams();
     const [depositHistory, setDepositHistory] = useState([]);
     const [loading, setLoading] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
@@ -17,7 +17,7 @@ export const AdminUserDepositHistoryPage = () => {
         // Check if token exists
         if (user.token) {
             // Make API request to fetch deposit history
-            axios.get(`http://localhost:8080/${user.role}/user/${userId}/deposit?role=customer`,
+            axios.get(`http://localhost:8080/${user.role}/user/${userId}/deposit?role=${userRole}`,
             {
                 headers: {
                     Authorization: `Bearer ${user.token}`, // Include token in the headers
@@ -27,7 +27,7 @@ export const AdminUserDepositHistoryPage = () => {
                 setDepositHistory(response.data);
             })
             .catch(error => {
-                setErrorMessage('An error occurred while fetching deposit history.');
+                setErrorMessage('An error occurred while fetching deposit history. Please try again later.');
             })
             .finally(() => {
                 setLoading(false);

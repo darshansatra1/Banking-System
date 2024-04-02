@@ -4,7 +4,6 @@ import { AdminUserProfilePage } from './AdminUserProfilePage';
 import { AdminUserDepositHistoryPage } from './AdminUserDepositHistoryPage';
 import { AdminUserWithdrawHistoryPage } from './AdminUserWithdrawHistoryPage';
 import { NavBar } from '../../../components/Admin/NavBar';
-import { AdminUserListPage } from './AdminUserListPage';
 
 export const AdminUserNavigationPage = () => {
 
