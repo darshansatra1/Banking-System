@@ -511,6 +511,7 @@ const getUserById = asyncHandler(async(req,res)=>{
                 phone_number: customer.phone_number,
                 dob: customer.dob,
                 address:customer.address,
+                status: customer.is_active,
             });
         }else{
             const merchant = await Merchant.findById(req.params.id);
@@ -528,6 +529,7 @@ const getUserById = asyncHandler(async(req,res)=>{
                 phone_number: merchant.phone_number,
                 dob: merchant.dob,
                 address:merchant.address,
+                status: merchant.is_active,
             });
         }
     }catch(error){
@@ -557,6 +559,10 @@ const updateUserProfile = asyncHandler(async (req,res)=>{
         if(req.body.role==="customer") {
             const customer = await Customer.findById(id);
 
+            if(customer.is_active){
+                return res.status(401).send("User is not active");
+            }
+
             if (customer.supervisor.toString() !== employee._id.toString()) {
                 return res.status(401).send("You are not authorized");
             }
@@ -578,6 +584,10 @@ const updateUserProfile = asyncHandler(async (req,res)=>{
             });
         }else{
             const merchant = await Merchant.findById(id);
+
+            if(merchant.is_active){
+                return res.status(401).send("User is not active");
+            }
 
             if (merchant.supervisor.toString() !== employee._id.toString()) {
                 return res.status(401).send("You are not authorized");
@@ -607,6 +617,112 @@ const updateUserProfile = asyncHandler(async (req,res)=>{
 });
 
 
+
+/**
+ * @desc   Update user
+ * @route  PUT /user/:id/status
+ * @access private(EMPLOYEE)
+ */
+const updateUserStatus = asyncHandler(async (req,res)=>{
+    const employee = req.employee;
+
+    if(!('role' in req.body)){
+        return res.status(400).send("Role is required");
+    }
+    if(req.body.role!=="customer" && req.body.role!=="merchant") {
+        return res.status(400).send("Wrong role");
+    }
+    if(!("status" in req.body)){
+        return res.statsu(400).send("Status is required");
+    }
+
+    const id = req.params.id;
+    const {status} = req.body;
+
+    try{
+        if(req.body.role==="customer") {
+            const customer = await Customer.findById(id);
+
+            if (customer.supervisor.toString() !== employee._id.toString()) {
+                return res.status(401).send("You are not authorized");
+            }
+
+            if(status === true){
+                customer.is_active = true;
+            }else if(status === false){
+                customer.is_active = false;
+                const deposits = await Deposit.find({
+                    toCustomer: id,
+                    status: "waiting",
+                });
+
+                for (const deposit of deposits) {
+                    deposit.status = "decline";
+                    await deposit.save();
+                }
+
+                const withdrawals = await Withdraw.find({
+                    fromCustomer: id,
+                    status: "waiting",
+                });
+
+                for (const withdraw of withdrawals) {
+                    withdraw.status = "decline";
+                    await withdraw.save();
+                }
+            }
+
+            await customer.save();
+
+            return res.status(200).json({
+                success: true
+            });
+        }else{
+            const merchant = await Merchant.findById(id);
+
+            if (merchant.supervisor.toString() !== employee._id.toString()) {
+                return res.status(401).send("You are not authorized");
+            }
+
+            if(status === true){
+                merchant.is_active = true;
+            }else if(status === false){
+                merchant.is_active = false;
+                const deposits = await Deposit.find({
+                    toMerchant: id,
+                    status: "waiting",
+                });
+
+                for (const deposit of deposits) {
+                    deposit.status = "decline";
+                    await deposit.save();
+                }
+
+                const withdrawals = await Withdraw.find({
+                    fromMerchant: id,
+                    status: "waiting",
+                });
+
+                for (const withdraw of withdrawals) {
+                    withdraw.status = "decline";
+                    await withdraw.save();
+                }
+            }
+
+            await merchant.save();
+
+            return res.status(200).json({
+                success: true
+            });
+        }
+    }catch(error){
+        if (error.message.match(/(email|password|name|phone|addresee|dob|date)/gi))
+            return res.status(400).send(error.message);
+        return res.status(500).send("Ooops!! Something Went Wrong, Try again...");
+    }
+});
+
+
 module.exports = {
     getProfile,
     updateProfile,
@@ -618,5 +734,6 @@ module.exports = {
     getUserWithdrawLogs,
     getUsers,
     getUserById,
-    updateUserProfile
+    updateUserProfile,
+    updateUserStatus
 };

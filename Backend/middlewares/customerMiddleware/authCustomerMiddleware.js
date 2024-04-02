@@ -13,6 +13,10 @@ const authCustomerProtect = asyncHandler(async (req, res, next) => {
                 return res.status(401).send("Not authorized");
             }
             req.customer = customer;
+
+            if(!customer.is_active){
+                return res.status(404).send("User not found");
+            }
             next();
         } catch (error) {
             if (!decoded || !customer) {
