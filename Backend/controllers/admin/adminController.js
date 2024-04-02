@@ -357,6 +357,9 @@ const getUserById = asyncHandler(async(req,res)=>{
                 supervisor: employee.user_name,
                 manager:manager.user_name,
                 role:"customer",
+                phone_number: customer.phone_number,
+                dob: customer.dob,
+                address:customer.address,
             });
         }else{
             const merchant = await Merchant.findById(req.params.id);
@@ -372,6 +375,9 @@ const getUserById = asyncHandler(async(req,res)=>{
                 supervisor: employee.user_name,
                 manager:manager.user_name,
                 role:"merchant",
+                phone_number: merchant.phone_number,
+                dob: merchant.dob,
+                address:merchant.address,
             });
         }
     }catch(error){
