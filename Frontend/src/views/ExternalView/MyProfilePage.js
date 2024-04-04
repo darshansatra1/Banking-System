@@ -72,6 +72,16 @@ const MyProfilePage = () => {
         setIsEditing(false);
     };
 
+
+
+    const extractDate = (datetimeString) => {
+        const date = new Date(datetimeString);
+        // Get the date part in yyyy-mm-dd format
+        return date.toISOString().split('T')[0];
+    };
+
+    const formattedDate = extractDate(userData.dob);
+
     return (
         <div className="container mx-auto py-8">
             {isEditing ? (
@@ -79,6 +89,7 @@ const MyProfilePage = () => {
                     userData={userData} 
                     onSave={handleSave} 
                     onCancel={handleCancel} 
+                    date = {formattedDate}
                 />
             ) : (
                 <div className="max-w block p-6 rounded shadow-lg shadow-black/20 bg-gray-800 mx-auto">
@@ -90,6 +101,7 @@ const MyProfilePage = () => {
                             <div>
                                 <p className='text-slate-100'><strong>User Name:</strong> {userData.user_name}</p>
                                 <p className='text-slate-100'><strong>Email:</strong> {userData.email}</p>
+                                <p className='text-slate-100'><strong>Date of Birth:</strong>{formattedDate }</p>
                                 <p className='text-slate-100'><strong>Mobile Number:</strong> {userData.phone_number}</p>
                                 <p className='text-slate-100'><strong>Address:</strong> {userData.address}</p>
                                 <p className='text-slate-100'><strong>Balance:</strong> {userData.balance}</p>

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-const ExternalEditProfileFields = ({ userData, onSave, onCancel }) => {
+const ExternalEditProfileFields = ({ userData, onSave, onCancel, date }) => {
     const [editedUserData, setEditedUserData] = useState(userData);
     const [phoneNumberError, setPhoneNumberError] = useState('');
 
@@ -18,6 +18,8 @@ const ExternalEditProfileFields = ({ userData, onSave, onCancel }) => {
             setEditedUserData({ ...editedUserData, [name]: value });
         }
     };
+
+  
     
     
 
@@ -46,9 +48,23 @@ const ExternalEditProfileFields = ({ userData, onSave, onCancel }) => {
                                 type="text"
                                 name="user_name"
                                 value={editedUserData.user_name}
-                                onChange={handleFieldChange}
+                                disabled // disabling the input field
+                                // onChange={handleFieldChange} // No need for onChange event
                             />
-                        </div>
+                            </div>
+
+                            <div className="mb-4">
+                                <label className="block text-sm font-bold mb-2 text-blue-300" htmlFor="date">Date of Birth:</label>
+                                <input
+                                    className="w-full px-3 py-2 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
+                                    type="date"
+                                    name="date"
+                                    value={date} // Corrected this line
+                                    disabled
+                                />
+                            </div>
+
+                        
                         <div className="mb-4">
                             <label className="block text-sm font-bold mb-2 text-blue-300" htmlFor="address">Address:</label>
                             <input
@@ -66,12 +82,38 @@ const ExternalEditProfileFields = ({ userData, onSave, onCancel }) => {
                                 type="text"
                                 name="phone_number"
                                 value={editedUserData.phone_number}
-                                onChange={handleFieldChange}
+                                 onChange={handleFieldChange}
+                                
                             />
                             {phoneNumberError && <span className="text-red-500">{phoneNumberError}</span>}
                         </div>
-                        <p className='text-sm text-slate-100'><strong>Email:</strong> {userData.email}</p>
-                        <p className='text-sm text-slate-100'><strong>Balance:</strong> {userData.balance}</p>
+
+                        <div className="mb-4">
+                            <label className="block text-sm font-bold mb-2 text-blue-300" htmlFor="email">Email:</label>
+                            <input
+                                className="w-full px-3 py-2 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
+                                type="text"
+                                name="email"
+                                value={editedUserData.email}
+                                disabled
+                            />
+                        </div>
+
+                        <div className="mb-4">
+                            <label className="block text-sm font-bold mb-2 text-blue-300" htmlFor="balance">Balance:</label>
+                            <input
+                                className="w-full px-3 py-2 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
+                                type="text"
+                                name="balance"
+                                value={editedUserData.balance}
+                                disabled
+                            />
+                        </div>
+
+
+                        
+                        
+                        
                     </div>
                     <div className="flex justify-center mt-6">
                         <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-2" onClick={handleSave}>Save</button>
