@@ -73,6 +73,24 @@ const InternalProfilePage = () => {
         setIsEditing(false);
     };
 
+    
+    const extractDate = (datetimeString) => {
+        if (!datetimeString) return null; // Return null if datetimeString is null or empty
+    
+        const date = new Date(datetimeString);
+        // Check if the date is valid
+        if (isNaN(date.getTime())) {
+            console.error("Invalid datetime string:", datetimeString);
+            return null;
+        }
+        
+        // Get the date part in yyyy-mm-dd format
+        return date.toISOString().split('T')[0];
+    };
+    
+
+    const formattedDate = userData ? extractDate(userData.dob) : null;
+
     return (
         <div className="container mx-auto py-8">
             {isEditing ? (
@@ -80,6 +98,7 @@ const InternalProfilePage = () => {
                     userData={userData} 
                     onSave={handleSave} 
                     onCancel={handleCancel} 
+                    date = {formattedDate}
                 />
             ) : (
                 <div className="max-w block p-6 rounded shadow-lg shadow-black/20 bg-gray-800 mx-auto">
@@ -91,6 +110,7 @@ const InternalProfilePage = () => {
                             <div>
                                 <p className='text-slate-100'><strong>User Name:</strong> {userData.user_name}</p>
                                 <p className='text-slate-100'><strong>Email:</strong> {userData.email}</p>
+                                {formattedDate && <p className='text-slate-100'><strong>Date of Birth:</strong>{formattedDate}</p>}
                                 <p className='text-slate-100'><strong>Mobile Number:</strong> {userData.phone_number}</p>
                                 <p className='text-slate-100'><strong>Address:</strong> {userData.address}</p>
                                

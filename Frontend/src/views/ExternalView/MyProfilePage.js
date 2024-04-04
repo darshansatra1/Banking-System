@@ -80,44 +80,43 @@ const MyProfilePage = () => {
         return date.toISOString().split('T')[0];
     };
 
-    const formattedDate = extractDate(userData.dob);
+    const formattedDate = userData ? extractDate(userData.dob) : null;
 
     return (
         <div className="container mx-auto py-8">
-            {isEditing ? (
-                <ExternalEditProfileFields 
-                    userData={userData} 
-                    onSave={handleSave} 
-                    onCancel={handleCancel} 
-                    date = {formattedDate}
-                />
-            ) : (
-                <div className="max-w block p-6 rounded shadow-lg shadow-black/20 bg-gray-800 mx-auto">
-                    <div className="p-6">
-                        <h3 className="flex justify-center items-center text-2xl text-blue-600 font-bold text-center p-2 my-4 rounded shadow bg-blue-200 border-x-4 select-none">
-                            <span>User Profile</span>
-                        </h3>
-                        {userData && (
+            {userData && (  // Add this condition to ensure userData is not null before rendering
+                isEditing ? (
+                    <ExternalEditProfileFields 
+                        userData={userData} 
+                        onSave={handleSave} 
+                        onCancel={handleCancel} 
+                        date={formattedDate}
+                    />
+                ) : (
+                    <div className="max-w block p-6 rounded shadow-lg shadow-black/20 bg-gray-800 mx-auto">
+                        <div className="p-6">
+                            <h3 className="flex justify-center items-center text-2xl text-blue-600 font-bold text-center p-2 my-4 rounded shadow bg-blue-200 border-x-4 select-none">
+                                <span>User Profile</span>
+                            </h3>
                             <div>
                                 <p className='text-slate-100'><strong>User Name:</strong> {userData.user_name}</p>
                                 <p className='text-slate-100'><strong>Email:</strong> {userData.email}</p>
-                                <p className='text-slate-100'><strong>Date of Birth:</strong>{formattedDate }</p>
+                                {formattedDate && <p className='text-slate-100'><strong>Date of Birth:</strong>{formattedDate}</p>}
                                 <p className='text-slate-100'><strong>Mobile Number:</strong> {userData.phone_number}</p>
                                 <p className='text-slate-100'><strong>Address:</strong> {userData.address}</p>
                                 <p className='text-slate-100'><strong>Balance:</strong> {userData.balance}</p>
                                 <p className='text-slate-100'><strong>Supervisor Name:</strong> {userData.supervisor}</p>
-                             
-                                
                             </div>
-                        )}
-                        <div className="flex justify-center mt-4">
-                            <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onClick={handleEdit}>Update Profile</button>
+                            <div className="flex justify-center mt-4">
+                                <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onClick={handleEdit}>Update Profile</button>
+                            </div>
                         </div>
                     </div>
-                </div>
+                )
             )}
         </div>
     );
+    
 };
 
 export default MyProfilePage;
