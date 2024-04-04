@@ -16,7 +16,7 @@ export const AdminUserListPage = () => {
         setErrorMessage(''); 
         // Check if token exists
         if (user.token) {
-            // Make API request to fetch deposit history
+            // Make API request to fetch user list
             axios.get(`http://localhost:8080/${user.role}/user`,
             {
                 headers: {
