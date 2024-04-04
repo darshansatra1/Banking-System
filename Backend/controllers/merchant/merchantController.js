@@ -339,6 +339,7 @@ const createBill = asyncHandler(async (req,res)=>{
                 merchant: merchant._id,
                 customer: customer._id,
                 status: "pending",
+                description: description,
                 amount: amount,
             });
 
@@ -418,6 +419,7 @@ const getBillById = asyncHandler(async (req,res)=>{
             _id:bill._id,
             status: bill.status,
             amount: bill.amount,
+            description: bill.description,
             account_id: bill.customer,
             customer: customer.user_name,
         });

@@ -10,6 +10,10 @@ const BillSchema = new mongoose.Schema(
             type: mongoose.Schema.Types.ObjectId,
             ref: 'Customer',
         },
+        description:{
+            type: String,
+            required: [true, "Please type the description"],
+        },
         status:{
             type: String,
             enum:{

@@ -2,6 +2,8 @@ const Customer = require("../../models/CustomerModel");
 const Deposit = require("../../models/DepositModel");
 const Withdraw = require("../../models/WithdrawModel");
 const Employee = require("../../models/EmployeeModel");
+const Merchant = require("../../models/MerchantModel");
+const Bill = require("../../models/BillModel");
 const Otp = require("../../models/OtpModel");
 const transporter = require("../../config/mailer");
 
@@ -294,6 +296,135 @@ const getWithdraws = asyncHandler(async (req,res)=>{
     }
 });
 
+/**
+ * @desc   Get all bills
+ * @route  GET  /bills
+ * @access private(CUSTOMER)
+ */
+const getBills = asyncHandler(async (req,res)=>{
+    const customer = req.customer;
+
+    try{
+        const allBills = await Bill.find({
+            customer: customer._id
+        });
+
+        const output = [];
+
+        for(let i=0;i<allBills.length;i++){
+            var merchant = await Merchant.findById(allBills[i].merchant);
+            output.push({
+                "_id":allBills[i]._id,
+                "status":allBills[i].status,
+                "amount":allBills[i].amount,
+                "date_created":allBills[i].createdAt,
+                "merchant":merchant.user_name,
+                "customer":customer.user_name,
+            });
+        }
+
+        return res.status(200).json(output);
+
+    }catch(error){
+        if (error.message.match(/(Balance|Account|validation|deposit)/gi))
+            return res.status(400).send(error.message);
+        res.status(500).send("Ooops!! Something Went Wrong, Try again...");
+    }
+});
+
+
+/**
+ * @desc   Get bill by id
+ * @route  GET  /bill/:id
+ * @access private(CUSTOMER)
+ */
+const getBillById = asyncHandler(async (req,res)=>{
+    const customer = req.customer;
+    const id = req.params.id;
+
+    try{
+        const bill = await Bill.findById(id);
+        if(!bill){
+            return res.status(404).send("Bill not found");
+        }
+        var merchant = await Merchant.findById(bill.merchant);
+        return res.status(200).json({
+            _id:bill._id,
+            status: bill.status,
+            amount: bill.amount,
+            description: bill.description,
+            account_id: bill.customer,
+            merchant: merchant.user_name,
+        });
+    }catch(error){
+        if (error.message.match(/(Balance|Account|validation|deposit)/gi))
+            return res.status(400).send(error.message);
+        res.status(500).send("Ooops!! Something Went Wrong, Try again...");
+    }
+});
+
+
+
+/**
+ * @desc   Complete bill
+ * @route  POST  /bill/:id
+ * @access private(CUSTOMER)
+ */
+const completeBill = asyncHandler(async (req,res)=>{
+    if(!('otp' in req.body)){
+        return res.status(400).send("OTP is required");
+    }
+
+    const {otp} = req.body;
+    const customer = req.customer;
+    const id = req.params.id;
+
+    try{
+        const verifiedOtp = await Otp.findOne({
+            customerUserId: customer._id,
+            code: otp,
+            expiresAt: {
+                $gt: Date.now()
+            }
+        });
+
+        if(verifiedOtp){
+            await Otp.deleteOne({_id: verifiedOtp._id});
+            var bill = await Bill.findById(id);
+            if(!bill){
+                return res.status(404).send("Bill not found");
+            }
+
+            if(bill.amount>customer.balance){
+                return res.status(400).send("You don't have enough balance for paying the bill");
+            }
+
+            bill.status = "complete"
+            customer.balance -= bill.amount;
+
+            var merchant = await Merchant.findById(bill.merchant);
+            merchant.balance += bill.amount;
+
+            await customer.save();
+            await bill.save();
+            await merchant.save();
+
+            return res.status(201).json({
+                success: true,
+            });
+        }else{
+            return res.status(401).json({
+                message:"Invalid OTP"
+            });
+        }
+    }catch(error){
+        if (error.message.match(/(Balance|Account|validation|deposit)/gi))
+            return res.status(400).send(error.message);
+        res.status(500).send("Ooops!! Something Went Wrong, Try again...");
+    }
+});
+
+
 module.exports = {
     getProfile,
     updateProfile,
@@ -301,5 +432,8 @@ module.exports = {
     getOtp,
     getDeposits,
     withdraw,
-    getWithdraws
+    getWithdraws,
+    getBills,
+    getBillById,
+    completeBill
 };
