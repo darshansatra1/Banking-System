@@ -333,17 +333,17 @@ const getUsers = asyncHandler(async(req,res)=>{
  * @access private(ADMIN)
  */
 const getUserById = asyncHandler(async(req,res)=>{
-    if(!("role" in req.body)){
+    if(!("role" in req.query)){
         return res.status(400).send("Please specify role");
     }
-    if(req.body.role!=="customer" && req.body.role!=="merchant"){
+    if(req.query.role!=="customer" && req.query.role!=="merchant"){
         return res.status(400).send("Wrong role");
     }
 
     const admin = req.admin;
 
     try{
-        if(req.body.role==="customer"){
+        if(req.query.role==="customer"){
             const customer = await Customer.findById(req.params.id);
             const employee = await Employee.findById(customer.supervisor);
             const manager = await Manager.findById(employee.supervisor);
@@ -357,6 +357,10 @@ const getUserById = asyncHandler(async(req,res)=>{
                 supervisor: employee.user_name,
                 manager:manager.user_name,
                 role:"customer",
+                phone_number: customer.phone_number,
+                dob: customer.dob,
+                address:customer.address,
+                status: customer.is_active,
             });
         }else{
             const merchant = await Merchant.findById(req.params.id);
@@ -372,6 +376,10 @@ const getUserById = asyncHandler(async(req,res)=>{
                 supervisor: employee.user_name,
                 manager:manager.user_name,
                 role:"merchant",
+                phone_number: merchant.phone_number,
+                dob: merchant.dob,
+                address:merchant.address,
+                status: merchant.is_active,
             });
         }
     }catch(error){
@@ -386,14 +394,14 @@ const getUserById = asyncHandler(async(req,res)=>{
  * @access private(ADMIN)
  */
 const getUserDepositLogs = asyncHandler(async(req,res)=>{
-    if(!('role' in req.body)){
+    if(!('role' in req.query)){
         return res.status(400).send("Please send the role");
     }
-    if(req.body.role!=="customer" && req.body.role!=="merchant"){
+    if(req.query.role!=="customer" && req.query.role!=="merchant"){
         return res.status(400).send("Please send the current role");
     }
     try{
-        if(req.body.role=="customer"){
+        if(req.query.role=="customer"){
             const customer = await Customer.findById(req.params.id);
             const allDeposits = await Deposit.find({
                 toCustomer: customer._id,
@@ -439,15 +447,15 @@ const getUserDepositLogs = asyncHandler(async(req,res)=>{
  * @access private(ADMIN)
  */
 const getUserWithdrawLogs = asyncHandler(async(req,res)=>{
-    if(!('role' in req.body)){
+    if(!('role' in req.query)){
         return res.status(400).send("Please send the role");
     }
-    if(req.body.role!=="customer" && req.body.role!=="merchant"){
+    if(req.query.role!=="customer" && req.query.role!=="merchant"){
         return res.status(400).send("Please send the current role");
     }
 
     try{
-        if(req.body.role=="customer"){
+        if(req.query.role=="customer"){
             const customer = await Customer.findById(req.params.id);
             const allWithdraws = await Withdraw.find({
                 fromCustomer: customer._id,
@@ -486,6 +494,174 @@ const getUserWithdrawLogs = asyncHandler(async(req,res)=>{
 });
 
 
+/**
+ * @desc   Update user
+ * @route  PUT /user/:id
+ * @access private(Admin)
+ */
+const updateUserProfile = asyncHandler(async (req,res)=>{
+    const admin = req.admin;
+
+    if(!('role' in req.body)){
+        return res.status(400).send("Role is required");
+    }
+    if(req.body.role!=="customer" && req.body.role!=="merchant") {
+        return res.status(400).send("Wrong role");
+    }
+
+    const id = req.params.id;
+
+    try{
+        if(req.body.role==="customer") {
+            const customer = await Customer.findById(id);
+
+            if(customer.is_active === false){
+                return res.status(401).send("User is not active");
+            }
+
+            if ('address' in req.body) {
+                customer.address = req.body.address;
+            }
+            if ('phone_number' in req.body) {
+                customer.phone_number = req.body.phone_number;
+            }
+            if ('dob' in req.body) {
+                customer.dob = req.body.dob;
+            }
+
+            await customer.save();
+
+            return res.status(200).json({
+                success: true
+            });
+        }else{
+            const merchant = await Merchant.findById(id);
+
+            if(merchant.is_active === false){
+                return res.status(401).send("User is not active");
+            }
+
+            if ('address' in req.body) {
+                merchant.address = req.body.address;
+            }
+            if ('phone_number' in req.body) {
+                merchant.phone_number = req.body.phone_number;
+            }
+            if ('dob' in req.body) {
+                merchant.dob = req.body.dob;
+            }
+
+            await merchant.save();
+
+            return res.status(200).json({
+                success: true
+            });
+        }
+    }catch(error){
+        if (error.message.match(/(email|password|name|phone|addresee|dob|date)/gi))
+            return res.status(400).send(error.message);
+        return res.status(500).send("Ooops!! Something Went Wrong, Try again...");
+    }
+});
+
+
+/**
+ * @desc   Update user
+ * @route  PUT /user/:id/status
+ * @access private(ADMIN)
+ */
+const updateUserStatus = asyncHandler(async (req,res)=>{
+    const admin = req.admin;
+
+    if(!('role' in req.body)){
+        return res.status(400).send("Role is required");
+    }
+    if(req.body.role!=="customer" && req.body.role!=="merchant") {
+        return res.status(400).send("Wrong role");
+    }
+    if(!("status" in req.body)){
+        return res.statsu(400).send("Status is required");
+    }
+
+    const id = req.params.id;
+    const {status} = req.body;
+
+    try{
+        if(req.body.role==="customer") {
+            const customer = await Customer.findById(id);
+
+            if(status === true){
+                customer.is_active = true;
+            }else if(status === false){
+                customer.is_active = false;
+                const deposits = await Deposit.find({
+                    toCustomer: id,
+                    status: "waiting",
+                });
+
+                for (const deposit of deposits) {
+                    deposit.status = "decline";
+                    await deposit.save();
+                }
+
+                const withdrawals = await Withdraw.find({
+                    fromCustomer: id,
+                    status: "waiting",
+                });
+
+                for (const withdraw of withdrawals) {
+                    withdraw.status = "decline";
+                    await withdraw.save();
+                }
+            }
+
+            await customer.save();
+
+            return res.status(200).json({
+                success: true
+            });
+        }else{
+            const merchant = await Merchant.findById(id);
+
+            if(status === true){
+                merchant.is_active = true;
+            }else if(status === false){
+                merchant.is_active = false;
+                const deposits = await Deposit.find({
+                    toMerchant: id,
+                    status: "waiting",
+                });
+
+                for (const deposit of deposits) {
+                    deposit.status = "decline";
+                    await deposit.save();
+                }
+
+                const withdrawals = await Withdraw.find({
+                    fromMerchant: id,
+                    status: "waiting",
+                });
+
+                for (const withdraw of withdrawals) {
+                    withdraw.status = "decline";
+                    await withdraw.save();
+                }
+            }
+
+            await merchant.save();
+
+            return res.status(200).json({
+                success: true
+            });
+        }
+    }catch(error){
+        if (error.message.match(/(email|password|name|phone|addresee|dob|date)/gi))
+            return res.status(400).send(error.message);
+        return res.status(500).send("Ooops!! Something Went Wrong, Try again...");
+    }
+});
+
+
 module.exports = {
     getProfile,
     updateProfile,
@@ -497,4 +673,6 @@ module.exports = {
     getUserById,
     getUserDepositLogs,
     getUserWithdrawLogs,
+    updateUserProfile,
+    updateUserStatus
 };

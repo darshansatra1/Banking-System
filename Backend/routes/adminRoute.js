@@ -1,5 +1,5 @@
 const express = require("express");
-const {updateProfile,getUserWithdrawLogs,getWithdraws, authorizeWithdraw,getUserDepositLogs,getUserById,getUsers,getProfile,getDeposits,authorizeDeposit} = require("../controllers/admin/adminController");
+const {updateUserStatus,updateUserProfile,updateProfile,getUserWithdrawLogs,getWithdraws, authorizeWithdraw,getUserDepositLogs,getUserById,getUsers,getProfile,getDeposits,authorizeDeposit} = require("../controllers/admin/adminController");
 const {authAdminProtect} = require("../middlewares/adminMiddleware/authAdminMiddleware");
 
 const router = express.Router();
@@ -30,6 +30,10 @@ router.route("/user")
     .get(authAdminProtect, getUsers);
 
 router.route("/user/:id")
-    .get(authAdminProtect, getUserById);
+    .get(authAdminProtect, getUserById)
+    .put(authAdminProtect,updateUserProfile);
+
+router.route("/user/:id/status")
+    .put(authAdminProtect,updateUserStatus);
 
 module.exports = router;
