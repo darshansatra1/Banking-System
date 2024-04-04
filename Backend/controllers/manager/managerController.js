@@ -593,9 +593,6 @@ const updateUserProfile = asyncHandler(async (req,res)=>{
             if ('phone_number' in req.body) {
                 customer.phone_number = req.body.phone_number;
             }
-            if ('dob' in req.body) {
-                customer.dob = req.body.dob;
-            }
 
             await customer.save();
 
@@ -619,9 +616,6 @@ const updateUserProfile = asyncHandler(async (req,res)=>{
             }
             if ('phone_number' in req.body) {
                 merchant.phone_number = req.body.phone_number;
-            }
-            if ('dob' in req.body) {
-                merchant.dob = req.body.dob;
             }
 
             await merchant.save();
