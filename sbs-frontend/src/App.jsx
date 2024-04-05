@@ -22,6 +22,8 @@ import { AdminUserProfilePage } from "./pages/Admin/Users/AdminUserProfilePage";
 import { AdminUserDepositHistoryPage } from "./pages/Admin/Users/AdminUserDepositHistoryPage";
 import { AdminUserWithdrawHistoryPage } from "./pages/Admin/Users/AdminUserWithdrawHistoryPage";
 import { AdminUserNavigationPage } from "./pages/Admin/Users/AdminUserNavigationPage";
+import { CustomerBillListPage } from "./pages/User/Bill/CustomerBillListPage";
+import { CustomerPayBillPage } from "./pages/User/Bill/CustomerPayBillPage";
 
 
 function App() {
@@ -39,6 +41,8 @@ function App() {
           <Route path="withdraw" element={<UserWithdrawPage/>} /> 
           <Route path="deposit_history" element={<UserDepositHistoryPage/>} /> 
           <Route path="withdraw_history" element={<UserWithdrawHistoryPage/>} /> 
+          <Route path="bill" element={<CustomerBillListPage/>} />
+          <Route path="bill/:bill_id" element={<CustomerPayBillPage/>} />
           <Route path="logout" element={<UserLogoutPage/>} /> 
         </Route>
 

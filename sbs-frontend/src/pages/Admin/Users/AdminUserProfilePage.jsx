@@ -7,7 +7,6 @@ import { AdminUserProfileEditPage } from './AdminUserProfileEditPage';
 
 export const AdminUserProfilePage = () => {
     const { userId, userRole } = useParams();
-    console.log("userRole in profile page is ", userRole);
     const navigate = useNavigate();
     const [userData, setUserData] = useState(null);
     const [loading, setLoading] = useState(false);
@@ -147,11 +146,11 @@ export const AdminUserProfilePage = () => {
                         <span>User Profile</span>
                     </h3>
                     {loading ? (
-                          <p className="text-gray-100">Loading deposit history...</p>
+                          <p className="text-gray-100">Loading user profile...</p>
                       ) : errorMessage ? (
                           <p className="text-red-500">{errorMessage}</p>
                       ) : userData && userData.length === 0 ? (
-                          <p className="text-gray-100">No deposit history available.</p>
+                          <p className="text-gray-100">No user profile available.</p>
                       ) : (
                           <ul>
                             {userData && (
