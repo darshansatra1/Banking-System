@@ -24,6 +24,8 @@ import { AdminUserWithdrawHistoryPage } from "./pages/Admin/Users/AdminUserWithd
 import { AdminUserNavigationPage } from "./pages/Admin/Users/AdminUserNavigationPage";
 import CreateBill from "./pages/User/Create Bill/CreateBill";
 import BillHistory from "./pages/User/Create Bill/BillHistory";
+import { CustomerBillListPage } from "./pages/User/Bill/CustomerBillListPage";
+import { CustomerPayBillPage } from "./pages/User/Bill/CustomerPayBillPage";
 
 
 function App() {
@@ -43,8 +45,8 @@ function App() {
           <Route path="bill_history" element={<BillHistory/>} /> 
           <Route path="deposit_history" element={<UserDepositHistoryPage/>} /> 
           <Route path="withdraw_history" element={<UserWithdrawHistoryPage/>} /> 
-          <Route path="bill" element={<CustomerBillListPage/>} />
-          <Route path="bill/:bill_id" element={<CustomerPayBillPage/>} />
+          <Route path="bill" element = {<CustomerBillListPage/>}/>
+          <Route path="bill/:bill_id"element = {<CustomerPayBillPage/>}/>
           <Route path="logout" element={<UserLogoutPage/>} /> 
         </Route>
 
