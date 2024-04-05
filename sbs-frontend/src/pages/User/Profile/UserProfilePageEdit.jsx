@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-const ExternalEditProfileFields = ({ userData, onSave, onCancel, date }) => {
+const UserProfilePageEdit = ({ userData, onSave, onCancel, date }) => {
     const [editedUserData, setEditedUserData] = useState(userData);
     const [phoneNumberError, setPhoneNumberError] = useState('');
 
@@ -125,4 +125,4 @@ const ExternalEditProfileFields = ({ userData, onSave, onCancel, date }) => {
     );
 };
 
-export default ExternalEditProfileFields;
+export default UserProfilePageEdit;

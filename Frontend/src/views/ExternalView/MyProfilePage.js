@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Cookies from 'js-cookie';
 import { useNavigate } from 'react-router-dom';
-import EditProfileFields from './ExternalEditProfileFields'; // Adjust the path as needed
-import ExternalEditProfileFields from './ExternalEditProfileFields';
+// import EditProfileFields from './ExternalEditProfileFields'; // Adjust the path as needed
+// import ExternalEditProfileFields from './ExternalEditProfileFields';
 
 const MyProfilePage = () => {
     const [userData, setUserData] = useState(null);
