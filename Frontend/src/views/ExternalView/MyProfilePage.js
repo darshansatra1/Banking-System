@@ -2,42 +2,44 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Cookies from 'js-cookie';
 import { useNavigate } from 'react-router-dom';
-import {useAuth} from "../../../hooks/useAuth";
+// import EditProfileFields from './ExternalEditProfileFields'; // Adjust the path as needed
+// import ExternalEditProfileFields from './ExternalEditProfileFields';
 
-import UserProfilePageEdit from './UserProfilePageEdit';
-
-const UserProfilePage = () => {
+const MyProfilePage = () => {
     const [userData, setUserData] = useState(null);
     const [isEditing, setIsEditing] = useState(false);
-    const {user} = useAuth();
     const [role, setRole] = useState(null); // Define role state
     const navigate = useNavigate(); 
   
     useEffect(() => {
         const fetchUserData = async () => {
             try {
-                if (!user.role) {
+                const roleFromCookie = Cookies.get('role');
+                if (!roleFromCookie) {
+                  console.error("Role not found in cookie");
                   navigate("/login");
                   return;
                 }
-                
-                if (user.token) {
-                  const response = await axios.get('http://localhost:8080/'+ user.role +'/profile', {
+                setRole(roleFromCookie); // Set role state
+                const token = Cookies.get('token');
+                if (token) {
+                  const response = await axios.get('http://localhost:8080/'+ roleFromCookie +'/profile', {
                     headers: {
-                      Authorization: `Bearer ${user.token}`,
+                      Authorization: `Bearer ${token}`,
                     },
-                  }); 
-                  console.log(user.role)
+                  });
                   setUserData(response.data);
+                  console.log("User data:", response.data);
                 } else {
+                  console.error("Token not found in cookie");
                   navigate("/login");          
                 }
               } catch (error) {
                 console.error("Error fetching user data:", error);
               }
             };
-        fetchUserData();
-        }, []);
+            fetchUserData();
+          }, [navigate]);
 
     const handleEdit = () => {
         setIsEditing(true);
@@ -46,10 +48,11 @@ const UserProfilePage = () => {
     const handleSave = async (updatedUserData) => {
         // Send updated user data to the backend
         try {
-            if (user.token) {
-                const response = await axios.put('http://localhost:8080/'+ user.role +'/profile', updatedUserData, {
+            const token = Cookies.get('token');
+            if (token) {
+                await axios.put('http://localhost:8080/'+ role +'/profile', updatedUserData, {
                     headers: {
-                        Authorization: `Bearer ${user.token}`,
+                        Authorization: `Bearer ${token}`,
                     },
                 });
                 // Update local state with new user data
@@ -57,14 +60,14 @@ const UserProfilePage = () => {
                 setIsEditing(false);
                 console.log("Profile updated successfully!");
             } else {
-                console.error("Token not found in user object");
+                console.error("Token not found in cookie");
                 navigate("/login");
             }
         } catch (error) {
             console.error("Error updating profile:", error);
         }
     };
-    
+
     const handleCancel = () => {
         setIsEditing(false);
     };
@@ -72,26 +75,18 @@ const UserProfilePage = () => {
 
 
     const extractDate = (datetimeString) => {
-        if (!datetimeString) return null; // handle null or undefined datetimeString
-        
         const date = new Date(datetimeString);
-        
-        if (isNaN(date.getTime())) {
-            console.error("Invalid date string:", datetimeString);
-            return null;
-        }
-        
         // Get the date part in yyyy-mm-dd format
         return date.toISOString().split('T')[0];
     };
-    
+
     const formattedDate = userData ? extractDate(userData.dob) : null;
 
     return (
         <div className="container mx-auto py-8">
             {userData && (  // Add this condition to ensure userData is not null before rendering
                 isEditing ? (
-                    <UserProfilePageEdit 
+                    <ExternalEditProfileFields 
                         userData={userData} 
                         onSave={handleSave} 
                         onCancel={handleCancel} 
@@ -124,4 +119,4 @@ const UserProfilePage = () => {
     
 };
 
-export default UserProfilePage;
+export default MyProfilePage;

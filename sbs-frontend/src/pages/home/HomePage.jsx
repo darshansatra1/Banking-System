@@ -5,7 +5,7 @@ import { ScrollToTopBtn } from "../../components/ScrollToTopBtn";
 import Footer from "../../components/Footer";
 
 
-export const HomePage = ()=>{
+const HomePage = ()=>{
 
     const [startAnimation, setStartAnimation] = useState(false);
 
@@ -66,3 +66,4 @@ export const HomePage = ()=>{
         </>
     )
 }
+export default HomePage;
