@@ -28,9 +28,9 @@ export const AdminUserProfilePage = () => {
           })
           .then(response => {
             setUserData(response.data);
-            setIsActive(userData.status);
+            setIsActive(response.data.status);
           })
-          .catch(error => { 
+          .catch(error => {
               setErrorMessage('An error occurred while fetching user profile. Please try again later.');
           })
           .finally(() => {
@@ -61,7 +61,7 @@ export const AdminUserProfilePage = () => {
 
         const deactivatePayload = {};
         deactivatePayload.role = userData.role;
-        deactivatePayload.status = "false";
+        deactivatePayload.status = false;
         
         await axios.put(`http://localhost:8080/${user.role}/user/${userId}/status`, deactivatePayload, {
             headers: {
@@ -90,7 +90,7 @@ export const AdminUserProfilePage = () => {
     
             const deactivatePayload = {};
             deactivatePayload.role = userData.role;
-            deactivatePayload.status = "true";
+            deactivatePayload.status = true;
             
             await axios.put(`http://localhost:8080/${user.role}/user/${userId}/status`, deactivatePayload, {
                 headers: {
@@ -163,7 +163,7 @@ export const AdminUserProfilePage = () => {
                                     <p className='text-slate-100'><strong>Phone number:</strong> {userData.phone_number}</p>
                                     <p className='text-slate-100'><strong>Address:</strong> {userData.address}</p>
                                     <div style={{ textAlign: 'right' }}>
-                                    {isActive == true && ( <button type="button" 
+                                    {isActive === true && ( <button type="button"
                                                 data-te-ripple-init 
                                                 data-te-ripple-color="light" 
                                                 onClick={handleEditUser}
@@ -171,7 +171,7 @@ export const AdminUserProfilePage = () => {
                                                 style={{ marginRight: '50px' }}>
                                             Edit User
                                         </button>)}      
-                                        {isActive == true ? 
+                                        {isActive === true ?
                                         (     
                                         <button type="button" 
                                         data-te-ripple-init 
