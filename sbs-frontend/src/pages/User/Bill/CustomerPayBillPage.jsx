@@ -27,6 +27,7 @@ export const CustomerPayBillPage = () => {
             })
             .then(response => {
               setBillData(response.data);
+              setShowPayBillButton(true)
             })
             .catch(error => { 
                 setErrorMessage('An error occurred while fetching bill data. Please try again later.');
@@ -154,7 +155,7 @@ export const CustomerPayBillPage = () => {
                         </button>
                     )}
 
-                    {!showOtpField  &&(
+                    {!showOtpField  && showPayBillButton && (
                         <button
                         className="mb-6 inline-block w-full rounded-lg bg-[hsl(143,74%,45%)] px-6 pt-2.5 pb-2 text-m font-big uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#3b71ca] transition duration-150 ease-in-out hover:bg-[hsl(218,81%,75%)] hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] dark:shadow-[0_4px_9px_-4px_rgba(59,113,202,0.5)] dark:hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)]"
                         onClick={handleGenerateOtp}
