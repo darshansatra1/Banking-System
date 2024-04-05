@@ -3,8 +3,11 @@ import { Link } from 'react-router-dom';
 import {Outlet} from "react-router-dom";
 import { Navbar } from '../../components/Navbar';
 import Footer from '../../components/Footer';
+import { useAuth } from '../../hooks/useAuth';
 
 export const UserDashboard = () => {
+  const {user} = useAuth();
+
   return (
     <>
         <Navbar />
@@ -19,6 +22,10 @@ export const UserDashboard = () => {
                 <Link to="/user/bill_history" className="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700">Bill History</Link>          
                 <Link to="/user/deposit_history" className="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700">Deposit History</Link>
                 <Link to="/user/withdraw_history" className="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700">Withdraw History</Link> 
+                {user.role == "customer" && 
+                ( 
+                <Link to="/user/bill" className="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700">Pay Bill</Link> 
+                )}
                 <Link to="/user/logout" className="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700">Logout</Link>          
                 
                 {/* Add more links as needed */}

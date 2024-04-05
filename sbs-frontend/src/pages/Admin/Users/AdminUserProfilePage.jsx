@@ -7,12 +7,12 @@ import { AdminUserProfileEditPage } from './AdminUserProfileEditPage';
 
 export const AdminUserProfilePage = () => {
     const { userId, userRole } = useParams();
-    console.log("userRole in profile page is ", userRole);
     const navigate = useNavigate();
     const [userData, setUserData] = useState(null);
     const [loading, setLoading] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
     const [isEditing, setIsEditing] = useState(false);
+    const [isActive, setIsActive] = useState(false);
     const {user} = useAuth();
 
     useEffect(() => {
@@ -20,7 +20,7 @@ export const AdminUserProfilePage = () => {
       setErrorMessage(''); 
       // Check if token exists
         if (user.token) {
-          // Make API request to fetch withdrawal history
+          // Make API request to fetch user data
           axios.get(`http://localhost:8080/${user.role}/user/${userId}?role=${userRole}`, {
               headers: {
                   Authorization: `Bearer ${user.token}`, // Include token in the headers
@@ -28,6 +28,7 @@ export const AdminUserProfilePage = () => {
           })
           .then(response => {
             setUserData(response.data);
+            setIsActive(userData.status);
           })
           .catch(error => { 
               setErrorMessage('An error occurred while fetching user profile. Please try again later.');
@@ -48,7 +49,7 @@ export const AdminUserProfilePage = () => {
         setIsEditing(false);
     };
 
-    const handleDeleteUser = async () => {
+    const handleDeactivateUser = async () => {
         try {
         setLoading(true);
         setErrorMessage(''); 
@@ -57,17 +58,17 @@ export const AdminUserProfilePage = () => {
             navigate("/login");
             return;
         }
-        //userId
-        // const response = await axios.post(
-        //     'http://localhost:8080/'+user.role+'/deposit/'+ depositId,
-        //     { accept },
-        //     {
-        //     headers: {
-        //         Authorization: `Bearer ${user.token}`,
-        //     },
-        //     }
-        // ); 
-          navigate('/admin/users');
+
+        const deactivatePayload = {};
+        deactivatePayload.role = userData.role;
+        deactivatePayload.status = "false";
+        
+        await axios.put(`http://localhost:8080/${user.role}/user/${userId}/status`, deactivatePayload, {
+            headers: {
+                Authorization: `Bearer ${user.token}`, // Include token in the headers
+            },
+        });
+        setIsActive(false);
         } catch (error) {
         window.alert(error.message, () => {
             window.location.reload(); // Reload the page on OK
@@ -75,6 +76,35 @@ export const AdminUserProfilePage = () => {
         } finally {
         setLoading(false); // Set loading to false regardless of success or failure
         }
+    };
+
+    const handleActivateUser = async () => {
+        try {
+            setLoading(true);
+            setErrorMessage(''); 
+        
+            if (!user.role || !user.token) {
+                navigate("/login");
+                return;
+            }
+    
+            const deactivatePayload = {};
+            deactivatePayload.role = userData.role;
+            deactivatePayload.status = "true";
+            
+            await axios.put(`http://localhost:8080/${user.role}/user/${userId}/status`, deactivatePayload, {
+                headers: {
+                    Authorization: `Bearer ${user.token}`, // Include token in the headers
+                },
+            });
+            setIsActive(true);
+            } catch (error) {
+            window.alert(error.message, () => {
+                window.location.reload(); // Reload the page on OK
+            });
+            } finally {
+            setLoading(false); // Set loading to false regardless of success or failure
+            }
     };
 
     const handleSave = async (updatedUserData) => {
@@ -116,11 +146,11 @@ export const AdminUserProfilePage = () => {
                         <span>User Profile</span>
                     </h3>
                     {loading ? (
-                          <p className="text-gray-100">Loading deposit history...</p>
+                          <p className="text-gray-100">Loading user profile...</p>
                       ) : errorMessage ? (
                           <p className="text-red-500">{errorMessage}</p>
                       ) : userData && userData.length === 0 ? (
-                          <p className="text-gray-100">No deposit history available.</p>
+                          <p className="text-gray-100">No user profile available.</p>
                       ) : (
                           <ul>
                             {userData && (
@@ -133,22 +163,33 @@ export const AdminUserProfilePage = () => {
                                     <p className='text-slate-100'><strong>Phone number:</strong> {userData.phone_number}</p>
                                     <p className='text-slate-100'><strong>Address:</strong> {userData.address}</p>
                                     <div style={{ textAlign: 'right' }}>
-                                        <button type="button" 
+                                    {isActive == true && ( <button type="button" 
                                                 data-te-ripple-init 
                                                 data-te-ripple-color="light" 
                                                 onClick={handleEditUser}
                                                 className="mb-6 rounded bg-[hsl(143,74%,45%)] px-6 pt-2.5 pb-2 text-xs font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#3b71ca] transition duration-150 ease-in-out hover:bg-[hsl(218,81%,75%)] hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] dark:shadow-[0_4px_9px_-4px_rgba(59,113,202,0.5)] dark:hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)]"
                                                 style={{ marginRight: '50px' }}>
                                             Edit User
-                                        </button>
-
+                                        </button>)}      
+                                        {isActive == true ? 
+                                        (     
                                         <button type="button" 
-                                                data-te-ripple-init 
-                                                data-te-ripple-color="light" 
-                                                onClick={handleDeleteUser}
-                                                className="mb-6 rounded bg-[hsl(143,74%,45%)] px-6 pt-2.5 pb-2 text-xs font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#3b71ca] transition duration-150 ease-in-out hover:bg-[hsl(218,81%,75%)] hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] dark:shadow-[0_4px_9px_-4px_rgba(59,113,202,0.5)] dark:hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)]">
-                                            Delete User
-                                        </button>
+                                        data-te-ripple-init 
+                                        data-te-ripple-color="light" 
+                                        onClick={handleDeactivateUser}
+                                        className="mb-6 rounded bg-[hsl(143,74%,45%)] px-6 pt-2.5 pb-2 text-xs font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#3b71ca] transition duration-150 ease-in-out hover:bg-[hsl(218,81%,75%)] hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] dark:shadow-[0_4px_9px_-4px_rgba(59,113,202,0.5)] dark:hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)]">
+                                    Deactivate User
+                                </button>
+                                ) : 
+                                ( 
+                                    <button type="button" 
+                                            data-te-ripple-init 
+                                            data-te-ripple-color="light" 
+                                            onClick={handleActivateUser}
+                                            className="mb-6 rounded bg-[hsl(143,74%,45%)] px-6 pt-2.5 pb-2 text-xs font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#3b71ca] transition duration-150 ease-in-out hover:bg-[hsl(218,81%,75%)] hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] dark:shadow-[0_4px_9px_-4px_rgba(59,113,202,0.5)] dark:hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)]">
+                                        Activate User
+                                    </button>) }
+                                      
                                     </div>
                                 </div>  
                             )}

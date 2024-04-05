@@ -2,11 +2,11 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import {useNavigate } from "react-router-dom";
 import {useAuth} from "../../../hooks/useAuth";
-import UserListCard from "../../../components/Admin/UserListCard";
+import CustomerBillCard from "../../../components/Admin/CustomerBillCard";
 
-export const AdminUserListPage = () => {
+export const CustomerBillListPage = () => {
     const navigate = useNavigate();
-    const [userData, setUserData] = useState([]);
+    const [billData, setBillData] = useState([]);
     const [loading, setLoading] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
     const {user} = useAuth();
@@ -16,18 +16,18 @@ export const AdminUserListPage = () => {
         setErrorMessage(''); 
         // Check if token exists
         if (user.token) {
-            // Make API request to fetch user list
-            axios.get(`http://localhost:8080/${user.role}/user`,
+            // Make API request to fetch customer bill list
+            axios.get(`http://localhost:8080/${user.role}/bills`,
             {
                 headers: {
                     Authorization: `Bearer ${user.token}`, // Include token in the headers
                 },
             })
             .then(response => {
-              setUserData(response.data);
+              setBillData(response.data);
             })
             .catch(error => {
-                setErrorMessage('An error occurred while fetching user list. Please try again later.');
+                setErrorMessage('An error occurred while fetching customer bill list. Please try again later.');
             })
             .finally(() => {
                 setLoading(false);
@@ -38,8 +38,8 @@ export const AdminUserListPage = () => {
         }
     }, []);  
 
-    const onClick = async (userId, userRole) => {
-        navigate(`${userId}/${userRole}`);
+    const onClick = async (bill_id) => {
+        navigate(`${bill_id}`);
     };    
 
     return (
@@ -49,26 +49,22 @@ export const AdminUserListPage = () => {
                   <div className="p-6">
 
                       <h3 className="flex justify-center items-center text-2xl text-blue-600 font-bold text-center p-2 my-4 rounded shadow bg-blue-200 border-x-4 select-none">
-                          <span>User List</span>
+                          <span>Bill List</span>
                       </h3>
                       {loading ? (
-                          <p className="text-gray-100">Loading user list...</p>
+                          <p className="text-gray-100">Loading bill list...</p>
                       ) : errorMessage ? (
                           <p className="text-red-500">{errorMessage}</p>
-                      ) : userData.length === 0 ? (
-                          <p className="text-gray-100">No user list available.</p>
+                      ) : billData.length === 0 ? (
+                          <p className="text-gray-100">No bills available.</p>
                       ) : (
                           <ul>
-                              {userData && userData.map((user) => (
-                                  <UserListCard
-                                      user_name={user.user_name}
-                                      email={user.email}
-                                      balance={user.balance}
-                                      account_id={user._id}
-                                      role={user.role}
-                                      supervisor={user.supervisor}
-                                      manager={user.manager}
-                                      user_id={user._id}
+                              {billData && billData.map((bill) => (
+                                  <CustomerBillCard
+                                      bill_id={bill._id}
+                                      status={bill.status}
+                                      amount={bill.amount}
+                                      merchant={bill.merchant}
                                       onClick={onClick}
                                   />
                               ))}
