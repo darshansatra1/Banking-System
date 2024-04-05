@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { Fragment } from 'react'
 import { Link } from 'react-router-dom';
 import {Outlet} from "react-router-dom";
 import { Navbar } from '../../components/Navbar';
@@ -18,14 +18,24 @@ export const UserDashboard = () => {
                 <Link to="/user" className="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700">Profile</Link>
                 <Link to="/user/deposit" className="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700">Deposit</Link>
                 <Link to="/user/withdraw" className="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700">Withdraw</Link>
-                <Link to="/user/createbill" className="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700">Create Bill</Link> 
-                <Link to="/user/bill_history" className="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700">Bill History</Link>          
+               
                 <Link to="/user/deposit_history" className="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700">Deposit History</Link>
                 <Link to="/user/withdraw_history" className="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700">Withdraw History</Link> 
-                {user.role == "customer" && 
+                {user.role === "customer" && 
                 ( 
                 <Link to="/user/bill" className="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700">Pay Bill</Link> 
                 )}
+
+                {user.role === "merchant" &&
+                (
+                 <Fragment>
+ <Link to="/user/createbill" className="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700">Create Bill</Link> 
+                <Link to="/user/bill_history" className="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700">Bill History</Link>    
+
+                 </Fragment>
+               
+                )      
+                }
                 <Link to="/user/logout" className="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700">Logout</Link>          
                 
                 {/* Add more links as needed */}
