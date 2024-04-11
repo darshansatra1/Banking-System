@@ -17,8 +17,12 @@ export const UserDepositListCard = ({deposit}) => {
                 </p>
             </div>
             <div
-                class="text-white bg-blue-700 rounded-lg text-sm px-6 py-2.5 me-2 mb-2 dark:bg-blue-600 focus:outline-none dark:focus:ring-blue-800">
-                <strong>Status:</strong> {deposit.status}
+                className={deposit.status === 'accept' ? 'bg-green-500 text-white rounded-lg text-sm px-6 py-2.5 me-2 mb-2 dark:bg-green-500 focus:outline-none' 
+                : deposit.status === 'waiting' ? 'text-white bg-blue-700 rounded-lg text-sm px-6 py-2.5 me-2 mb-2 dark:bg-blue-600 focus:outline-none' 
+                : 'bg-red-500 text-white rounded-lg text-sm px-6 py-2.5 me-2 mb-2 dark:bg-red-500 focus:outline-none'}
+                
+                >
+                <strong >Status:</strong> {deposit.status === 'accept' ? 'Success' : deposit.status === 'waiting' ? 'Pending' : 'Decline'}
             </div>
         </div>
     </div>
