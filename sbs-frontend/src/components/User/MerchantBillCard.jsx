@@ -14,7 +14,7 @@ export const MerchantBillCard = ({ bill, index }) => {
     // </div>
     <div>
             <ul class="max-w divide-y divide-gray-200 dark:divide-gray-800">
-                <li class="block w-full cursor-pointer rounded-lg p-4 text-left transition duration-500 hover:bg-white-100 hover:text-white-500 focus:bg-white-100 focus:text-white-500 focus:ring-0 dark:hover:bg-teal-900 dark:hover:text-white-200 dark:focus:bg-green-600 dark:focus:text-white-200">
+                <li class="block w-full cursor-pointer rounded-lg p-4 text-left transition duration-500 hover:bg-white-100 focus:bg-white-100 focus:text-white-500 focus:ring-0 hover:bg-teal-900 dark:hover:text-white-200 dark:focus:bg-green-600 dark:focus:text-white-200">
                     <div
                         class="flex items-center space-x-4 rtl:space-x-reverse text-slate-900 group-hover:text-white text-sm">
                         <div class="flex-shrink-0 w-8 h-8 rounded-full">
@@ -35,8 +35,9 @@ export const MerchantBillCard = ({ bill, index }) => {
                             </p>
                         </div>
                         <div
-                            class="text-white bg-blue-700 rounded-lg text-sm px-6 py-2.5 me-2 mb-2 dark:bg-blue-600 focus:outline-none dark:focus:ring-blue-800">
-                            <strong>Status:</strong> {bill.status}
+                            className={bill.status === 'complete' ? 'text-white bg-green-500 rounded-lg text-sm px-6 py-2.5 me-2 mb-2' : 'text-white bg-blue-700 rounded-lg text-sm px-6 py-2.5 me-2 mb-2'}
+                            >
+                            <strong >Status:</strong> {bill.status=== 'complete' ? "Paid" : "Pending"}
                         </div>
                     </div>
                 </li>

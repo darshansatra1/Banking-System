@@ -17,9 +17,16 @@ export const UserWithdrawListCard = ({withdrawal}) => {
                         <strong>Date Created: </strong> {withdrawal.date_created}
                     </p>
                 </div>
-                <div
+                {/* <div
                     class="text-white bg-blue-700 rounded-lg text-sm px-6 py-2.5 me-2 mb-2 dark:bg-blue-600 focus:outline-none dark:focus:ring-blue-800">
                     <strong>Status:</strong> {withdrawal.status}
+                </div> */}
+                <div
+                    className={withdrawal.status === 'accept' ? 'bg-green-500 text-white rounded-lg text-sm px-6 py-2.5 me-2 mb-2 dark:bg-green-500 focus:outline-none' 
+                    : withdrawal.status === 'waiting' ? 'text-white bg-blue-700 rounded-lg text-sm px-6 py-2.5 me-2 mb-2 dark:bg-blue-600 focus:outline-none' 
+                    : 'bg-red-500 text-white rounded-lg text-sm px-6 py-2.5 me-2 mb-2 dark:bg-red-500 focus:outline-none'}
+                    >
+                    <strong >Status:</strong> {withdrawal.status === 'accept' ? 'Success' : withdrawal.status === 'waiting' ? 'Pending' : 'Decline'}
                 </div>
             </div>
         </div>

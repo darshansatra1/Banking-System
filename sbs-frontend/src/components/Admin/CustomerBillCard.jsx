@@ -21,9 +21,14 @@ const CustomerBillCard = ({bill_id, status, amount, merchant, onClick}) => {
                             <p className="text-sm text-gray-100 truncate dark:text-gray-100">
                                 <strong>Amount:</strong> {amount}
                             </p>
-                            <p className="text-sm text-gray-100 truncate dark:text-gray-100">
+                            {/* <p className="text-sm text-gray-100 truncate dark:text-gray-100">
                                 <strong>Status:</strong> {status}
-                            </p>
+                            </p> */}
+                        </div>
+                        <div
+                            className={status === 'complete' ? 'text-white bg-green-500 rounded-lg text-sm px-6 py-2.5 me-2 mb-2' : 'text-white bg-blue-700 rounded-lg text-sm px-6 py-2.5 me-2 mb-2'}
+                            >
+                            <strong >Status:</strong> {status=== 'complete' ? "Paid" : "Pending"}
                         </div>
                         {status == "pending" && (
                             <div>
@@ -31,7 +36,7 @@ const CustomerBillCard = ({bill_id, status, amount, merchant, onClick}) => {
                                     data-te-ripple-init 
                                     data-te-ripple-color="light" 
                                     onClick={handlePayBill}
-                                    class="mb-6 inline-block w-full rounded bg-[hsl(143,74%,45%)] px-6 pt-2.5 pb-2 text-xs font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#3b71ca] transition duration-150 ease-in-out hover:bg-[hsl(218,81%,75%)] hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] dark:shadow-[0_4px_9px_-4px_rgba(59,113,202,0.5)] dark:hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)]">
+                                    class="mb-2 inline-block w-full rounded-lg bg-[hsl(143,74%,45%)] px-6 pt-2.5 pb-2 text-xs font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#3b71ca] transition duration-150 ease-in-out hover:bg-[hsl(218,81%,75%)] hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] dark:shadow-[0_4px_9px_-4px_rgba(59,113,202,0.5)] dark:hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)]">
                             Pay Bill
                             </button></p>
                         </div>  
