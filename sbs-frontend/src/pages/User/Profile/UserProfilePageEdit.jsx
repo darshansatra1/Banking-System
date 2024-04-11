@@ -39,7 +39,9 @@ const UserProfilePageEdit = ({ userData, onSave, onCancel, date }) => {
         <div className="container mx-auto py-8">
             <div className="max-w-lg mx-auto bg-gray-800 rounded-lg overflow-hidden shadow-lg">
                 <div className="p-6">
-                    <h3 className="text-2xl text-blue-600 font-bold text-center my-4">Edit Profile</h3>
+                    <h3 className="flex justify-center items-center text-2xl text-blue-600 font-bold text-center p-2 my-4 rounded shadow bg-blue-200 border-x-4 select-none">
+                        <span> Edit Profile</span>
+                    </h3>
                     <div>
                         <div className="mb-4">
                             <label className="block text-sm font-bold mb-2 text-blue-300" htmlFor="user_name">User Name:</label>
