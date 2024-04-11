@@ -23,7 +23,14 @@ const BillHistory = () => {
                         Authorization: `Bearer ${user.token}`,
                     },
                 });
-                setBillHistory(response.data);
+
+
+
+
+
+
+
+           setBillHistory(response.data);
                 setLoading(false);
             } catch (error) {
                 console.error('Error fetching bill history:', error);

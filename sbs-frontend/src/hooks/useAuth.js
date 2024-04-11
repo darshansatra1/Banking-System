@@ -1,10 +1,18 @@
+// AuthProvider.js
 import { createContext, useContext, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { useLocalStorage } from "./useLocalStorage";
+import CryptoJS from "crypto-js";
+
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-    const [user, setUser] = useLocalStorage("user", null);
+    
+    const encryptionKey = "7FQJWPkf7efdxsiTcCTUzfTkibXvCg6fpmmqHpMckqB"
+
+
+
+    const [user, setUser] = useLocalStorage("user", null, encryptionKey);
     const navigate = useNavigate();
 
     // call this function when you want to authenticate the user
