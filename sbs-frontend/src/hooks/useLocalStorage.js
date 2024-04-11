@@ -20,14 +20,20 @@ export const useLocalStorage = (keyName, defaultValue, encryptionKey) => {
 
     const setValue = (newValue) => {
         try {
-            // Encrypt and store the new value
-            const encryptedValue = CryptoJS.AES.encrypt(JSON.stringify(newValue), encryptionKey).toString();
-            window.localStorage.setItem(keyName, encryptedValue);
+            if (newValue) {
+                // Encrypt the new value and store it
+                const encryptedValue = CryptoJS.AES.encrypt(JSON.stringify(newValue), encryptionKey).toString();
+                window.localStorage.setItem(keyName, encryptedValue);
+                setStoredValue(newValue); // Update the state with the new value
+            } else {
+                // If no new value is provided, clear the stored value from localStorage
+                window.localStorage.removeItem(keyName);
+                setStoredValue(defaultValue); // Update the state with the default value
+            }
         } catch (err) {
             console.error("Error setting localStorage value:", err);
         }
-        setStoredValue(newValue);
     };
-
+    
     return [storedValue, setValue];
 };
