@@ -362,7 +362,7 @@ const getUserById = asyncHandler(async(req,res)=>{
     if(!("role" in req.query)){
         return res.status(400).send("Please specify role");
     }
-    if(req.query.role!=="customer" && req.query.role!=="merchant"){
+    if(req.query.role!=="customer" && req.query.role!=="merchant" && req.query.role!=="manager" && req.query.role!=="employee"){
         return res.status(400).send("Wrong role");
     }
 
@@ -388,7 +388,7 @@ const getUserById = asyncHandler(async(req,res)=>{
                 address:customer.address,
                 status: customer.is_active,
             });
-        }else{
+        }else if(req.query.role==="merchant"){
             const merchant = await Merchant.findById(req.params.id);
             const employee = await Employee.findById(merchant.supervisor);
             const manager = await Manager.findById(employee.supervisor);
@@ -406,6 +406,33 @@ const getUserById = asyncHandler(async(req,res)=>{
                 dob: merchant.dob,
                 address:merchant.address,
                 status: merchant.is_active,
+            });
+        }else if(req.query.role === "employee"){
+            const employee = await Employee.findById(req.params.id);
+            const manager = await Manager.findById(employee.supervisor);
+
+            return res.json({
+                _uid: employee._id,
+                user_name: employee.user_name,
+                email: employee.email,
+                date_created: merchant.createdAt,
+                manager:manager.user_name,
+                role:"employee",
+                phone_number: employee.phone_number,
+                dob: employee.dob,
+                address:employee.address,
+            });
+        }else{
+            const manager = await Manager.findById(req.params.id);
+            return res.json({
+                _uid: manager._id,
+                user_name: manager.user_name,
+                email: manager.email,
+                date_created: manager.createdAt,
+                role:"manager",
+                phone_number: manager.phone_number,
+                dob: manager.dob,
+                address:manager.address,
             });
         }
     }catch(error){

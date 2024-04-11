@@ -388,7 +388,7 @@ const getUserById = asyncHandler(async(req,res)=>{
     if(!("role" in req.query)){
         return res.status(400).send("Please specify role");
     }
-    if(req.query.role!=="customer" && req.query.role!=="merchant"){
+    if(req.query.role!=="customer" && req.query.role!=="merchant" && req.query.role==="employee"){
         return res.status(400).send("Wrong role");
     }
 
@@ -415,7 +415,7 @@ const getUserById = asyncHandler(async(req,res)=>{
                 address:customer.address,
                 status: customer.is_active,
             });
-        }else{
+        }else if(req.query.role==="merchant"){
             const merchant = await Merchant.findById(req.params.id);
             const employee = await Employee.findById(merchant.supervisor);
             if(employee.supervisor.toString()!==manager._id.toString()){
@@ -433,6 +433,22 @@ const getUserById = asyncHandler(async(req,res)=>{
                 dob: merchant.dob,
                 address:merchant.address,
                 status: merchant.is_active,
+            });
+        }else{
+            const employee = await Employee.findById(req.params.id);
+            if(employee.supervisor.toString()!==manager._id.toString()){
+                return res.status(401).send("You are not authorized");
+            }
+            return res.json({
+                _uid: employee._id,
+                user_name: employee.user_name,
+                email: employee.email,
+                date_created: employee.createdAt,
+                manager: manager.user_name,
+                role:"employee",
+                phone_number: employee.phone_number,
+                dob: employee.dob,
+                address:employee.address,
             });
         }
     }catch(error){
