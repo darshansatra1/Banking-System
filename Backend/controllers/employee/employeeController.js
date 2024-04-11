@@ -167,7 +167,7 @@ const authorizeDeposit = asyncHandler(async(req,res)=>{
         }
         if(deposit.toMerchant){
             const merchant = await Merchant.findById(deposit.toMerchant);
-            if(merchant.supervisor!==employee._id){
+            if(merchant.supervisor.toString()!==employee._id.toString()){
                 return res.status(401).send("You are not authorized");
             }
             if(accept){

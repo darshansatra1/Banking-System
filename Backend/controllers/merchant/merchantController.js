@@ -103,7 +103,7 @@ const getOtp = asyncHandler(async (req,res)=>{
 
         const newOtp = new Otp({merchantUserId: merchant._id,code:otp,expiresAt: Date.now() + 60*2*1000}); // Expires in 2 minutes
         await newOtp.save();
-        // await transporter.sendMail(mailOptions);
+        await transporter.sendMail(mailOptions);
 
         return res.status(200).json({
             message:'OTP sent succesfully'
