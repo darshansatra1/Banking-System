@@ -339,6 +339,14 @@ const getUsers = asyncHandler(async(req,res)=>{
             const employeeId = manager.employees[i];
             const employee = await Employee.findById(employeeId);
 
+            output.push({
+                "_id":employee._id,
+                "role":"employee",
+                "user_name":employee.user_name,
+                "email":employee.email,
+                "manager":manager.user_name,
+            });
+
             for(let j=0;j<employee.users.length;j++){
                 const user = employee.users[j];
                 if(user.role==="customer"){
@@ -567,7 +575,7 @@ const updateUserProfile = asyncHandler(async (req,res)=>{
     if(!('role' in req.body)){
         return res.status(400).send("Role is required");
     }
-    if(req.body.role!=="customer" && req.body.role!=="merchant") {
+    if(req.body.role!=="customer" && req.body.role!=="merchant" && req.body.role!=="employee") {
         return res.status(400).send("Wrong role");
     }
 
@@ -599,7 +607,7 @@ const updateUserProfile = asyncHandler(async (req,res)=>{
             return res.status(200).json({
                 success: true
             });
-        }else{
+        }else if(req.body.role==="merchant"){
             const merchant = await Merchant.findById(id);
             if(merchant.is_active === false){
                 return res.status(401).send("User is not active");
@@ -619,6 +627,25 @@ const updateUserProfile = asyncHandler(async (req,res)=>{
             }
 
             await merchant.save();
+
+            return res.status(200).json({
+                success: true
+            });
+        }else{
+            const employee = await Employee.findById(id);
+
+            if (employee.supervisor.toString() !== manager._id.toString()) {
+                return res.status(401).send("You are not authorized");
+            }
+
+            if ('address' in req.body) {
+                employee.address = req.body.address;
+            }
+            if ('phone_number' in req.body) {
+                employee.phone_number = req.body.phone_number;
+            }
+
+            await employee.save();
 
             return res.status(200).json({
                 success: true

@@ -320,6 +320,32 @@ const getUsers = asyncHandler(async(req,res)=>{
                 "manager":manager.user_name,
             });
         }
+
+        const employees = await Employee.find();
+        for(let i=0;i<employees.length;i++){
+            const employee = employees[i];
+            const manager = await Manager.findById(employee.supervisor);
+            output.push({
+                "_id":employee._id,
+                "role":"employee",
+                "user_name":employee.user_name,
+                "email":employee.email,
+                "manager":manager.user_name,
+            });
+        }
+
+        const managers = await Manager.find();
+        for(let i=0;i<managers.length;i++){
+            const manager = managers[i];
+
+            output.push({
+                "_id":manager._id,
+                "role":"manager",
+                "user_name":manager.user_name,
+                "email":manager.email,
+            });
+        }
+
         return res.status(200).send(output);
     }catch(error){
         return res.status(500).send("Ooops!! Something Went Wrong, Try again...");
@@ -505,7 +531,7 @@ const updateUserProfile = asyncHandler(async (req,res)=>{
     if(!('role' in req.body)){
         return res.status(400).send("Role is required");
     }
-    if(req.body.role!=="customer" && req.body.role!=="merchant") {
+    if(req.body.role!=="customer" && req.body.role!=="merchant" && req.body.role!=="manager" && req.body.role!=="employee") {
         return res.status(400).send("Wrong role");
     }
 
@@ -531,7 +557,7 @@ const updateUserProfile = asyncHandler(async (req,res)=>{
             return res.status(200).json({
                 success: true
             });
-        }else{
+        }else if(req.body.role==="merchant"){
             const merchant = await Merchant.findById(id);
 
             if(merchant.is_active === false){
@@ -546,6 +572,36 @@ const updateUserProfile = asyncHandler(async (req,res)=>{
             }
 
             await merchant.save();
+
+            return res.status(200).json({
+                success: true
+            });
+        }else if(req.body.role==="employee"){
+            const employee = await Employee.findById(id);
+
+            if ('address' in req.body) {
+                employee.address = req.body.address;
+            }
+            if ('phone_number' in req.body) {
+                employee.phone_number = req.body.phone_number;
+            }
+
+            await employee.save();
+
+            return res.status(200).json({
+                success: true
+            });
+        }else{
+            const manager = await Manager.findById(id);
+
+            if ('address' in req.body) {
+                manager.address = req.body.address;
+            }
+            if ('phone_number' in req.body) {
+                manager.phone_number = req.body.phone_number;
+            }
+
+            await manager.save();
 
             return res.status(200).json({
                 success: true
