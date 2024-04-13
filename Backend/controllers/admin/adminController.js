@@ -415,7 +415,7 @@ const getUserById = asyncHandler(async(req,res)=>{
                 _uid: employee._id,
                 user_name: employee.user_name,
                 email: employee.email,
-                date_created: merchant.createdAt,
+                date_created: employee.createdAt,
                 manager:manager.user_name,
                 role:"employee",
                 phone_number: employee.phone_number,
