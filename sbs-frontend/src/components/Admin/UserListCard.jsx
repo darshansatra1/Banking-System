@@ -38,10 +38,11 @@ const UserListCard = ({user_name, email, balance, account_id, role, supervisor, 
                                 </p>
                             )}
                         </div>
-                        <div
+                        {balance && (<div
                             class="text-white bg-blue-700 rounded-lg text-sm px-6 py-2.5 me-2 mb-2 dark:bg-blue-600 focus:outline-none dark:focus:ring-blue-800">
                             <strong>Balance:</strong> ${balance}
                         </div>
+                        )}
                         <div>
                             <p><button type="button" 
                                     data-te-ripple-init 

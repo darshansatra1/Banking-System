@@ -7,21 +7,27 @@ import { NavBar } from '../../../components/Admin/NavBar';
 
 export const AdminUserNavigationPage = () => {
 
-    const TABS = {
+    const CUSTOMER_TABS = {
         'profile': <AdminUserProfilePage />,
         'deposit': <AdminUserDepositHistoryPage />,
         'withdraw': <AdminUserWithdrawHistoryPage />
-      }
+    }
 
-    const { userId } = useParams(); // Retrieve user ID from URL parameters
+    const { userId, userRole } = useParams(); // Retrieve user ID from URL parameters
     const [selectedTab, setSelectedTab] = useState('profile');
 
     return (
-        <div className="container mx-auto py-8">
-            <div>
-                <NavBar setSelectedTab={setSelectedTab} />
-                {React.cloneElement(TABS[selectedTab], { userId })} {/* Pass userId as prop */}
+        <div className="container mx-auto py-8">  
+        {userRole === "customer" ? (
+                <div>
+                <NavBar setSelectedTab={setSelectedTab}/>
+                {React.cloneElement(CUSTOMER_TABS[selectedTab], { userId })} {/* Pass userId as prop */}
             </div>
-        </div>     
+        ) : (
+  
+            <AdminUserProfilePage/>
+        )}
+        </div>
+        
     );
 };
