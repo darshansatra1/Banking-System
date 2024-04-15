@@ -47,15 +47,15 @@ const register = async (req, res) => {
         return await registerManager(req, res);
     }
 
-    if(req.body.role==="admin"){
-        const admin = await Admin.findOne({
-            email: req.body.email,
-        });
-        if(admin){
-            return res.status(400).send("User already exists");
-        }
-        return await registerAdmin(req, res);
-    }
+    // if(req.body.role==="admin"){
+    //     const admin = await Admin.findOne({
+    //         email: req.body.email,
+    //     });
+    //     if(admin){
+    //         return res.status(400).send("User already exists");
+    //     }
+    //     return await registerAdmin(req, res);
+    // }
 
     return res.status(400).send("Invalid credentials")
 }

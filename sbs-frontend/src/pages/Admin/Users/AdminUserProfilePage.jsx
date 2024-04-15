@@ -21,7 +21,7 @@ export const AdminUserProfilePage = () => {
       // Check if token exists
         if (user.token) {
           // Make API request to fetch user data
-          axios.get(`http://localhost:8080/${user.role}/user/${userId}?role=${userRole}`, {
+          axios.get(`https://156.56.103.231:8080/${user.role}/user/${userId}?role=${userRole}`, {
               headers: {
                   Authorization: `Bearer ${user.token}`, // Include token in the headers
               },
@@ -63,7 +63,7 @@ export const AdminUserProfilePage = () => {
         deactivatePayload.role = userData.role;
         deactivatePayload.status = false;
         
-        await axios.put(`http://localhost:8080/${user.role}/user/${userId}/status`, deactivatePayload, {
+        await axios.put(`https://156.56.103.231:8080/${user.role}/user/${userId}/status`, deactivatePayload, {
             headers: {
                 Authorization: `Bearer ${user.token}`, // Include token in the headers
             },
@@ -92,7 +92,7 @@ export const AdminUserProfilePage = () => {
             deactivatePayload.role = userData.role;
             deactivatePayload.status = true;
             
-            await axios.put(`http://localhost:8080/${user.role}/user/${userId}/status`, deactivatePayload, {
+            await axios.put(`https://156.56.103.231:8080/${user.role}/user/${userId}/status`, deactivatePayload, {
                 headers: {
                     Authorization: `Bearer ${user.token}`, // Include token in the headers
                 },
@@ -111,19 +111,15 @@ export const AdminUserProfilePage = () => {
         // Send updated user data to the backend
         try {
             if (user.token) {
-                await axios.put(`http://localhost:8080/${user.role}/user/${userId}`, updatedUserData, {
+                await axios.put(`https://156.56.103.231:8080/${user.role}/user/${userId}`, updatedUserData, {
                     headers: {
                         Authorization: `Bearer ${user.token}`, // Include token in the headers
                     },
-                });
-
-                console.log()
+                }); 
                 // Update local state with new user data
                 setUserData(updatedUserData);
-                setIsEditing(false);
-                console.log("Profile updated successfully!");
-            } else {
-                console.error("Token not found in cookie");
+                setIsEditing(false); 
+            } else { 
                 navigate("/login");
             }
         } catch (error) {

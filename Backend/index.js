@@ -9,20 +9,30 @@ const rateLimit = require("express-rate-limit"); // Rate limiting middleware
 const xss = require("xss-clean"); // Cross-site scripting (XSS) protection
 const mongoSanitize = require("express-mongo-sanitize"); // Data sanitization
 const { errorHandler, notFound } = require("./middlewares/errorHandler");
-
-
+const fs = require('fs');
+const https = require("node:https");  
+const options = {  
+  // key: fs.readFileSync('./ssl/key.pem'),
+  // cert: fs.readFileSync('./ssl/cert.pem'),
+  key: fs.readFileSync('./certs/private.key','utf8'),
+  cert: fs.readFileSync('./certs/certificate.crt','utf8'),
+}
 
 const app = express();
+const server = https.createServer(options, app);
 
 // Database connection 
 dbConnect().then(t=>{
 
-});
-
+}); 
 // Middleware for enhanced security and functionality:
 app.use(morgan("dev")); // Log HTTP requests and responses
 app.use(helmet()); // Set security headers
-app.use(cors({ origin: process.env.CORS_ORIGIN || "*" })); // Configure CORS based on your needs
+app.use(cors(
+  {
+    "origin": "*", 
+  }
+)); // Configure CORS based on your needs 
 app.use(rateLimit({ windowMs: 15 * 60 * 1000, max: 100 })); // Limit requests per window
 app.use(xss()); // Clean incoming requests from XSS attacks
 app.use(mongoSanitize()); // Sanitize data for MongoDB queries
@@ -38,8 +48,7 @@ const merchantRoute = require("./routes/merchantRoute");
 const employeeRoute = require("./routes/employeeRoute");
 const managerRoute = require("./routes/managerRoute");
 const adminRoute = require("./routes/adminRoute");
-
-
+ 
 app.use('/', usersRoute);
 app.use('/customer',customerRoute);
 app.use('/merchant',merchantRoute);
@@ -54,6 +63,5 @@ app.use(notFound);
 app.use(errorHandler);
 
 // Server startup:
-app.listen(PORT, () => {
-    console.log(`Server is running at PORT ${PORT}`);
-});
+
+server.listen(PORT);

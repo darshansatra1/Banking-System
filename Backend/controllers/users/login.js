@@ -6,7 +6,7 @@ const Admin = require("../../models/AdminModel");
 const {generateUserToken} = require("../../helpers/generateUserToken");
 const {generateAdminToken} = require("../../helpers/generateAdminToken");
 
-const login  = async(req,res)=>{
+const login  = async(req,res)=>{ 
     const customer = await Customer.findOne({
         email: req.body.email,
     });

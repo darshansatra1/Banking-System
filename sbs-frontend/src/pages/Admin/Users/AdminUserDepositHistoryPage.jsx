@@ -17,7 +17,7 @@ export const AdminUserDepositHistoryPage = () => {
         // Check if token exists
         if (user.token) {
             // Make API request to fetch deposit history
-            axios.get(`http://localhost:8080/${user.role}/user/${userId}/deposit?role=${userRole}`,
+            axios.get(`https://156.56.103.231:8080/${user.role}/user/${userId}/deposit?role=${userRole}`,
             {
                 headers: {
                     Authorization: `Bearer ${user.token}`, // Include token in the headers

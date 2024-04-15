@@ -17,7 +17,7 @@ export const AdminProfilePage = () => {
                 }
                 
                 if (user.token) {
-                  const response = await axios.get('http://localhost:8080/'+ user.role +'/profile', {
+                  const response = await axios.get('https://156.56.103.231:8080/'+ user.role +'/profile', {
                     headers: {
                       Authorization: `Bearer ${user.token}`,
                     },

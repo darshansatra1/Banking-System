@@ -18,7 +18,7 @@ export const AdminUserWithdrawHistoryPage = () => {
         // Check if token exists
         if (user.token) {
             // Make API request to fetch withdrawal history
-            axios.get(`http://localhost:8080/${user.role}/user/${userId}/withdraw?role=${userRole}`, {
+            axios.get(`https://156.56.103.231:8080/${user.role}/user/${userId}/withdraw?role=${userRole}`, {
                 headers: {
                     Authorization: `Bearer ${user.token}`, // Include token in the headers
                 },

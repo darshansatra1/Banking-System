@@ -18,7 +18,7 @@ const BillHistory = () => {
                     return;
                 }
 
-                const response = await axios.get(`http://localhost:8080/merchant/bills`, {
+                const response = await axios.get(`https://156.56.103.231:8080/merchant/bills`, {
                     headers: {
                         Authorization: `Bearer ${user.token}`,
                     },

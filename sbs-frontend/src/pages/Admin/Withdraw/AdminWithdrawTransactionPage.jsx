@@ -21,7 +21,7 @@ export const AdminWithdrawTransactionPage = () => {
           }
   
           if (user.token) {
-            const response = await axios.get('http://localhost:8080/' +user.role +'/withdraw', {
+            const response = await axios.get('https://156.56.103.231:8080/' +user.role +'/withdraw', {
               headers: {
                 Authorization: `Bearer ${user.token}`,
               },
@@ -52,7 +52,7 @@ export const AdminWithdrawTransactionPage = () => {
           }
       
           const response = await axios.post(
-            'http://localhost:8080/'+user.role+'/withdraw/'+ withdrawId,
+            'https://156.56.103.231:8080/'+user.role+'/withdraw/'+ withdrawId,
             { accept },
             {
               headers: {

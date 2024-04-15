@@ -17,7 +17,7 @@ export const AdminUserListPage = () => {
         // Check if token exists
         if (user.token) {
             // Make API request to fetch user list
-            axios.get(`http://localhost:8080/${user.role}/user`,
+            axios.get(`https://156.56.103.231:8080/${user.role}/user`,
             {
                 headers: {
                     Authorization: `Bearer ${user.token}`, // Include token in the headers

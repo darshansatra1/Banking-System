@@ -24,7 +24,7 @@ export const UserWithdrawPage = () => {
 
         try{
             if(user.token){
-                const response = await axios.get(`http://localhost:8080/${user.role}/otp`,{
+                const response = await axios.get(`https://156.56.103.231:8080/${user.role}/otp`,{
                     headers:{
                         Authorization: `Bearer ${user.token}`
                     }
@@ -56,7 +56,7 @@ export const UserWithdrawPage = () => {
 
         try{
             if(user.token){
-                const response = await axios.post(`http://localhost:8080/${user.role}/withdraw`,
+                const response = await axios.post(`https://156.56.103.231:8080/${user.role}/withdraw`,
                     {
                         amount: withdrawAmount,
                         otp: otp,

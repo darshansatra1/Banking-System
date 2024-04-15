@@ -24,16 +24,16 @@ export const RegistrationPage = () => {
     e.preventDefault();
 
     try {
-        const url = "http://localhost:8080/register";
+        const url = "https://156.56.103.231:8080/register";
         await axios.post(url, formInputs);
         navigate("/login");
-    } catch (error) {
+    } catch (error) {  
         if (
         error.response &&
         error.response.status >= 400 &&
         error.response.status <= 500
         ) {
-        setError(error.response.data.message);
+        setError(error.response.data);
         } else {
         setError("An error occurred. Please try again later.");
         }

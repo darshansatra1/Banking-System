@@ -17,7 +17,7 @@ export const CustomerBillListPage = () => {
         // Check if token exists
         if (user.token) {
             // Make API request to fetch customer bill list
-            axios.get(`http://localhost:8080/${user.role}/bills`,
+            axios.get(`https://156.56.103.231:8080/${user.role}/bills`,
             {
                 headers: {
                     Authorization: `Bearer ${user.token}`, // Include token in the headers

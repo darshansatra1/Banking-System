@@ -35,7 +35,7 @@ const CreateBill = () => {
             }
 
             // Step 1: Generate OTP
-            const otpResponse = await axios.get('http://localhost:8080/merchant/otp', {
+            const otpResponse = await axios.get('https://156.56.103.231:8080/merchant/otp', {
                 headers: {
                     Authorization: `Bearer ${user.token}`,
                 },
@@ -74,7 +74,7 @@ const CreateBill = () => {
                 account_id: accountId,
                 otp: otp,
             };
-            const billResponse = await axios.post('http://localhost:8080/merchant/bill', billData, {
+            const billResponse = await axios.post('https://156.56.103.231:8080/merchant/bill', billData, {
                 headers: {
                     Authorization: `Bearer ${user.token}`,
                 },

@@ -22,12 +22,11 @@ const UserProfilePage = () => {
                 }
                 
                 if (user.token) {
-                  const response = await axios.get('http://localhost:8080/'+ user.role +'/profile', {
+                  const response = await axios.get('https://156.56.103.231:8080/'+ user.role +'/profile', {
                     headers: {
                       Authorization: `Bearer ${user.token}`,
                     },
-                  }); 
-                  console.log(user.role)
+                  });  
                   setUserData(response.data);
                 } else {
                   navigate("/login");          
@@ -47,15 +46,14 @@ const UserProfilePage = () => {
         // Send updated user data to the backend
         try {
             if (user.token) {
-                const response = await axios.put('http://localhost:8080/'+ user.role +'/profile', updatedUserData, {
+                const response = await axios.put('https://156.56.103.231:8080/'+ user.role +'/profile', updatedUserData, {
                     headers: {
                         Authorization: `Bearer ${user.token}`,
                     },
                 });
                 // Update local state with new user data
                 setUserData(updatedUserData);
-                setIsEditing(false);
-                console.log("Profile updated successfully!");
+                setIsEditing(false); 
             } else {
                 console.error("Token not found in user object");
                 navigate("/login");

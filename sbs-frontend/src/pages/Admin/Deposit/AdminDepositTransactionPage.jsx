@@ -18,7 +18,7 @@ export const AdminDepositTransactionPage = () => {
                 return;
             }
             if (user.token) {
-                const response = await axios.get(`http://localhost:8080/${user.role}/deposit`, {
+                const response = await axios.get(`https://156.56.103.231:8080/${user.role}/deposit`, {
                     headers: {
                     Authorization: `Bearer ${user.token}`,
                     },
@@ -49,7 +49,7 @@ export const AdminDepositTransactionPage = () => {
           }
       
           const response = await axios.post(
-            'http://localhost:8080/'+user.role+'/deposit/'+ depositId,
+            'https://156.56.103.231:8080/'+user.role+'/deposit/'+ depositId,
             { accept },
             {
               headers: {

@@ -40,7 +40,7 @@ const registerUser = asyncHandler(async (req,res)=>{
  * @route  POST  /login
  * @access public
  */
-const loginUser = asyncHandler(async (req, res) => {
+const loginUser = asyncHandler(async (req, res) => { 
     if (!('email' in req.body) || !('password' in req.body)){
         return res.status(401).send("Invalid credentails");
     }

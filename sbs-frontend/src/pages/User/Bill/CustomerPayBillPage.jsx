@@ -20,7 +20,7 @@ export const CustomerPayBillPage = () => {
         // Check if token exists
           if (user.token) {
             // Make API request to fetch bill data
-            axios.get(`http://localhost:8080/${user.role}/bill/${bill_id}`, {
+            axios.get(`https://156.56.103.231:8080/${user.role}/bill/${bill_id}`, {
                 headers: {
                     Authorization: `Bearer ${user.token}`, // Include token in the headers
                 },
@@ -47,7 +47,7 @@ export const CustomerPayBillPage = () => {
 
         try{
             if(user.token){
-                const response = await axios.get(`http://localhost:8080/${user.role}/otp`,{
+                const response = await axios.get(`https://156.56.103.231:8080/${user.role}/otp`,{
                     headers:{
                         Authorization: `Bearer ${user.token}`
                     }
@@ -73,7 +73,7 @@ export const CustomerPayBillPage = () => {
 
         try{
             if(user.token){
-                const response = await axios.post(`http://localhost:8080/${user.role}/bill/${bill_id}`,
+                const response = await axios.post(`https://156.56.103.231:8080/${user.role}/bill/${bill_id}`,
                     {
                         otp: otp,
                     },

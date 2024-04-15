@@ -42,7 +42,7 @@ export const LoginPage = () => {
 
     const handleLogin = async (e) => {
         e.preventDefault();
-        const url = "http://localhost:8080/login";
+        const url = "https://156.56.103.231:8080/login";
         try {
             const response = await axios.post(url, inputValue);
 
@@ -53,6 +53,7 @@ export const LoginPage = () => {
             });
             routeAsPerRole(response.data.role);
         } catch (err) {
+          console.log(err.response);
         if (err.response && err.response.status === 401) {
             // Handle 401 Unauthorized error
             setError('Unauthorized. Please Sign up.');
